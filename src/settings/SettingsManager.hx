@@ -8,13 +8,10 @@ import sys.FileSystem;
 class SettingsManager {
 	private static final SETTINGS_FILE_PATH:String = "settings.json";
 
-	// private static final DEVICE_ID:String = "pci-0000:00:14.0-usb-0:1:1.0-event-kbd";
 	@:isVar public var settings(get, set):SettingsData;
 
 	public static final instance:SettingsManager = new SettingsManager();
 
-	// private var onDeviceFollowOn:Function;
-	// private for singleton use only
 	private function new() {}
 
 	public function init() {
@@ -67,8 +64,24 @@ class SettingsManager {
 				id: id,
 				name: "",
 				action: "",
+				actionState: "",
 				type: "",
+				enabled: false,
+				active: false,
+				current: false,
 			});
+			saveSettingsData();
+		}
+	}
+
+	public function updateCard(updatedCard:CardData) {
+		if (hasCard(updatedCard.id) == true) {
+			for (i in 0...settings.cards.length) {
+				if (updatedCard.id == settings.cards[i].id) {
+					settings.cards[i] = updatedCard;
+				}
+			}
+
 			saveSettingsData();
 		}
 	}

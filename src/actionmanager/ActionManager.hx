@@ -27,9 +27,9 @@ class ActionManager {
 
 			if (currentCardId != card.id) {
 				currentCardId = card.id;
-				LOG("DO car " + card.id);
+				LOG("Card Id " + card.id);
 				LOG("type " + card.type);
-				LOG("ACtion " + card.action);
+				LOG("Action " + card.action);
 				if (card.type == SettingsData.ACTION_STREAM) {
 					playAudioStream(card.action);
 				} else if (card.type == SettingsData.ACTION_YTPL) {

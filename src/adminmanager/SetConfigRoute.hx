@@ -1,0 +1,37 @@
+package adminmanager;
+
+import settings.CardData;
+import settings.SettingsManager;
+import weblink.Request;
+import adminmanager.http.Route;
+import weblink.Weblink;
+
+class SetConfigRoute extends Route {
+	public function new(server:Weblink) {
+		super("/setconfig", new ConfigRouteData(), Route.POST_METHOD, server);
+	}
+
+	override function onRequest(request:Request) {
+		var requestDataObj:Dynamic = haxe.Json.parse(Std.string(request.data));
+		var newCardArray:Array<CardData> = requestDataObj.cards;
+
+		var cardFieldsToUpdate:Array<String> = ["name", "enabled", "action", "type",];
+
+		for (newCard in newCardArray) {
+			if (SettingsManager.instance.hasCard(newCard.id) == true) {
+				for (field in cardFieldsToUpdate) {
+					var storedCard:CardData = SettingsManager.instance.getCard(newCard.id);
+					var currentValue:Dynamic = Reflect.getProperty(storedCard, field);
+					var newValue:Dynamic = Reflect.getProperty(newCard, field);
+					if (currentValue != newValue) {
+						Reflect.setField(storedCard,field, newValue);
+						SettingsManager.instance.updateCard(storedCard);
+					}
+				}
+			}
+		}
+		var configRouteData:ConfigRouteData = new ConfigRouteData();
+		configRouteData.config = SettingsManager.instance.settings;
+		respond(configRouteData);
+	}
+}

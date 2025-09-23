@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RFID Admin</title>
+    <style>
+        :root {
+            --bg: #303030;
+            --fg: #ffffff;
+            --muted: #bdbdbd;
+            --card: #3a3a3a;
+            --border: #4a4a4a;
+            --accent: #7dd3fc;
+            --error: #ef4444;
+        }
+        * { box-sizing: border-box; }
+        body {
+            background-color: var(--bg);
+            color: var(--fg);
+            margin: 0;
+            font-family: Arial, Helvetica, sans-serif;
+            padding: 24px;
+        }
+        h1 { text-align: center; margin: 0 0 16px; }
+        h2 { margin: 24px 0 12px; }
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 16px;
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+        .panel {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 16px;
+        }
+        .row { display: flex; gap: 16px; flex-wrap: wrap; }
+        .kv { min-width: 240px; }
+        .label { color: var(--muted); font-size: 12px; text-transform: uppercase; letter-spacing: .06em; }
+        .value { font-size: 16px; margin-top: 4px; }
+        table { width: 100%; border-collapse: collapse; }
+        thead th { text-align: left; font-weight: 600; color: var(--muted); font-size: 12px; padding: 10px; border-bottom: 1px solid var(--border); }
+        tbody td { padding: 10px; border-bottom: 1px solid var(--border); vertical-align: middle; }
+        input[type="text"], select {
+            background: #2b2b2b;
+            color: var(--fg);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            padding: 6px 8px;
+            width: 100%;
+        }
+        input[type="checkbox"] { transform: scale(1.1); }
+        .mono { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; }
+        ul { margin: 0; padding-left: 18px; }
+        .small { font-size: 12px; color: var(--muted); }
+        .controls { display:flex; align-items:center; gap:12px; }
+        .btn { background: transparent; border:1px solid var(--border); color: var(--fg); padding:8px 12px; border-radius:8px; cursor:pointer; }
+        .btn:hover { border-color: var(--accent); }
+        .pill { display:inline-flex; align-items:center; gap:8px; border:1px solid var(--border); padding:8px 10px; border-radius:999px; }
+        .error { color: var(--error); }
+    </style>
+    <script>
+        // --- Sample data toggle ---
+        const SAMPLE_DATA = {
+            "verboseLogging": true,
+            "deviceID": "usb-HXGCoLtd_27db-event-kbd",
+            "cards": [
+                {"action":"","actionState":"","active":false,"current":false,"enabled":false,"id":"0003032758","name":"example 4","type":""},
+                {"action":"","actionState":"","active":false,"current":false,"enabled":false,"id":"0003032732","name":"example 3","type":""},
+                {"action":"","actionState":"","active":false,"current":false,"enabled":false,"id":"0002985670","name":"example 2","type":""},
+                {"action":"","actionState":"","active":false,"current":false,"enabled":false,"id":"0002973783","name":"example 1","type":""}
+            ],
+            "avalibleCardActions": ["ACTION_STREAM","ACTION_YTPL"]
+        };
+
+        let configData = null;
+        let intervalId = null;
+
+        function pageLoaded() {
+            console.log("Page has fully loaded.");
+            loadConfigData();
+            startDataLoadInterval();
+        }
+
+        function startDataLoadInterval() {
+            if (intervalId) clearInterval(intervalId);
+            intervalId = setInterval(loadConfigData, 5000);
+        }
+
+        function useSample() {
+            const checkbox = document.getElementById('useSample');
+            return checkbox && checkbox.checked;
+        }
+
+        function showError(msg) {
+            const el = document.getElementById('errorBanner');
+            el.textContent = msg || '';
+            el.style.display = msg ? 'block' : 'none';
+        }
+
+        function loadConfigData() {
+            showError('');
+            if (useSample()) {
+                onConfigDataLoaded(structuredClone(SAMPLE_DATA));
+                return;
+            }
+            fetch('./config')
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok ' + response.status + ' ' + response.statusText);
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    onConfigDataLoaded(data);
+                })
+                .catch(error => {
+                    console.error("Error loading config data:", error);
+                    showError('Failed to load ./config. Enable "Use sample data" to preview.');
+                });
+        }
+
+        function onConfigDataLoaded(data) {
+            if (JSON.stringify(data) !== JSON.stringify(configData)) {
+                configData = data;
+                updatePage();
+            }
+        }
+
+        function postConfigData() {
+            if (!configData) return;
+            fetch('./setconfig', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(configData)
+            }).then(res => {
+                if (!res.ok) throw new Error('Failed to save config');
+                console.log('Config saved successfully');
+            }).catch(err => {
+                console.error('Error saving config:', err);
+            });
+        }
+
+        function updatePage() {
+            if (!configData) return;
+            const deviceIdEl = document.getElementById('deviceId');
+            const verboseEl = document.getElementById('verboseLogging');
+            const updatedEl = document.getElementById('lastUpdated');
+            deviceIdEl.textContent = configData["deviceID"] ?? '';
+            verboseEl.textContent = String(!!configData.verboseLogging);
+            updatedEl.textContent = new Date().toLocaleString();
+
+            const tbody = document.getElementById('cardsBody');
+            tbody.innerHTML = '';
+            const cards = Array.isArray(configData.cards) ? configData.cards : [];
+            const actions = Array.isArray(configData.avalibleCardActions) ? configData.avalibleCardActions : [];
+
+            if (cards.length > 0) {
+                cards.forEach((card, idx) => {
+                    const tr = document.createElement('tr');
+
+                    const tdId = document.createElement('td');
+                    tdId.className = 'mono';
+                    tdId.textContent = card.id ?? '';
+                    tr.appendChild(tdId);
+
+                    const tdName = document.createElement('td');
+                    const nameInput = document.createElement('input');
+                    nameInput.type = 'text';
+                    nameInput.value = card.name ?? '';
+                    nameInput.addEventListener('change', (e) => {
+                        configData.cards[idx].name = e.target.value;
+                        postConfigData();
+                    });
+                    tdName.appendChild(nameInput);
+                    tr.appendChild(tdName);
+
+                    const tdEnabled = document.createElement('td');
+                    const enabledInput = document.createElement('input');
+                    enabledInput.type = 'checkbox';
+                    enabledInput.checked = !!card.enabled;
+                    enabledInput.addEventListener('change', (e) => {
+                        configData.cards[idx].enabled = !!e.target.checked;
+                        postConfigData();
+                    });
+                    tdEnabled.appendChild(enabledInput);
+                    tr.appendChild(tdEnabled);
+
+                    const tdActive = document.createElement('td');
+                    tdActive.textContent = bool(card.active);
+                    tr.appendChild(tdActive);
+
+                    const tdCurrent = document.createElement('td');
+                    tdCurrent.textContent = bool(card.current);
+                    tr.appendChild(tdCurrent);
+
+                    const tdType = document.createElement('td');
+                    const typeInput = document.createElement('input');
+                    typeInput.type = 'text';
+                    typeInput.value = card.type || '';
+                    typeInput.addEventListener('change', (e) => {
+                        configData.cards[idx].type = e.target.value;
+                        postConfigData();
+                    });
+                    tdType.appendChild(typeInput);
+                    tr.appendChild(tdType);
+
+                    const tdAction = document.createElement('td');
+                    const actionSelect = document.createElement('select');
+                    const uniqueActions = Array.from(new Set(actions.concat(card.action ? [card.action] : [])));
+                    uniqueActions.forEach(act => {
+                        const opt = document.createElement('option');
+                        opt.value = act;
+                        opt.textContent = act;
+                        actionSelect.appendChild(opt);
+                    });
+                    actionSelect.value = card.action || '';
+                    actionSelect.addEventListener('change', (e) => {
+                        configData.cards[idx].action = e.target.value;
+                        postConfigData();
+                    });
+                    tdAction.appendChild(actionSelect);
+                    tr.appendChild(tdAction);
+
+                    const tdActionState = document.createElement('td');
+                    tdActionState.textContent = card.actionState || '';
+                    tr.appendChild(tdActionState);
+
+                    tbody.appendChild(tr);
+                });
+            } else {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `<td colspan="8" class="small">No cards found</td>`;
+                tbody.appendChild(tr);
+            }
+
+            const actionsUl = document.getElementById('actionsList');
+            actionsUl.innerHTML = '';
+            (configData.avalibleCardActions || []).forEach(act => {
+                const li = document.createElement('li');
+                li.textContent = act;
+                actionsUl.appendChild(li);
+            });
+        }
+
+        function bool(val){ return val ? 'Yes' : 'No'; }
+    </script>
+</head>
+<body onload="pageLoaded()">
+    <h1>RFID Admin</h1>
+
+    <div class="grid">
+        <section class="panel">
+            <div class="controls">
+                <label class="pill"><input type="checkbox" id="useSample"> Use sample data</label>
+                <button class="btn" onclick="loadConfigData()">Load Now</button>
+                <span id="errorBanner" class="small error" style="display:none"></span>
+            </div>
+        </section>
+
+        <section class="panel">
+            <h2>System</h2>
+            <div class="row">
+                <div class="kv">
+                    <div class="label">Device ID</div>
+                    <div id="deviceId" class="value mono">—</div>
+                </div>
+                <div class="kv">
+                    <div class="label">Verbose Logging</div>
+                    <div id="verboseLogging" class="value">—</div>
+                </div>
+                <div class="kv">
+                    <div class="label">Last Updated</div>
+                    <div id="lastUpdated" class="value small">—</div>
+                </div>
+            </div>
+        </section>
+
+        <section class="panel">
+            <h2>Cards</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Enabled</th>
+                        <th>Active</th>
+                        <th>Current</th>
+                        <th>Type</th>
+                        <th>Action</th>
+                        <th>Action State</th>
+                    </tr>
+                </thead>
+                <tbody id="cardsBody"></tbody>
+            </table>
+        </section>
+
+        <section class="panel">
+            <h2>Available Card Actions</h2>
+            <ul id="actionsList"></ul>
+        </section>
+    </div>
+</body>
+</html>
