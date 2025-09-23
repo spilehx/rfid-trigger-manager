@@ -13,6 +13,7 @@
             --border: #4a4a4a;
             --accent: #7dd3fc;
             --error: #ef4444;
+            --success: #22c55e;
         }
         * { box-sizing: border-box; }
         body {
@@ -61,6 +62,8 @@
         .btn:hover { border-color: var(--accent); }
         .pill { display:inline-flex; align-items:center; gap:8px; border:1px solid var(--border); padding:8px 10px; border-radius:999px; }
         .error { color: var(--error); }
+        .success { color: var(--success); }
+        .status { margin-left: 8px; }
     </style>
     <script>
         // --- Sample data toggle ---
@@ -99,6 +102,7 @@
             const el = document.getElementById('errorBanner');
             el.textContent = msg || '';
             el.style.display = msg ? 'block' : 'none';
+            if (msg) setStatus('', ''); // hide save status if showing an error
         }
 
         function loadConfigData() {
@@ -132,15 +136,17 @@
 
         function postConfigData() {
             if (!configData) return;
+            setStatus('Saving…', '');
             fetch('./setconfig', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(configData)
             }).then(res => {
                 if (!res.ok) throw new Error('Failed to save config');
-                console.log('Config saved successfully');
+                setStatus('Saved ✓', 'success');
             }).catch(err => {
                 console.error('Error saving config:', err);
+                setStatus('Save failed', 'error');
             });
         }
 
@@ -247,6 +253,21 @@
         }
 
         function bool(val){ return val ? 'Yes' : 'No'; }
+        function setStatus(msg, type) {
+            const el = document.getElementById('saveStatus');
+            if (!el) return;
+            el.textContent = msg || '';
+            el.className = 'small status ' + (type || '');
+            if (msg) {
+                el.style.display = 'inline';
+                clearTimeout(window._statusTimer);
+                window._statusTimer = setTimeout(() => {
+                    el.style.display = 'none';
+                }, 2000);
+            } else {
+                el.style.display = 'none';
+            }
+        }
     </script>
 </head>
 <body onload="pageLoaded()">
@@ -257,7 +278,8 @@
             <div class="controls">
                 <label class="pill"><input type="checkbox" id="useSample"> Use sample data</label>
                 <button class="btn" onclick="loadConfigData()">Load Now</button>
-                <span id="errorBanner" class="small error" style="display:none"></span>
+                <span id="errorBanner" class="small error" style="display:none" aria-live="polite"></span>
+                <span id="saveStatus" class="small status" style="display:none" aria-live="polite"></span>
             </div>
         </section>
 
