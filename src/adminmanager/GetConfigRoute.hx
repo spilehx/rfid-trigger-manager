@@ -12,6 +12,7 @@ class GetConfigRoute extends Route {
 
 	override function onRequest(request:Request) {
 		var configRouteData:ConfigRouteData = new ConfigRouteData();
+		// SettingsManager.instance.loadSettings();
 		configRouteData.config = SettingsManager.instance.settings;
 		respond(configRouteData);
 	}

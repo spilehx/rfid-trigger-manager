@@ -19,17 +19,33 @@ class ActionManager {
 
 	public function doAction(cardId:String) {
 		var card:CardData = SettingsManager.instance.getCard(cardId);
+		if (card.enabled != true) {
+			USER_MESSAGE("Card not enabled: " + card.id);
+			return;
+		}
+
 		if (card != null) {
 			// kill current
 			stopCurrentActions();
-
+			USER_MESSAGE("triggering card " + card.id);
 			Sys.sleep(.5);
 
 			if (currentCardId != card.id) {
 				currentCardId = card.id;
-				LOG("Card Id " + card.id);
-				LOG("type " + card.type);
-				LOG("Action " + card.action);
+				// LOG("Card Id " + card.id);
+				// LOG("type " + card.type);
+				// LOG("Action " + card.action);
+				card.current = true;
+				card.active = true;
+
+				SettingsManager.instance.updateCard(card);
+				// SettingsManager.instance.saveSettingsData();
+
+				if (card.action.length == 0) {
+					USER_MESSAGE("No action for card: " + card.id);
+					return;
+				}
+
 				if (card.type == SettingsData.ACTION_STREAM) {
 					playAudioStream(card.action);
 				} else if (card.type == SettingsData.ACTION_YTPL) {
@@ -42,6 +58,10 @@ class ActionManager {
 	}
 
 	private function stopCurrentActions() {
+		for (card in SettingsManager.instance.settings.cards) {
+			card.active = false;
+		}
+
 		LOG("Stopping stream");
 		if (streamProc != null) {
 			streamProc = null;

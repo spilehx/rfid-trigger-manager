@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -15,7 +16,11 @@
             --error: #ef4444;
             --success: #22c55e;
         }
-        * { box-sizing: border-box; }
+
+        * {
+            box-sizing: border-box;
+        }
+
         body {
             background-color: var(--bg);
             color: var(--fg);
@@ -23,8 +28,16 @@
             font-family: Arial, Helvetica, sans-serif;
             padding: 24px;
         }
-        h1 { text-align: center; margin: 0 0 16px; }
-        h2 { margin: 24px 0 12px; }
+
+        h1 {
+            text-align: center;
+            margin: 0 0 16px;
+        }
+
+        h2 {
+            margin: 24px 0 12px;
+        }
+
         .grid {
             display: grid;
             grid-template-columns: 1fr;
@@ -32,20 +45,58 @@
             max-width: 1100px;
             margin: 0 auto;
         }
+
         .panel {
             background: var(--card);
             border: 1px solid var(--border);
             border-radius: 12px;
             padding: 16px;
         }
-        .row { display: flex; gap: 16px; flex-wrap: wrap; }
-        .kv { min-width: 240px; }
-        .label { color: var(--muted); font-size: 12px; text-transform: uppercase; letter-spacing: .06em; }
-        .value { font-size: 16px; margin-top: 4px; }
-        table { width: 100%; border-collapse: collapse; }
-        thead th { text-align: left; font-weight: 600; color: var(--muted); font-size: 12px; padding: 10px; border-bottom: 1px solid var(--border); }
-        tbody td { padding: 10px; border-bottom: 1px solid var(--border); vertical-align: middle; }
-        input[type="text"], select {
+
+        .row {
+            display: flex;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+
+        .kv {
+            min-width: 240px;
+        }
+
+        .label {
+            color: var(--muted);
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: .06em;
+        }
+
+        .value {
+            font-size: 16px;
+            margin-top: 4px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        thead th {
+            text-align: left;
+            font-weight: 600;
+            color: var(--muted);
+            font-size: 12px;
+            padding: 10px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        tbody td {
+            padding: 10px;
+            border-bottom: 1px solid var(--border);
+            vertical-align: middle;
+        }
+
+        input[type="text"],
+        select {
             background: #2b2b2b;
             color: var(--fg);
             border: 1px solid var(--border);
@@ -53,32 +104,66 @@
             padding: 6px 8px;
             width: 100%;
         }
-        input[type="checkbox"] { transform: scale(1.1); }
-        .mono { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; }
-        ul { margin: 0; padding-left: 18px; }
-        .small { font-size: 12px; color: var(--muted); }
-        .controls { display:flex; align-items:center; gap:12px; }
-        .btn { background: transparent; border:1px solid var(--border); color: var(--fg); padding:8px 12px; border-radius:8px; cursor:pointer; }
-        .btn:hover { border-color: var(--accent); }
-        .pill { display:inline-flex; align-items:center; gap:8px; border:1px solid var(--border); padding:8px 10px; border-radius:999px; }
-        .error { color: var(--error); }
-        .success { color: var(--success); }
-        .status { margin-left: 8px; }
+
+        input[type="checkbox"] {
+            transform: scale(1.1);
+        }
+
+        .mono {
+            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+        }
+
+        ul {
+            margin: 0;
+            padding-left: 18px;
+        }
+
+        .small {
+            font-size: 12px;
+            color: var(--muted);
+        }
+
+        .controls {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .btn {
+            background: transparent;
+            border: 1px solid var(--border);
+            color: var(--fg);
+            padding: 8px 12px;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+
+        .btn:hover {
+            border-color: var(--accent);
+        }
+
+        .pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            border: 1px solid var(--border);
+            padding: 8px 10px;
+            border-radius: 999px;
+        }
+
+        .error {
+            color: var(--error);
+        }
+
+        .success {
+            color: var(--success);
+        }
+
+        .status {
+            margin-left: 8px;
+        }
     </style>
     <script>
-        // --- Sample data toggle ---
-        const SAMPLE_DATA = {
-            "verboseLogging": true,
-            "deviceID": "usb-HXGCoLtd_27db-event-kbd",
-            "cards": [
-                {"action":"","actionState":"","active":false,"current":false,"enabled":false,"id":"0003032758","name":"example 4","type":""},
-                {"action":"","actionState":"","active":false,"current":false,"enabled":false,"id":"0003032732","name":"example 3","type":""},
-                {"action":"","actionState":"","active":false,"current":false,"enabled":false,"id":"0002985670","name":"example 2","type":""},
-                {"action":"","actionState":"","active":false,"current":false,"enabled":false,"id":"0002973783","name":"example 1","type":""}
-            ],
-            "avalibleCardActions": ["ACTION_STREAM","ACTION_YTPL"]
-        };
-
         let configData = null;
         let intervalId = null;
 
@@ -93,24 +178,15 @@
             intervalId = setInterval(loadConfigData, 5000);
         }
 
-        function useSample() {
-            const checkbox = document.getElementById('useSample');
-            return checkbox && checkbox.checked;
-        }
-
         function showError(msg) {
             const el = document.getElementById('errorBanner');
             el.textContent = msg || '';
             el.style.display = msg ? 'block' : 'none';
-            if (msg) setStatus('', ''); // hide save status if showing an error
+            if (msg) setStatus('', '');
         }
 
         function loadConfigData() {
             showError('');
-            if (useSample()) {
-                onConfigDataLoaded(structuredClone(SAMPLE_DATA));
-                return;
-            }
             fetch('./config')
                 .then(response => {
                     if (!response.ok) {
@@ -123,13 +199,14 @@
                 })
                 .catch(error => {
                     console.error("Error loading config data:", error);
-                    showError('Failed to load ./config. Enable "Use sample data" to preview.');
+                    showError('Failed to load ./config');
                 });
         }
 
         function onConfigDataLoaded(data) {
+
             if (JSON.stringify(data) !== JSON.stringify(configData)) {
-                configData = data;
+                configData = data.config;
                 updatePage();
             }
         }
@@ -151,6 +228,7 @@
         }
 
         function updatePage() {
+
             if (!configData) return;
             const deviceIdEl = document.getElementById('deviceId');
             const verboseEl = document.getElementById('verboseLogging');
@@ -161,6 +239,7 @@
 
             const tbody = document.getElementById('cardsBody');
             tbody.innerHTML = '';
+
             const cards = Array.isArray(configData.cards) ? configData.cards : [];
             const actions = Array.isArray(configData.avalibleCardActions) ? configData.avalibleCardActions : [];
 
@@ -252,7 +331,7 @@
             });
         }
 
-        function bool(val){ return val ? 'Yes' : 'No'; }
+        function bool(val) { return val ? 'Yes' : 'No'; }
         function setStatus(msg, type) {
             const el = document.getElementById('saveStatus');
             if (!el) return;
@@ -270,13 +349,13 @@
         }
     </script>
 </head>
+
 <body onload="pageLoaded()">
     <h1>RFID Admin</h1>
 
     <div class="grid">
         <section class="panel">
             <div class="controls">
-                <label class="pill"><input type="checkbox" id="useSample"> Use sample data</label>
                 <button class="btn" onclick="loadConfigData()">Load Now</button>
                 <span id="errorBanner" class="small error" style="display:none" aria-live="polite"></span>
                 <span id="saveStatus" class="small status" style="display:none" aria-live="polite"></span>
@@ -326,4 +405,5 @@
         </section>
     </div>
 </body>
+
 </html>

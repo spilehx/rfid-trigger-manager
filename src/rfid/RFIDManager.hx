@@ -1,9 +1,11 @@
 package rfid;
 
+import sys.thread.Thread;
 import settings.SettingsManager;
 import sys.io.Process;
 import haxe.Timer;
 import haxe.Constraints.Function;
+import sys.thread.Deque;
 
 class RFIDManager {
 	private static final DEVICE_ID:String = "pci-0000:00:14.0-usb-0:1:1.0-event-kbd";
@@ -13,6 +15,10 @@ class RFIDManager {
 	@:isVar public var onRead(get, set):String->Void;
 
 	private var connectedDevices:Array<String>;
+
+	final queue = new Deque<String>();
+	var running:Bool = false;
+	var pumpTimer:Timer;
 
 	// private for singleton use only
 	private function new() {}
@@ -114,24 +120,53 @@ class RFIDManager {
 		}
 
 		startCardListen();
+		startQueuePump();
 	}
 
-	private function startCardListen() {
-		var cardCode:String = "";
-		var inputLine:String;
-		try
-			while (true) {
-				inputLine = Sys.stdin().readLine();
-				if (isCardCode(inputLine)) {
-					cardCode = inputLine;
-					break;
+	public function startCardListen() {
+		if (running)
+			return; // already running
+		running = true;
+
+		// Worker thread
+		Thread.create(() -> {
+			try {
+				while (running) {
+					var line = Sys.stdin().readLine();
+					if (isCardCode(line)) {
+						queue.add(line);
+					}
 				}
 			} catch (e:haxe.io.Eof) {
-			trace('End of file, bye!');
-		}
+				trace('End of file, bye!');
+			} catch (e:Dynamic) {
+				trace('Unexpected error: $e');
+			}
+		});
 
-		if (cardCode.length > 0) {
-			onCardRead(cardCode);
+		startQueuePump();
+	}
+
+	private function startQueuePump() {
+		pumpTimer = new Timer(10);
+		pumpTimer.run = () -> {
+			var code:String;
+			while ((code = queue.pop(false)) != null) {
+				onCardRead(code); // main thread safe
+			}
+		};
+	}
+
+	// --- STOP functions ---
+	public function stopCardListen() {
+		running = false;
+		stopQueuePump();
+	}
+
+	public function stopQueuePump() {
+		if (pumpTimer != null) {
+			pumpTimer.stop();
+			pumpTimer = null;
 		}
 	}
 
@@ -145,13 +180,14 @@ class RFIDManager {
 	}
 
 	private function onCardRead(code:String) {
-		// LOG("INPUT--->" + code);
+		stopCardListen();
 		if (onRead != null) {
 			onRead(code);
 		}
 
-        // start read again
-        startCardListen();
+		Sys.sleep(.5);
+		// start read again
+		startCardListen();
 	}
 
 	function get_onDeviceConnected():Function {

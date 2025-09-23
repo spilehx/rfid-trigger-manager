@@ -10,8 +10,6 @@ class RFIDTriggerServer {
 		SettingsManager.instance.init();
 		USER_MESSAGE("Starting RFIDTriggerServer", true);
 
-		AdminManager.instance.init();
-
 		RFIDManager.instance.onDeviceConnected = function() {
 			LOG("Device Ready " + SettingsManager.instance.settings.deviceID);
 		}
@@ -19,10 +17,12 @@ class RFIDTriggerServer {
 		RFIDManager.instance.onRead = function(cardId:String) {
 			if (SettingsManager.instance.hasCard(cardId) == false) {
 				SettingsManager.instance.addCard(cardId);
+			} else {
+				ActionManager.instance.doAction(cardId);
 			}
-
-			ActionManager.instance.doAction(cardId);
 		}
+
+		AdminManager.instance.init();
 
 		RFIDManager.instance.init();
 	}

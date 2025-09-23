@@ -25,9 +25,9 @@ class HTTPServer {
 		server.listen(port, false);
 	}
 
-	public function stopServer() {
-		server.close(); // TODO: review if this is enough;
-	}
+	// public function stopServer() {
+	// 	server.close(); // TODO: review if this is enough;
+	// }
 
 	public function addRoute(routeClass:Class<Route>) {
 		routeClasses.push(routeClass);

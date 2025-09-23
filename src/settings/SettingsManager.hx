@@ -18,10 +18,19 @@ class SettingsManager {
 		this.settings = new SettingsData();
 		validateSettingsFileExists();
 		loadSettings();
+
+		resetCards();
 		GlobalLoggingSettings.settings.verbose = this.settings.verboseLogging;
 	}
 
-	private function loadSettings() {
+	public function resetCards(){
+		for(card in settings.cards){
+			card.active = card.current = false;
+		}
+		saveSettingsData();
+	}
+
+	public function loadSettings() {
 		loadSettingsFromFile();
 	}
 
