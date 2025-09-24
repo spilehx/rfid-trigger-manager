@@ -23,8 +23,8 @@ class SettingsManager {
 		GlobalLoggingSettings.settings.verbose = this.settings.verboseLogging;
 	}
 
-	public function resetCards(){
-		for(card in settings.cards){
+	public function resetCards() {
+		for (card in settings.cards) {
 			card.active = card.current = false;
 		}
 		saveSettingsData();

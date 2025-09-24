@@ -23,7 +23,6 @@ class RFIDTriggerServer {
 		}
 
 		AdminManager.instance.init();
-
 		RFIDManager.instance.init();
 	}
 }

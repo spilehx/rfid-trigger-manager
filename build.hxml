@@ -3,6 +3,6 @@
 -main RFIDTriggerServer
 --hl dist/RFIDTriggerServer.hl
 
---cmd "cp -a assets/. dist/"
+# --cmd "cp -a assets/. dist/"
 
 
