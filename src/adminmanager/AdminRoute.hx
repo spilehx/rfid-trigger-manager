@@ -18,7 +18,7 @@ class AdminRoute extends Route {
 }
 
 class AdminPageTools {
-	private static var ADMIN_PAGE_CONTENT:String = macrotools.Macros.fileAsString("./assets/index.html"); // Embed.fileAsString("./assets/index.html");
+	private static var ADMIN_PAGE_CONTENT:String = macrotools.Macros.fileAsString("./assets/index.html");
 
 	public static function getAdminPageContent():String {
 		if (ADMIN_PAGE_CONTENT == "") {
