@@ -16,8 +16,14 @@ class RFIDTriggerServer {
 
 		RFIDManager.instance.onRead = function(cardId:String) {
 			if (SettingsManager.instance.hasCard(cardId) == false) {
+				LOG("NEW CARD "+cardId);
+
+
+
 				SettingsManager.instance.addCard(cardId);
 			} else {
+
+				LOG("current CARD "+cardId);
 				ActionManager.instance.doAction(cardId);
 			}
 		}

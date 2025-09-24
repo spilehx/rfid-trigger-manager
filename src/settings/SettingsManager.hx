@@ -87,12 +87,31 @@ class SettingsManager {
 		if (hasCard(updatedCard.id) == true) {
 			for (i in 0...settings.cards.length) {
 				if (updatedCard.id == settings.cards[i].id) {
+					updatedCard.enabled = validateCardEnabledState(updatedCard);
 					settings.cards[i] = updatedCard;
+
+					break;
 				}
 			}
 
 			saveSettingsData();
 		}
+	}
+
+	public function validateCardEnabledState(card:CardData):Bool {
+		// this function will look at a cards enabled state,
+		// if it is enabled but it should not be as its not set up, it will return false
+		if (card.enabled == true) { // wanted it to be true
+			if (card.name.length > 0) { // has a name
+				if (card.action.length > 0) { // has action
+					if (card.type.length > 0) { // has type
+						return true; // wanted it to be true, and all fields ok so retruning true
+					}
+				}
+			}
+		}
+
+		return false;
 	}
 
 	public function hasCard(id:String) {
