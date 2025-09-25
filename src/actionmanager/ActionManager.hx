@@ -1,5 +1,7 @@
 package actionmanager;
 
+import actionmanager.actions.TestAction;
+import actionmanager.actions.Action;
 import settings.SettingsData;
 import settings.CardData;
 import haxe.Timer;
@@ -8,14 +10,32 @@ import sys.io.Process;
 import settings.SettingsManager;
 
 class ActionManager {
+	private var actionClasses:Array<Class<Action>>;
+
 	private var currentCardId:String;
 	private var streamProc:Process;
 
+	@:isVar public var avaliableActionTypes(get, null):Array<String>;
+
 	public static final instance:ActionManager = new ActionManager();
 
-	private function new() {}
+	private function new() {
+		actionClasses = [Action, TestAction];
+	}
 
-	public function init() {}
+	public function init() {
+		registerActions();
+	}
+
+	private function registerActions() {
+		avaliableActionTypes = new Array<String>();
+		for (actionClass in actionClasses) {
+			var action = Type.createInstance(actionClass, []);
+			avaliableActionTypes.push(action.type);
+		}
+	}
+
+	private var currentAction:Action;
 
 	public function doAction(cardId:String) {
 		var card:CardData = SettingsManager.instance.getCard(cardId);
@@ -24,38 +44,73 @@ class ActionManager {
 			return;
 		}
 
-		if (card != null) {
-			// kill current
-			stopCurrentActions();
-			USER_MESSAGE("triggering card " + card.id);
-			Sys.sleep(.5);
+		if (currentCardId != card.id) { // new card triggered
+			if (currentAction != null) {
+				LOG("Stopping current running action");
+				currentAction.stop();
+				Sys.sleep(.5);
+			}
 
-			if (currentCardId != card.id) {
-				currentCardId = card.id;
-				// LOG("Card Id " + card.id);
-				// LOG("type " + card.type);
-				// LOG("Action " + card.action);
-				card.current = true;
-				card.active = true;
+			// start new action
 
-				SettingsManager.instance.updateCard(card);
-				// SettingsManager.instance.saveSettingsData();
+			currentAction = getActionClassFromType(card.action);
+			currentCardId = card.id;
+			LOG("Start new action");
+			currentAction.start();
+		} else { // same card triggered again
+			currentAction.startWhileAlreadyRunning();
+		}
 
-				if (card.action.length == 0) {
-					USER_MESSAGE("No action for card: " + card.id);
-					return;
-				}
+		// if (card != null) {
+		// kill current
+		// stopCurrentActions();
 
-				if (card.type == SettingsData.ACTION_STREAM) {
-					playAudioStream(card.action);
-				} else if (card.type == SettingsData.ACTION_YTPL) {
-					playYTPlaylist(card.action);
-				}
-			} else {
-				currentCardId = "";
+		// USER_MESSAGE("triggering card " + card.id);
+		// Sys.sleep(.5);
+
+		// if (currentCardId != card.id) {
+		// 	currentCardId = card.id;
+		// 	// LOG("Card Id " + card.id);
+		// 	// LOG("type " + card.type);
+		// 	// LOG("Action " + card.action);
+		// 	card.current = true;
+		// 	card.active = true;
+
+		// 	SettingsManager.instance.updateCard(card);
+		// 	// SettingsManager.instance.saveSettingsData();
+
+		// 	if (card.action.length == 0) {
+		// 		USER_MESSAGE("No action for card: " + card.id);
+		// 		return;
+		// 	}
+
+		// 	if (card.type == SettingsData.ACTION_STREAM) {
+		// 		playAudioStream(card.action);
+		// 	} else if (card.type == SettingsData.ACTION_YTPL) {
+		// 		playYTPlaylist(card.action);
+		// 	}
+
+		// } else {
+		// 	currentCardId = "";
+		// }
+		// }
+	}
+
+	private function getActionClassFromType(actionType:String):Action {
+		for (actionClass in actionClasses) {
+			var action = Type.createInstance(actionClass, []);
+			if (actionType == action.type) {
+				return action;
 			}
 		}
+
+		return null;
 	}
+
+	// private static function isMatchingActionType(type:String, actionClass:Class<Action>):Bool {
+	// 	var action = Type.createInstance(actionClass, []);
+	// 	return (type == action.type);
+	// }
 
 	private function stopCurrentActions() {
 		for (card in SettingsManager.instance.settings.cards) {
@@ -98,5 +153,9 @@ class ActionManager {
 			timer = null;
 			followOn();
 		}
+	}
+
+	function get_avaliableActionTypes():Array<String> {
+		return avaliableActionTypes;
 	}
 }

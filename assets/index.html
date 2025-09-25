@@ -282,16 +282,16 @@
                     tdCurrent.textContent = bool(card.current);
                     tr.appendChild(tdCurrent);
 
-                    const tdType = document.createElement('td');
-                    const typeInput = document.createElement('input');
-                    typeInput.type = 'text';
-                    typeInput.value = card.type || '';
-                    typeInput.addEventListener('change', (e) => {
-                        configData.cards[idx].type = e.target.value;
+                    const tdCommand = document.createElement('td');
+                    const commandInput = document.createElement('input');
+                    commandInput.type = 'text';
+                    commandInput.value = card.command || '';
+                    commandInput.addEventListener('change', (e) => {
+                        configData.cards[idx].command = e.target.value;
                         postConfigData();
                     });
-                    tdType.appendChild(typeInput);
-                    tr.appendChild(tdType);
+                    tdCommand.appendChild(commandInput);
+                    tr.appendChild(tdCommand);
 
                     const tdAction = document.createElement('td');
                     const actionSelect = document.createElement('select');
@@ -390,7 +390,7 @@
                         <th>Enabled</th>
                         <th>Active</th>
                         <th>Current</th>
-                        <th>Type</th>
+                        <th>Command</th>
                         <th>Action</th>
                         <th>Action State</th>
                     </tr>

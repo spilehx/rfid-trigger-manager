@@ -1,5 +1,6 @@
 package settings;
 
+import actionmanager.ActionManager;
 import logger.GlobalLoggingSettings;
 import sys.io.File;
 import haxe.Json;
@@ -15,12 +16,13 @@ class SettingsManager {
 	private function new() {}
 
 	public function init() {
+		
 		this.settings = new SettingsData();
 		validateSettingsFileExists();
 		loadSettings();
-
-		resetCards();
 		GlobalLoggingSettings.settings.verbose = this.settings.verboseLogging;
+		resetCards();
+		validateCardActions();
 	}
 
 	public function resetCards() {
@@ -28,6 +30,31 @@ class SettingsManager {
 			card.active = card.current = false;
 		}
 		saveSettingsData();
+	}
+
+	private function validateCardActions() {
+		settings.avalibleCardActions = ActionManager.instance.avaliableActionTypes;
+
+		var userMsgIndentStr:String = "\n    - ";
+		USER_MESSAGE("  "+settings.avalibleCardActions.length
+			+ " actions found "
+			+ userMsgIndentStr
+			+ settings.avalibleCardActions.join(userMsgIndentStr));
+
+		for (card in settings.cards) {
+			if (card.action.length < 1) {
+				card.enabled = false;
+				continue;
+			}
+
+			if (settings.avalibleCardActions.indexOf(card.action) == -1) {
+				USER_MESSAGE("Bad action found for card: " + card.id + " resetting");
+				card.action = "";
+				card.enabled = false;
+			}
+		}
+
+		SettingsManager.instance.saveSettingsData();
 	}
 
 	public function loadSettings() {
@@ -74,7 +101,7 @@ class SettingsManager {
 				name: "",
 				action: "",
 				actionState: "",
-				type: "",
+				command: "",
 				enabled: false,
 				active: false,
 				current: false,
@@ -104,7 +131,7 @@ class SettingsManager {
 		if (card.enabled == true) { // wanted it to be true
 			if (card.name.length > 0) { // has a name
 				if (card.action.length > 0) { // has action
-					if (card.type.length > 0) { // has type
+					if (card.command.length > 0) { // has type
 						return true; // wanted it to be true, and all fields ok so retruning true
 					}
 				}

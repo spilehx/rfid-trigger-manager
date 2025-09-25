@@ -88,7 +88,7 @@ class RFIDManager {
 	}
 
 	private function checkDeviceConnection() {
-		LOG("Checking Device connection");
+		USER_MESSAGE("Checking Device connection");
 		if (isConnected() == true) {
 			deviceConnected();
 		} else {
