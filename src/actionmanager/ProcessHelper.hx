@@ -77,17 +77,17 @@ class ProcessHandle {
 			// create the process here so construction doesn't block the caller thread
 			proc = (_args == null || _args.length == 0) ? new Process(_cmd) : new Process(_cmd, _args);
 
-			// Drain output to avoid child process blocking on full pipes
-			Thread.create(() -> {
-				try {
-					while (true) proc.stdout.readLine();
-				} catch (_:Dynamic) {}
-			});
-			Thread.create(() -> {
-				try {
-					while (true) proc.stderr.readLine();
-				} catch (_:Dynamic) {}
-			});
+			// // Drain output to avoid child process blocking on full pipes
+			// Thread.create(() -> {
+			// 	try {
+			// 		while (true) proc.stdout.readLine();
+			// 	} catch (_:Dynamic) {}
+			// });
+			// Thread.create(() -> {
+			// 	try {
+			// 		while (true) proc.stderr.readLine();
+			// 	} catch (_:Dynamic) {}
+			// });
 
 			// Poll until exitCode() stops throwing
 			while (true) {
@@ -124,6 +124,7 @@ class ProcessHandle {
 	}
 
 	public function kill():Void {
-		try if (proc != null) proc.kill() else {} catch (_:Dynamic) {}
+		proc.kill();
+		// try if (proc != null) proc.kill() else {} catch (_:Dynamic) {}
 	}
 }

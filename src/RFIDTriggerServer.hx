@@ -15,6 +15,9 @@ class RFIDTriggerServer {
 			USER_MESSAGE("Device Ready " + SettingsManager.instance.settings.deviceID);
 		}
 
+
+		
+
 		RFIDManager.instance.onRead = function(cardId:String) {
 			if (SettingsManager.instance.hasCard(cardId) == false) {
 				SettingsManager.instance.addCard(cardId);

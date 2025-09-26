@@ -180,14 +180,14 @@ class RFIDManager {
 	}
 
 	private function onCardRead(code:String) {
-		stopCardListen();
+		// stopCardListen();
 		if (onRead != null) {
 			onRead(code);
 		}
 
-		Sys.sleep(.5);
+		// Sys.sleep(.5);
 		// start read again
-		startCardListen();
+		// startCardListen();
 	}
 
 	function get_onDeviceConnected():Function {
