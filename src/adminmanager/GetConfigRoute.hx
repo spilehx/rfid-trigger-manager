@@ -1,5 +1,6 @@
 package adminmanager;
 
+import logger.LogStream;
 import settings.SettingsManager;
 import weblink.Request;
 import adminmanager.http.Route;
@@ -14,6 +15,7 @@ class GetConfigRoute extends Route {
 		var configRouteData:ConfigRouteData = new ConfigRouteData();
 		// SettingsManager.instance.loadSettings();
 		configRouteData.config = SettingsManager.instance.settings;
+		configRouteData.logs = LogStream.instance.logString;
 		respond(configRouteData);
 	}
 }

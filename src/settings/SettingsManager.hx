@@ -16,7 +16,6 @@ class SettingsManager {
 	private function new() {}
 
 	public function init() {
-		
 		this.settings = new SettingsData();
 		validateSettingsFileExists();
 		loadSettings();

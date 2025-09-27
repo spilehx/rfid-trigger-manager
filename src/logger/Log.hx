@@ -3,10 +3,10 @@ package logger;
 import haxe.PosInfos;
 
 class Log {
-	private static inline var MSG_ERROR = "MSG_ERROR";
-	private static inline var MSG_DEBUG = "MSG_DEBUG";
-	private static inline var MSG_INFO = "MSG_INFO";
-	private static inline var MSG_SOFT = "MSG_SOFT";
+	private static inline var MSG_ERROR = "ERROR";
+	private static inline var MSG_DEBUG = "DEBUG";
+	private static inline var MSG_INFO = "INFO";
+	private static inline var MSG_SOFT = "SOFT";
 
 	private static inline var FG_RED:Int = 31;
 	private static inline var FG_GREEN:Int = 32;
@@ -31,8 +31,10 @@ class Log {
 
 	public static function userMessage(msg:String) {
 		var out:String = "\033[1;" + FG_GREEN + "m" + msg + " \033[0m";
-		Sys.println(out);
+		// Sys.println(out);
+		platfromSpecificLogCommand(out);
 		// out(debugprefix, msg, MSG_ERROR, toFile);
+			LogStream.instance.add(msg);
 	}
 
 	public static function logObject(prefix:String, obj:Dynamic) {
@@ -84,6 +86,7 @@ class Log {
 		#end
 
 		platfromSpecificLogCommand(out);
+			LogStream.instance.add(type+" "+msg);
 	}
 
 	private static function stdErrOut(msg:String) {
@@ -138,6 +141,8 @@ class Log {
 	}
 
 	private static function platfromSpecificLogCommand(msg:String) {
+
+	
 		if (allowLogs()) {
 			#if (js)
 			Reflect.callMethod(js.Browser.console, js.Browser.console.log, [msg]);
