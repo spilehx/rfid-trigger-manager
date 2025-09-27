@@ -1,4 +1,3 @@
-
 var cardTable = {};
 
 var actions = [];
@@ -53,7 +52,6 @@ function onConfigDataLoaded(data) {
 }
 
 function updatePage() {
-  console.log("updatepage");
   actions = Array.isArray(configData?.avalibleCardActions) ? configData.avalibleCardActions : [];
   setDeviceIdField(configData["deviceID"]);
 
@@ -68,15 +66,11 @@ function updateLogs(newLogs) {
     const newLogs = newLogArray.filter((item) => !logs.includes(item));
 
     while (newLogs.length > 0) {
-      let line = newLogs.shift(); // remove and return the last element
+      let line = newLogs.shift();
       logs.push(line);
       addLogLine(line);
     }
   }
-
-  //   logs = Array.isArray(configData?.avalibleCardActions) ? configData.avalibleCardActions : [];
-
-  // console.log(newLogs);
 }
 
 function addLogLine(value) {
@@ -88,7 +82,6 @@ function addLogLine(value) {
 
   // Limit lines
   while (terminalEl.children.length > 70) {
-    console.log("Auto remove");
     terminalEl.removeChild(terminalEl.firstChild);
   }
 
@@ -96,27 +89,11 @@ function addLogLine(value) {
   terminalEl.scrollTop = terminal.scrollHeight;
 }
 
-function test() {
-  onConfigDataLoaded();
-  setDeviceIdField("hello");
-  updateLastUpdatedField();
-
-  addLogLine("test");
-  addLogLine("dddd");
-  addLogLine("ffddd");
-  addLogLine("sdsdsdsd");
-
-  updateCardsTable();
-  updateCardsTable();
-}
-
 function updateCardsTable() {
   for (i in configData.cards) {
     var card = configData.cards[i];
 
     if (getCardRow(card) == null) {
-      console.log("card row not found creating new one");
-
       cardTable.appendChild(createNewRow(card));
     } else {
       updateCardRow(card);
@@ -145,6 +122,12 @@ function updateCardRowValue(card, field, newValue) {
     if (cellEl.querySelector("#inputChild")) {
       // input field
       var inputChild = cellEl.querySelector("#inputChild");
+
+      if (document.activeElement == inputChild) {
+        // dont update edit in progress!
+        return;
+      }
+
       if (inputChild.type == "checkbox") {
         if (inputChild.checked != newValue) {
           inputChild.checked = newValue;
@@ -169,6 +152,51 @@ function updateCardRowValue(card, field, newValue) {
 
 function onCardValueEdited(card, fieldName, newValue) {
   console.log("onCardValueEdited " + card.id + " " + fieldName + " " + newValue);
+
+  // Helper to get current index of this card inside configData.cards
+  const getIdx = () => (Array.isArray(configData?.cards) ? configData.cards.findIndex((c) => String(c.id) === String(card.id)) : -1);
+
+  const idx = getIdx();
+
+  if (idx !== -1) {
+    // console.log("UPDATE CARD "+idx+"  "+configData.cards[idx][fieldName]);
+    configData.cards[idx][fieldName] = newValue;
+    postConfigData();
+  }
+}
+
+function postConfigData() {
+  if (!configData) return;
+  setStatus("Saving…", "");
+  fetch("./setconfig", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(configData),
+  })
+    .then((res) => {
+      if (!res.ok) throw new Error("Failed to save config");
+      setStatus("Saved ✓", "success");
+    })
+    .catch((err) => {
+      console.error("Error saving config:", err);
+      setStatus("Save failed", "error");
+    });
+}
+
+function setStatus(msg, type) {
+  const el = document.getElementById("saveStatus");
+  if (!el) return;
+  el.textContent = msg || "";
+  el.className = "small status " + (type || "");
+  if (msg) {
+    el.style.display = "inline";
+    clearTimeout(window._statusTimer);
+    window._statusTimer = setTimeout(() => {
+      el.style.display = "none";
+    }, 2000);
+  } else {
+    el.style.display = "none";
+  }
 }
 
 function createCell(card, fieldName, type, editable, selectOptions) {
