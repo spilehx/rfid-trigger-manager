@@ -2,15 +2,15 @@ package actionmanager.actions;
 
 import haxe.Constraints.Function;
 
-class YTPlayListAction extends Action {
+class YTPVideoAction extends Action {
 	public function new(cardId:String, command:String) {
 		super(cardId, command);
-		this.type = "PLAY_YT_PLAYLIST";
+		this.type = "PLAY_YT_VIDEO";
 	}
 
 	override public function start(?onCompleteFollowOn:Function = null) {
 		super.start();
-		var url:String = "https://www.youtube.com/playlist?list=" + command;
+		var url:String = "https://www.youtube.com/watch?v=" + command;
 		triggerProcess("mpv", ["--no-video", url], onCompleteFollowOn);
 	}
 

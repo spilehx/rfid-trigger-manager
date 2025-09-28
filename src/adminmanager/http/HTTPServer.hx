@@ -5,9 +5,7 @@ import weblink.Weblink;
 class HTTPServer {
 	private var server:Weblink;
 	private var routeClasses:Array<Class<Route>>;
-
 	public var routes:Array<Route>;
-
 	private var port:Int;
 
 	public static final instance:HTTPServer = new HTTPServer();
@@ -24,10 +22,6 @@ class HTTPServer {
 		instantiateRoutes();
 		server.listen(port, false);
 	}
-
-	// public function stopServer() {
-	// 	server.close(); // TODO: review if this is enough;
-	// }
 
 	public function addRoute(routeClass:Class<Route>) {
 		routeClasses.push(routeClass);

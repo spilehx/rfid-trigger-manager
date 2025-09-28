@@ -1,6 +1,8 @@
 package actionmanager.actions;
 
-import actionmanager.ProcessHelper.ProcessHandle;
+import settings.SettingsManager;
+import settings.CardData;
+import haxe.Constraints.Function;
 import haxe.Timer;
 import sys.io.Process;
 
@@ -8,32 +10,38 @@ class Action {
 	@:isVar public var type(get, null):String;
 	@:isVar public var onActionComplete(get, set):String->Void;
 
-	private var cardId:String;
-	private var command:String;
-	private var streamProc:ProcessHandle;
+	public var cardId:String;
+	public var command:String;
 
-	public function new() {
+	public function new(cardId:String, command:String) {
 		this.type = "BASE_ACTION";
-	}
-
-	public function start(cardId:String, command:String) {
 		this.cardId = cardId;
 		this.command = command;
-
-		// exampleTestProcess();
 	}
 
-	public function stop() {
-		trace("Stopping " + type);
+	private function triggerProcess(command:String, args:Array<String>, ?onCompleteFollowOn:Function = null) {
+		ProcessWrapper.instance.start(command, args, function() {
+			if (onCompleteFollowOn != null) {
+				onFinished();
+				onCompleteFollowOn();
+			}
+		});
+	}
+
+	public function start(?onCompleteFollowOn:Function = null) {
+		setCardActiveState(cardId, true);
+	}
+
+	public function stop(?onStopped:Function = null) {
+		setCardActiveState(cardId, false);
 	}
 
 	public function startWhileAlreadyRunning() {
-		trace("startWhileAlreadyRunning " + type);
-		// // exampleTestProcess();
+		LOG("startWhileAlreadyRunning " + type);
+		stop();
 	}
 
 	private function exampleTestProcess() {
-		trace("start exampleTestProcess " + type);
 		var t:Timer = new Timer(7000);
 		t.run = function() {
 			t.stop();
@@ -45,6 +53,10 @@ class Action {
 		if (onActionComplete != null) {
 			onActionComplete(cardId);
 		}
+	}
+
+	private function onFinished() {
+		setCardActiveState(cardId, false);
 	}
 
 	function get_type():String {
@@ -59,5 +71,15 @@ class Action {
 		return this.onActionComplete = onActionComplete;
 	}
 
+	private function setCardCurrentState(cardId:String, current:Bool) {
+		var card:CardData = SettingsManager.instance.getCard(cardId);
+		card.current = current;
+		SettingsManager.instance.updateCard(card);
+	}
 
+	private function setCardActiveState(cardId:String, active:Bool) {
+		var card:CardData = SettingsManager.instance.getCard(cardId);
+		card.active = active;
+		SettingsManager.instance.updateCard(card);
+	}
 }

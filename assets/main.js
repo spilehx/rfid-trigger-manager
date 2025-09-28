@@ -88,16 +88,14 @@ function updatePage() {
 function setupVerboseLoggingCheckbox() {
   var verboseLoggingCheckbox = document.getElementById("verboseLoggingCheckbox");
   verboseLoggingCheckbox.addEventListener("change", (e) => {
-// console.log("hello");
     configData.verboseLogging = e.target.checked;
     postConfigData();
-
   });
 }
 
 function updateVerboseLoggingCheckbox() {
- var verboseLoggingCheckbox = document.getElementById("verboseLoggingCheckbox");
- verboseLoggingCheckbox.checked =  configData.verboseLogging;
+  var verboseLoggingCheckbox = document.getElementById("verboseLoggingCheckbox");
+  verboseLoggingCheckbox.checked = configData.verboseLogging;
 }
 
 function updateLogs(newLogs) {

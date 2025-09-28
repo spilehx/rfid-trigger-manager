@@ -1,5 +1,6 @@
 package actionmanager;
 
+import actionmanager.actions.YTPVideoAction;
 import actionmanager.actions.YTPlayListAction;
 import actionmanager.actions.TestAction;
 import actionmanager.actions.Action;
@@ -12,7 +13,7 @@ import settings.SettingsManager;
 
 class ActionManager {
 	private var actionClasses:Array<Class<Action>>;
-
+	private var currentAction:Action;
 	private var currentCardId:String;
 
 	// private var streamProc:Process;
@@ -21,7 +22,9 @@ class ActionManager {
 	public static final instance:ActionManager = new ActionManager();
 
 	private function new() {
-		actionClasses = [Action, TestAction, YTPlayListAction];
+		actionClasses = [Action, TestAction, YTPlayListAction, YTPVideoAction];
+		// currentAction = new Action("","");
+		// currentAction.onActionComplete = onActionComplete;
 	}
 
 	public function init() {
@@ -36,15 +39,10 @@ class ActionManager {
 		}
 	}
 
-	private var currentAction:Action;
+	private var triggeredAction:Dynamic;
 
 	public function doAction(cardId:String) {
-
-		LOG("debug");
-			LOG_ERROR("error");
-				LOG_INFO("info");
-				LOG_WARN("warn");
-
+		LOG_INFO("Starting action for card: " + cardId);
 
 		var card:CardData = SettingsManager.instance.getCard(cardId);
 		if (card.enabled != true) {
@@ -52,51 +50,48 @@ class ActionManager {
 			return;
 		}
 
-		if (currentCardId != card.id) { // new card triggered
-			if (currentAction != null) {
-				USER_MESSAGE("Stopping action: " + currentCardId);
-				currentAction.stop();
-				setCardActiveState(currentCardId, true);
-				setCardCurrentState(currentCardId, true);
-				// Sys.sleep(.5);
+		// var triggeredActionClass:Class = getActionClassFromType(card.action);
+		// var triggeredAction = cast(Type.createInstance(triggeredActionClass,[]), triggeredActionClass);
+
+		triggeredAction = getActionInstanceFromType(card.action, cardId, card.command);
+
+		if (currentAction == null) {
+			startAction();
+		} else {
+			if (currentAction.cardId != triggeredAction.cardId) {
+				LOG_INFO("Starting action for card: " + cardId);
+				currentAction.stop(function() {
+					trace("Stopped");
+				});
+			} else {
+				triggeredAction = null;
+				LOG_INFO("RETRIGGER action for card: " + cardId);
+				currentAction.startWhileAlreadyRunning();
 			}
-
-			// start new action
-			currentAction = getActionClassFromType(card.action);
-			currentCardId = card.id;
-			USER_MESSAGE("Starting action: " + cardId);
-			setCardActiveState(currentCardId, true);
-			setCardCurrentState(currentCardId, true);
-			currentAction.onActionComplete = onActionComplete;
-			currentAction.start(cardId, card.command);
-		} else { // same card triggered again
-
-			trace("STARTING AGAIN------");
-			setCardActiveState(currentCardId, true);
-			currentAction.startWhileAlreadyRunning();
 		}
 	}
 
-	private function onActionComplete(cardId:String) {
-		USER_MESSAGE("Action complete: " + cardId);
-		setCardActiveState(cardId, false);
+	private function startAction() {
+		currentAction = triggeredAction;
+		triggeredAction = null;
+		currentAction.start(onActionComplete);
 	}
 
-	private function setCardCurrentState(cardId:String, current:Bool) {
-		var card:CardData = SettingsManager.instance.getCard(cardId);
-		card.current = current;
-		SettingsManager.instance.updateCard(card);
+	private function onActionComplete() {
+		USER_MESSAGE("Action complete: ");
+		currentAction = null;
+
+		// start next if there
+		if (triggeredAction != null) {
+			startAction();
+		} else {
+			USER_MESSAGE("System idle, awaiting next card");
+		}
 	}
 
-	private function setCardActiveState(cardId:String, active:Bool) {
-		var card:CardData = SettingsManager.instance.getCard(cardId);
-		card.active = active;
-		SettingsManager.instance.updateCard(card);
-	}
-
-	private function getActionClassFromType(actionType:String):Action {
+	private function getActionInstanceFromType(actionType:String, cardId:String, command:String):Dynamic {
 		for (actionClass in actionClasses) {
-			var action = Type.createInstance(actionClass, []);
+			var action = Type.createInstance(actionClass, [cardId, command]);
 			if (actionType == action.type) {
 				return action;
 			}
@@ -104,46 +99,6 @@ class ActionManager {
 
 		return null;
 	}
-
-	// private static function isMatchingActionType(type:String, actionClass:Class<Action>):Bool {
-	// 	var action = Type.createInstance(actionClass, []);
-	// 	return (type == action.type);
-	// }
-	// private function stopCurrentActions() {
-	// 	for (card in SettingsManager.instance.settings.cards) {
-	// 		card.active = false;
-	// 	}
-	// 	LOG("Stopping stream");
-	// 	if (streamProc != null) {
-	// 		streamProc = null;
-	// 		killByName("mpv");
-	// 	}
-	// }
-	// private function killByPid(pid:Int) {
-	// 	var killProc:Process = new sys.io.Process("pkill " + pid);
-	// 	LOG("ERRR " + killProc.stderr.readAll().toString());
-	// 	LOG("out " + killProc.stdout.readAll().toString());
-	// }
-	// private function killByName(name:String) {
-	// 	var killProc:Process = new sys.io.Process("pkill " + name);
-	// }
-	// private function playAudioStream(url:String) {
-	// 	var action:String = "mpv " + url;
-	// 	streamProc = new sys.io.Process(action, null, true);
-	// }
-	// private function playYTPlaylist(plId:String) {
-	// 	var pl:String = "https://www.youtube.com/playlist?list=" + plId;
-	// 	var action:String = "mpv --no-video " + pl;
-	// 	streamProc = new sys.io.Process(action, null, true);
-	// }
-	// private function delay(t:Int, followOn:Function) {
-	// 	var timer:Timer = new Timer(t);
-	// 	timer.run = function() {
-	// 		timer.stop();
-	// 		timer = null;
-	// 		followOn();
-	// 	}
-	// }
 
 	function get_avaliableActionTypes():Array<String> {
 		return avaliableActionTypes;
