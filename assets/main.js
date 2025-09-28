@@ -1,8 +1,10 @@
-var cardTable = {};
+const UPDATE_INTERVAL_TIME = 2000;
 
+var cardTable = {};
 var actions = [];
 var configData = {};
 var logs = [];
+var backendConnected = true;
 
 (function () {
   window.addEventListener("load", function () {
@@ -11,10 +13,28 @@ var logs = [];
 })();
 
 function onPageLoaded() {
-  console.log("page loaded");
   setElements();
+  setupVerboseLoggingCheckbox();
   loadData();
   startAutoUpdate();
+}
+
+function setBackendConnectedState(state) {
+  if (backendConnected != state) {
+    backendConnected = state;
+    if (backendConnected == true) {
+      setStatus("Backend connected", "");
+      addLogLine("INFO: Backend connected");
+    } else {
+      setStatus("Cant load data! Is backend running?", "error");
+      addLogLine("ERROR: Backend not found");
+    }
+  }
+}
+
+function showBackendReconnectState() {
+  setStatus("Retrying Connection", "error");
+  addLogLine("INFO: Retrying backend connection");
 }
 
 function setElements() {
@@ -23,8 +43,12 @@ function setElements() {
 
 function startAutoUpdate() {
   var intervalId = setInterval(() => {
+    if (backendConnected == false) {
+      showBackendReconnectState();
+    }
+
     loadData();
-  }, 1000);
+  }, UPDATE_INTERVAL_TIME);
 }
 
 function loadData() {
@@ -36,9 +60,11 @@ function loadData() {
       return response.json();
     })
     .then((data) => {
+      setBackendConnectedState(true);
       onConfigDataLoaded(data);
     })
     .catch((error) => {
+      setBackendConnectedState(false);
       //   console.error("Error loading config data:", error);
     });
 }
@@ -54,9 +80,24 @@ function onConfigDataLoaded(data) {
 function updatePage() {
   actions = Array.isArray(configData?.avalibleCardActions) ? configData.avalibleCardActions : [];
   setDeviceIdField(configData["deviceID"]);
-
   updateLastUpdatedField();
   updateCardsTable();
+  updateVerboseLoggingCheckbox();
+}
+
+function setupVerboseLoggingCheckbox() {
+  var verboseLoggingCheckbox = document.getElementById("verboseLoggingCheckbox");
+  verboseLoggingCheckbox.addEventListener("change", (e) => {
+// console.log("hello");
+    configData.verboseLogging = e.target.checked;
+    postConfigData();
+
+  });
+}
+
+function updateVerboseLoggingCheckbox() {
+ var verboseLoggingCheckbox = document.getElementById("verboseLoggingCheckbox");
+ verboseLoggingCheckbox.checked =  configData.verboseLogging;
 }
 
 function updateLogs(newLogs) {
@@ -77,6 +118,23 @@ function addLogLine(value) {
   var terminalEl = document.getElementById("terminal");
 
   const newLine = document.createElement("p");
+
+  if (value.indexOf("DEBUG:") !== -1) {
+    newLine.classList.add("log_debug");
+  }
+
+  if (value.indexOf("ERROR:") !== -1) {
+    newLine.classList.add("log_error");
+  }
+
+  if (value.indexOf("INFO:") !== -1) {
+    newLine.classList.add("log_info");
+  }
+
+  if (value.indexOf("WARN:") !== -1) {
+    newLine.classList.add("log_warn");
+  }
+
   newLine.textContent = value;
   terminalEl.appendChild(newLine);
 
@@ -184,7 +242,7 @@ function postConfigData() {
 }
 
 function setStatus(msg, type) {
-  const el = document.getElementById("saveStatus");
+  const el = document.getElementById("statusBanner");
   if (!el) return;
   el.textContent = msg || "";
   el.className = "small status " + (type || "");

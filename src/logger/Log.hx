@@ -6,7 +6,7 @@ class Log {
 	private static inline var MSG_ERROR = "ERROR";
 	private static inline var MSG_DEBUG = "DEBUG";
 	private static inline var MSG_INFO = "INFO";
-	private static inline var MSG_SOFT = "SOFT";
+	private static inline var MSG_SOFT = "WARN";
 
 	private static inline var FG_RED:Int = 31;
 	private static inline var FG_GREEN:Int = 32;
@@ -72,21 +72,13 @@ class Log {
 		}
 
 		#if (!js)
-		// // this is used to do the admin dash
-		// if(GlobalLoggingSettings.settings.remoteLogUrl.length>0){
-		// 	sendRemoteLog(msg);
-		// }
-
-		// GlobalLogBuffer.instance.addLog(debugprefix+msg);
-
-		// std error for docker logs
 		if (type == MSG_ERROR) {
 			stdErrOut(msg);
 		}
 		#end
 
 		platfromSpecificLogCommand(out);
-			LogStream.instance.add(type+" "+msg);
+			LogStream.instance.add(type+": "+msg);
 	}
 
 	private static function stdErrOut(msg:String) {

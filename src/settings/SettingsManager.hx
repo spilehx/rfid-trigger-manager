@@ -10,6 +10,7 @@ class SettingsManager {
 	private static final SETTINGS_FILE_PATH:String = "settings.json";
 
 	@:isVar public var settings(get, set):SettingsData;
+	@:isVar public var verboseLogging(get, set):Bool;
 
 	public static final instance:SettingsManager = new SettingsManager();
 
@@ -24,6 +25,16 @@ class SettingsManager {
 		validateCardActions();
 	}
 
+	function get_verboseLogging():Bool {
+		return verboseLogging;
+	}
+
+	function set_verboseLogging(verboseLogging):Bool {
+		this.verboseLogging = verboseLogging;
+		GlobalLoggingSettings.settings.verbose = this.settings.verboseLogging = verboseLogging;
+		return this.verboseLogging = verboseLogging;
+	}
+
 	public function resetCards() {
 		for (card in settings.cards) {
 			card.active = card.current = false;
@@ -35,7 +46,8 @@ class SettingsManager {
 		settings.avalibleCardActions = ActionManager.instance.avaliableActionTypes;
 
 		var userMsgIndentStr:String = "\n    - ";
-		USER_MESSAGE("  "+settings.avalibleCardActions.length
+		USER_MESSAGE("  "
+			+ settings.avalibleCardActions.length
 			+ " actions found "
 			+ userMsgIndentStr
 			+ settings.avalibleCardActions.join(userMsgIndentStr));

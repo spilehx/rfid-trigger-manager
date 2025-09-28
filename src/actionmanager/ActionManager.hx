@@ -40,7 +40,11 @@ class ActionManager {
 
 	public function doAction(cardId:String) {
 
-		trace("doAction");
+		LOG("debug");
+			LOG_ERROR("error");
+				LOG_INFO("info");
+				LOG_WARN("warn");
+
 
 		var card:CardData = SettingsManager.instance.getCard(cardId);
 		if (card.enabled != true) {

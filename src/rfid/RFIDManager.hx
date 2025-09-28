@@ -8,7 +8,7 @@ import haxe.Constraints.Function;
 import sys.thread.Deque;
 
 class RFIDManager {
-	private static final DEVICE_ID:String = "pci-0000:00:14.0-usb-0:1:1.0-event-kbd";
+	// private static final DEVICE_ID:String = "pci-0000:00:14.0-usb-0:1:1.0-event-kbd";
 	public static final instance:RFIDManager = new RFIDManager();
 
 	@:isVar public var onDeviceConnected(get, set):Function;

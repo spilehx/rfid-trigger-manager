@@ -1,71 +1,73 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>RFID Admin</title>
-        <style>
-            $ADMIN_PAGE_STYLE_TAG
-        </style>
-        <script>
-            $ADMIN_PAGE_SCRIPT_TAG
-        </script>
-    </head>
 
-    <body>
-        <h1>RFID Admin</h1>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RFID Admin</title>
+    <style>
+        /*$ADMIN_PAGE_STYLE_TAG*/
+    </style>
+    <script>
+        $ADMIN_PAGE_SCRIPT_TAG
+    </script>
+</head>
 
-        <div class="grid">
-            <section class="panel">
-                <div class="controls">
-                    <button class="btn" onclick="loadConfigData()">Refresh ⟳</button>
-                    <span id="errorBanner" class="small error" style="display:none" aria-live="polite"></span>
-                    <span id="saveStatus" class="small status" style="display:none" aria-live="polite"></span>
+<body>
+    <h1>RFID Admin</h1>
+
+    <div class="grid">
+
+        <div class="controls">
+            <span id="statusBanner" class="small status" style="display:none" aria-live="polite"></span>
+        </div>
+
+
+        <section class="panel">
+            <h2>System</h2>
+            <div class="row">
+                <div class="kv">
+                    <div class="label">Device ID</div>
+                    <div id="deviceId" class="value mono">—</div>
                 </div>
-            </section>
-
-            <section class="panel">
-                <h2>System</h2>
-                <div class="row">
-                    <div class="kv">
-                        <div class="label">Device ID</div>
-                        <div id="deviceId" class="value mono">—</div>
-                    </div>
-                    <div class="kv">
-                        <div class="label">Verbose Logging</div>
-                        <div id="verboseLogging" class="value">—</div>
-                    </div>
-                    <div class="kv">
-                        <div class="label">Last Updated</div>
-                        <div id="lastUpdated" class="value small">—</div>
-                    </div>
+                <div class="kv">
+                    <div class="label">Last Updated</div>
+                    <div id="lastUpdated" class="value small">—</div>
                 </div>
-            </section>
+            </div>
+        </section>
 
-            <section class="panel">
-                <h2>Cards</h2>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>Name</th>
-                            <th>Enabled</th>
-                            <th>Active</th>
-                            <th>Current</th>
-                            <th>Command</th>
-                            <th>Action</th>
-                            <th>Action State</th>
-                        </tr>
-                    </thead>
-                    <tbody id="cardsBody"></tbody>
-                </table>
-            </section>
+        <section class="panel">
+            <h2>Cards</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Enabled</th>
+                        <th>Active</th>
+                        <th>Current</th>
+                        <th>Command</th>
+                        <th>Action</th>
+                        <th>Action State</th>
+                    </tr>
+                </thead>
+                <tbody id="cardsBody"></tbody>
+            </table>
+        </section>
 
         <section class="panel">
             <h2>Logs</h2>
-            <div id="terminal" class="terminal">
+            <div id="terminal" class="terminal"></div>
+            <div class="verboseloggingoption">
+                <label>
+                    Verbose Logging:
+                    <input type="checkbox" id="verboseLoggingCheckbox">
+                </label>
             </div>
+
         </section>
-        </div>
-    </body>
+    </div>
+</body>
+
 </html>

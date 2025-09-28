@@ -15,6 +15,8 @@ class SetConfigRoute extends Route {
 		var requestDataObj:Dynamic = haxe.Json.parse(Std.string(request.data));
 		var newCardArray:Array<CardData> = requestDataObj.cards;
 
+		SettingsManager.instance.verboseLogging = requestDataObj.verboseLogging;
+
 		var cardFieldsToUpdate:Array<String> = ["name", "enabled", "action", "command",];
 
 		for (newCard in newCardArray) {
@@ -26,14 +28,14 @@ class SetConfigRoute extends Route {
 					var newValue:Dynamic = Reflect.getProperty(newCard, field);
 					if (currentValue != newValue) {
 						updated = true;
-						Reflect.setField(storedCard,field, newValue);
+						Reflect.setField(storedCard, field, newValue);
 						SettingsManager.instance.updateCard(storedCard);
 					}
 				}
 			}
 
-			if(updated == true){
-				USER_MESSAGE("Updated card: "+newCard.id);
+			if (updated == true) {
+				USER_MESSAGE("Updated card: " + newCard.id);
 			}
 		}
 		var configRouteData:ConfigRouteData = new ConfigRouteData();
