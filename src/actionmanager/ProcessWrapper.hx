@@ -47,15 +47,19 @@ class ProcessWrapper {
 		}
 	}
 
-	public function stop(?onStoppedFollowOn:Function = null):Void {
-		this.onStoppedFollowOn = onStoppedFollowOn;
+	public function stop(?onStoppedFollowOn:Function = null, ?softStop:Bool = false):Void {
+	
+			this.onStoppedFollowOn = onStoppedFollowOn;
+		
 
 		if (proc != null) {
 			proc.kill();
 		}
 
 		onStopped();
-		onComplete();
+		if (softStop == false) {
+			onComplete();
+		}
 	}
 
 	private function cleanUp() {
@@ -79,5 +83,50 @@ class ProcessWrapper {
 		if (onCompleteFollowOn != null) {
 			onCompleteFollowOn();
 		}
+	}
+
+	public function runProcessForResponse(cmd:String, args:Array<String>, onResult:Dynamic->Void) {
+		var buffer = new StringBuf();
+		var output:String = "";
+
+		var p = new Process(cmd, args, true);
+		var t:Timer = new Timer(200);
+		t.run = function() {
+			// trace("p.exitCode(false)  " + p.exitCode(false));
+			if (p.exitCode(false) == null) {
+				try {
+					while (true) {
+						buffer.add(p.stdout.readLine());
+						buffer.add("\n");
+					}
+				} catch (e:haxe.io.Eof) {
+					// stream closed
+				}
+			} else {
+				t.stop();
+				t = null;
+				p.close();
+
+				output = StringTools.trim(buffer.toString());
+				onResult(output);
+				// trace("Process exited ():\n" + output);
+			}
+		}
+
+		// var output = p.stdout.readAll().toString();
+
+		// while (p.exitCode(false) != null){
+
+		// 	LOG("RUNNING");
+		// 	}
+
+		// var t:Timer = new Timer(200);
+		// t.run = function () {
+		// 	trace("p.exitCode(false)  "+p.exitCode(false));
+		// }
+
+		// LOG_INFO("line "+output);
+
+		return output;
 	}
 }

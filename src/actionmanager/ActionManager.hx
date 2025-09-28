@@ -60,7 +60,7 @@ class ActionManager {
 					trace("Stopped");
 				});
 			} else {
-				triggeredAction = null;
+				// triggeredAction = null;
 				LOG_INFO("RETRIGGER action for card: " + cardId);
 				currentAction.startWhileAlreadyRunning();
 			}

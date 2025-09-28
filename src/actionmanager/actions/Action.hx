@@ -12,6 +12,7 @@ class Action {
 
 	public var cardId:String;
 	public var command:String;
+	private var onStopped:Function;
 
 	public function new(cardId:String, command:String) {
 		this.type = "BASE_ACTION";
@@ -28,25 +29,28 @@ class Action {
 		});
 	}
 
+
+
+
+	private function triggerProcessForResponse(command:String, args:Array<String>, onResult:Dynamic->Void) {
+		ProcessWrapper.instance.runProcessForResponse(command, args, onResult);
+	}
+
 	public function start(?onCompleteFollowOn:Function = null) {
 		setCardActiveState(cardId, true);
 	}
 
 	public function stop(?onStopped:Function = null) {
+		if(onStopped!= null){
+			this.onStopped = onStopped;
+		}
+		ProcessWrapper.instance.stop(onStopped);
 		setCardActiveState(cardId, false);
 	}
 
 	public function startWhileAlreadyRunning() {
 		LOG("startWhileAlreadyRunning " + type);
 		stop();
-	}
-
-	private function exampleTestProcess() {
-		var t:Timer = new Timer(7000);
-		t.run = function() {
-			t.stop();
-			actionComplete();
-		}
 	}
 
 	private function actionComplete() {
