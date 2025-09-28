@@ -1,5 +1,6 @@
 package actionmanager;
 
+import actionmanager.actions.RadioAction;
 import actionmanager.actions.YTPVideoAction;
 import actionmanager.actions.YTPlayListAction;
 import actionmanager.actions.TestAction;
@@ -22,9 +23,7 @@ class ActionManager {
 	public static final instance:ActionManager = new ActionManager();
 
 	private function new() {
-		actionClasses = [Action, TestAction, YTPlayListAction, YTPVideoAction];
-		// currentAction = new Action("","");
-		// currentAction.onActionComplete = onActionComplete;
+		actionClasses = [YTPlayListAction, YTPVideoAction, RadioAction];
 	}
 
 	public function init() {
@@ -49,9 +48,6 @@ class ActionManager {
 			USER_MESSAGE("Card not enabled: " + card.id);
 			return;
 		}
-
-		// var triggeredActionClass:Class = getActionClassFromType(card.action);
-		// var triggeredAction = cast(Type.createInstance(triggeredActionClass,[]), triggeredActionClass);
 
 		triggeredAction = getActionInstanceFromType(card.action, cardId, card.command);
 
