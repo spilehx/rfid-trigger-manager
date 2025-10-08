@@ -4,7 +4,7 @@
 --hl dist/RFIDTriggerServer.hl
 
 
---cmd "cp -a assets/start.sh dist/"
+# --cmd "cp -a assets/start.sh dist/"
 
 
 
