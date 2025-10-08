@@ -1,9 +1,7 @@
 
 
-
-
-
-
 cd "$(dirname "$0")"
-# echo $(pwd)
-hl RFIDTriggerServer.hl
+# hl RFIDTriggerServer.hl
+
+hl RFIDTriggerServer.hl > /dev/null 2>&1 &
+
