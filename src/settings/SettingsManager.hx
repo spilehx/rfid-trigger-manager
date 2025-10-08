@@ -7,7 +7,7 @@ import haxe.Json;
 import sys.FileSystem;
 
 class SettingsManager {
-	private static final SETTINGS_FILE_PATH:String = "settings.json";
+	private static final SETTINGS_FILE_PATH:String = "./settings.json";
 
 	@:isVar public var settings(get, set):SettingsData;
 	@:isVar public var verboseLogging(get, set):Bool;
