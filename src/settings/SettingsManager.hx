@@ -1,5 +1,6 @@
 package settings;
 
+import rfid.DeviceDetection;
 import actionmanager.ActionManager;
 import logger.GlobalLoggingSettings;
 import sys.io.File;
@@ -20,6 +21,7 @@ class SettingsManager {
 		this.settings = new SettingsData();
 		validateSettingsFileExists();
 		loadSettings();
+		updateAvalibleDevices();
 		GlobalLoggingSettings.settings.verbose = this.settings.verboseLogging;
 		resetCards();
 		validateCardActions();
@@ -33,6 +35,11 @@ class SettingsManager {
 		this.verboseLogging = verboseLogging;
 		GlobalLoggingSettings.settings.verbose = this.settings.verboseLogging = verboseLogging;
 		return this.verboseLogging = verboseLogging;
+	}
+
+	public function updateAvalibleDevices(){
+		settings.avalibleDevices = DeviceDetection.getDeviceNames();
+		saveSettingsData();
 	}
 
 	public function resetCards() {

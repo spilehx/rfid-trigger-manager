@@ -12,6 +12,8 @@ class GetConfigRoute extends Route {
 	}
 
 	override function onRequest(request:Request) {
+		SettingsManager.instance.updateAvalibleDevices();
+
 		var configRouteData:ConfigRouteData = new ConfigRouteData();
 		configRouteData.config = SettingsManager.instance.settings;
 		configRouteData.logs = LogStream.instance.logString;

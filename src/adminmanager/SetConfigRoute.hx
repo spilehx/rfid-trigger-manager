@@ -15,6 +15,11 @@ class SetConfigRoute extends Route {
 		var requestDataObj:Dynamic = haxe.Json.parse(Std.string(request.data));
 		var newCardArray:Array<CardData> = requestDataObj.cards;
 
+		if(SettingsManager.instance.settings.deviceID != requestDataObj.deviceID){
+			USER_MESSAGE("Updated device: " + requestDataObj.deviceID);
+			SettingsManager.instance.settings.deviceID = requestDataObj.deviceID;
+		}
+
 		SettingsManager.instance.verboseLogging = requestDataObj.verboseLogging;
 
 		var cardFieldsToUpdate:Array<String> = ["name", "enabled", "action", "command",];

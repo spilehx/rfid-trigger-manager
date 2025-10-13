@@ -34,6 +34,9 @@
                     <div class="label">Last Updated</div>
                     <div id="lastUpdated" class="value small">—</div>
                 </div>
+                <div class="row">
+                    <button id="chooseDeviceBtn">Choose Device</button>
+                </div>
             </div>
         </section>
 
@@ -67,6 +70,20 @@
             </div>
 
         </section>
+    </div>
+
+    <!-- Device chooser modal -->
+    <div id="deviceModal" class="modal hidden" aria-hidden="true">
+        <div class="modal-backdrop"></div>
+        <div class="modal-dialog" role="dialog" aria-modal="true" aria-labelledby="deviceModalTitle">
+            <h3 id="deviceModalTitle">Choose Device:</h3>
+            <label class="sr-only" for="deviceSelect">Device</label>
+            <select id="deviceSelect"></select>
+            <div class="modal-actions">
+                <button id="deviceModalOk">OK</button>
+                <button id="deviceModalCancel" class="secondary">Cancel</button>
+            </div>
+        </div>
     </div>
 </body>
 

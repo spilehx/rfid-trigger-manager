@@ -14,10 +14,66 @@ var backendConnected = true;
 
 function onPageLoaded() {
   setElements();
+  setupChooseDeviceModal();
   setupVerboseLoggingCheckbox();
   loadData();
   startAutoUpdate();
 }
+
+
+
+function setupChooseDeviceModal() {
+  const btn = document.getElementById("chooseDeviceBtn");
+  if(!btn) return;
+
+  const modal = document.getElementById("deviceModal");
+  const select = document.getElementById("deviceSelect");
+  const ok = document.getElementById("deviceModalOk");
+  const cancel = document.getElementById("deviceModalCancel");
+
+  btn.addEventListener("click", () => {
+    // const options = Array.isArray(configData?.availableDevices) ? configData.availableDevices : [];
+
+    // console.log(configData.avalibleDevices);
+    onOpenChooseDeviceModal(modal, select, configData.avalibleDevices);
+  });
+
+  ok.addEventListener("click", () => onChooseDeviceModalOkClick(modal, select));
+  cancel.addEventListener("click", () => onChooseDeviceModalCloseClick(modal));
+
+  modal.addEventListener("click", e => {
+    if(e.target === modal || e.target.classList.contains("modal-backdrop")) closeModal(modal);
+  });
+  window.addEventListener("keydown", e => {
+    if(!modal.classList.contains("hidden") && e.key === "Escape"){
+      e.preventDefault();
+      onChooseDeviceModalCloseClick(modal);
+    }
+  });
+}
+
+function onOpenChooseDeviceModal(modal, select, options = []) {
+  const opts = options.length ? options : ["Device A","Device B","Device C"];
+  select.innerHTML = opts.map(v => `<option value="${v}">${v}</option>`).join("");
+  modal.classList.remove("hidden");
+  modal.setAttribute("aria-hidden","false");
+  select.focus();
+}
+
+function onChooseDeviceModalOkClick(modal, select) {
+  const chosen = select.value;
+  console.log("chosen "+chosen);
+  configData.deviceID = chosen;
+  // setDeviceIdField(chosen);
+  postConfigData();
+  onChooseDeviceModalCloseClick(modal);
+}
+
+function onChooseDeviceModalCloseClick(modal) {
+  modal.classList.add("hidden");
+  modal.setAttribute("aria-hidden","true");
+}
+
 
 function setBackendConnectedState(state) {
   if (backendConnected != state) {
