@@ -9,15 +9,13 @@ import sys.io.File;
 import haxe.Json;
 import sys.FileSystem;
 
-class SettingsManager extends spilehx.core.ManagerCore{
+class SettingsManager extends spilehx.core.ManagerCore {
 	private static final SETTINGS_FILE_PATH:String = "./settings.json";
 
 	@:isVar public var settings(get, set):SettingsData;
 	@:isVar public var verboseLogging(get, set):Bool;
 
 	public static final instance:SettingsManager = new SettingsManager();
-
-	// private function new() {}
 
 	public function init() {
 		this.settings = new SettingsData();
@@ -39,7 +37,7 @@ class SettingsManager extends spilehx.core.ManagerCore{
 		return this.verboseLogging = verboseLogging;
 	}
 
-	public function updateAvalibleDevices(){
+	public function updateAvalibleDevices() {
 		settings.avalibleDevices = DeviceDetection.getDeviceNames();
 		saveSettingsData();
 	}
@@ -52,26 +50,29 @@ class SettingsManager extends spilehx.core.ManagerCore{
 	}
 
 	private function validateCardActions() {
+
+		
 		settings.avalibleCardActions = ActionManager.instance.avaliableActionTypes;
 
-		var userMsgIndentStr:String = "\n    - ";
-		USER_MESSAGE("  "
-			+ settings.avalibleCardActions.length
-			+ " actions found "
-			+ userMsgIndentStr
-			+ settings.avalibleCardActions.join(userMsgIndentStr));
+		if(settings.avalibleCardActions !=null){
 
-		for (card in settings.cards) {
-			if (card.action.length < 1) {
-				card.enabled = false;
-				continue;
-			}
+			var userMsgIndentStr:String = "\n    - ";
+			USER_MESSAGE("  "+ settings.avalibleCardActions.length + " actions found " + userMsgIndentStr + settings.avalibleCardActions.join(userMsgIndentStr));
 
-			if (settings.avalibleCardActions.indexOf(card.action) == -1) {
-				USER_MESSAGE("Bad action found for card: " + card.id + " resetting");
-				card.action = "";
-				card.enabled = false;
+			for (card in settings.cards) {
+				if (card.action.length < 1) {
+					card.enabled = false;
+					continue;
+				}
+
+				if (settings.avalibleCardActions.indexOf(card.action) == -1) {
+					USER_MESSAGE("Bad action found for card: " + card.id + " resetting");
+					card.action = "";
+					card.enabled = false;
+				}
 			}
+		}else{
+			// LOG("settings.avalibleCardActions.length == 0");
 		}
 
 		SettingsManager.instance.saveSettingsData();

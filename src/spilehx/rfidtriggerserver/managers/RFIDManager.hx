@@ -1,5 +1,8 @@
 package spilehx.rfidtriggerserver.managers;
 
+import spilehx.rfidtriggerserver.managers.rfid.RFIDReader;
+import spilehx.rfidtriggerserver.managers.rfid.DeviceDetection;
+import spilehx.rfidtriggerserver.managers.rfid.Device;
 import spilehx.rfidtriggerserver.managers.SettingsManager;
 import haxe.Timer;
 import haxe.Constraints.Function;

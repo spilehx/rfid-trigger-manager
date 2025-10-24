@@ -1,6 +1,8 @@
 package spilehx.rfidtriggerserver.managers.rfid;
 
 class DeviceDetection {
+	private static var FORBIDDEN_DEVICE_NAME_STRINGS:Array<String> = ["lid", "power button", "mouse", "touchpad", "video", "razer", "mic", "headphone", "logitech", "HDA Intel"];
+
 	public static function getDevices():Array<Device> {
 		var result:Array<Device> = [];
 		var path:String = "/proc/bus/input/devices";
@@ -39,11 +41,27 @@ class DeviceDetection {
 			}
 
 			if (name != null && handlers.length > 0) {
-				result.push({name: name, handlers: handlers});
+				if(allowedDevice(name) == true){
+					result.push({name: name, handlers: handlers});
+				}
 			}
 		}
 
 		return result;
+	}
+
+	private static function allowedDevice(deviceName:String):Bool {
+		// checking if the device name contains any forbidden strings
+		// just so we can exclude devices that are clearly not rfid readers
+		// bit rough fix, but helps the user a little
+
+		for (forbidden in FORBIDDEN_DEVICE_NAME_STRINGS) {
+			if (deviceName.toLowerCase().indexOf(forbidden.toLowerCase()) != -1) {
+				return false;
+			}
+		}
+
+		return true;
 	}
 
 	public static function getDeviceNames():Array<String> {
