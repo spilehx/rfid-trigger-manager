@@ -8,8 +8,7 @@ import haxe.Timer;
 import haxe.Constraints.Function;
 import sys.thread.Deque;
 
-class RFIDManager extends spilehx.core.ManagerCore{
-	// private static final DEVICE_ID:String = "pci-0000:00:14.0-usb-0:1:1.0-event-kbd";
+class RFIDManager extends spilehx.core.ManagerCore {
 	public static final instance:RFIDManager = new RFIDManager();
 
 	@:isVar public var onDeviceConnected(get, set):Function;
@@ -23,10 +22,9 @@ class RFIDManager extends spilehx.core.ManagerCore{
 
 	private var device:Device;
 
-	// private for singleton use only
-	// private function new() {}
-
-	public function init() {
+	public function init(onDeviceConnected:Function = null, onRead:String->Void = null) {
+		this.onDeviceConnected = onDeviceConnected;
+		this.onRead = onRead;
 		checkDeviceConnection();
 	}
 
@@ -34,7 +32,6 @@ class RFIDManager extends spilehx.core.ManagerCore{
 		USER_MESSAGE("Checking Device connection");
 		if (isConnected() == true) {
 			device = DeviceDetection.getDeviceByName(SettingsManager.instance.settings.deviceID);
-
 			deviceConnected();
 		} else {
 			if (SettingsManager.instance.settings.deviceID == "") {
@@ -56,6 +53,7 @@ class RFIDManager extends spilehx.core.ManagerCore{
 	}
 
 	private function deviceConnected() {
+		USER_MESSAGE("Device Ready " + SettingsManager.instance.settings.deviceID);
 		if (onDeviceConnected != null) {
 			onDeviceConnected();
 		}
@@ -120,6 +118,7 @@ class RFIDManager extends spilehx.core.ManagerCore{
 	}
 
 	private function onCardRead(code:String) {
+		USER_MESSAGE("Card Read " + code);
 		if (onRead != null) {
 			onRead(code);
 		}

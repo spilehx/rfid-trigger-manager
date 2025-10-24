@@ -20,8 +20,8 @@ class Action {
 		this.type = "BASE_ACTION";
 		this.cardId = cardId;
 		this.command = command;
-		setGeneralEnv();
-		setRequiredEnv();
+		// setGeneralEnv();
+		// setRequiredEnv();
 	}
 
 	private function setGeneralEnv() {

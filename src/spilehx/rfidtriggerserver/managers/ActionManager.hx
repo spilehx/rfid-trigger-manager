@@ -54,52 +54,52 @@ class ActionManager extends spilehx.core.ManagerCore{
 			return;
 		}
 
-		triggeredAction = getActionInstanceFromType(card.action, cardId, card.command);
+		// triggeredAction = getActionInstanceFromType(card.action, cardId, card.command);
 
-		if (currentAction == null) {
-			startAction();
-		} else {
-			if (currentAction.cardId != triggeredAction.cardId) {
-				LOG_INFO("Starting action for card: " + cardId);
-				currentAction.stop(function() {
-					trace("Stopped");
-				});
-			} else {
-				// triggeredAction = null;
-				LOG_INFO("RETRIGGER action for card: " + cardId);
-				currentAction.startWhileAlreadyRunning();
-			}
-		}
+		// if (currentAction == null) {
+		// 	startAction();
+		// } else {
+		// 	if (currentAction.cardId != triggeredAction.cardId) {
+		// 		LOG_INFO("Starting action for card: " + cardId);
+		// 		currentAction.stop(function() {
+		// 			trace("Stopped");
+		// 		});
+		// 	} else {
+		// 		// triggeredAction = null;
+		// 		LOG_INFO("RETRIGGER action for card: " + cardId);
+		// 		currentAction.startWhileAlreadyRunning();
+		// 	}
+		// }
 	}
 
-	private function startAction() {
-		currentAction = triggeredAction;
-		triggeredAction = null;
-		currentAction.start(onActionComplete);
-	}
+	// private function startAction() {
+	// 	currentAction = triggeredAction;
+	// 	triggeredAction = null;
+	// 	currentAction.start(onActionComplete);
+	// }
 
-	private function onActionComplete() {
-		USER_MESSAGE("Action complete: ");
-		currentAction = null;
+	// private function onActionComplete() {
+	// 	USER_MESSAGE("Action complete: ");
+	// 	currentAction = null;
 
-		// start next if there
-		if (triggeredAction != null) {
-			startAction();
-		} else {
-			USER_MESSAGE("System idle, awaiting next card");
-		}
-	}
+	// 	// start next if there
+	// 	if (triggeredAction != null) {
+	// 		startAction();
+	// 	} else {
+	// 		USER_MESSAGE("System idle, awaiting next card");
+	// 	}
+	// }
 
-	private function getActionInstanceFromType(actionType:String, cardId:String, command:String):Dynamic {
-		for (actionClass in actionClasses) {
-			var action = Type.createInstance(actionClass, [cardId, command]);
-			if (actionType == action.type) {
-				return action;
-			}
-		}
+	// private function getActionInstanceFromType(actionType:String, cardId:String, command:String):Dynamic {
+	// 	for (actionClass in actionClasses) {
+	// 		var action = Type.createInstance(actionClass, [cardId, command]);
+	// 		if (actionType == action.type) {
+	// 			return action;
+	// 		}
+	// 	}
 
-		return null;
-	}
+	// 	return null;
+	// }
 
 	function get_avaliableActionTypes():Array<String> {
 		return avaliableActionTypes;
