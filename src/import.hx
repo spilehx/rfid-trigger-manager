@@ -1,1 +1,1 @@
-import logger.GlobalLogger.*;
+import spilehx.core.logger.GlobalLogger.*;
