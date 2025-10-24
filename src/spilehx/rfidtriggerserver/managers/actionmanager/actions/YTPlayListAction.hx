@@ -6,12 +6,12 @@ class YTPlayListAction extends Action {
 	private var playList:Array<String>;
 	private var currentTrack:Int = 0;
 
-	public function new(cardId:String, command:String) {
-		super(cardId, command);
-		this.type = "PLAY_YT_PLAYLIST";
-	}
+	// public function new(cardId:String, command:String) {
+	// 	super(cardId, command);
+	// 	// this.type = "PLAY_YT_PLAYLIST";
+	// }
 
-	override public function start(?onCompleteFollowOn:Function = null) {
+	override public function start() {
 		super.start();
 		triggerProcessForResponse("yt-dlp", ["--flat-playlist", "--get-id", command], function(resp:Dynamic) {
 			playList = Std.string(resp).split("\n");
@@ -32,7 +32,7 @@ class YTPlayListAction extends Action {
 		USER_MESSAGE("Playing track: " + index);
 		currentTrack = index;
 		var url:String = "https://www.youtube.com/watch?v=" + playList[currentTrack];
-		triggerProcess("mpv", ["--no-video", url], onTrackFinished);
+		// triggerProcess("mpv", ["--no-video", url], onTrackFinished);
 	}
 
 	private function onTrackFinished() {
@@ -52,8 +52,8 @@ class YTPlayListAction extends Action {
 		}, true);
 	}
 
-	override public function stop(?onStopped:Function = null) {
-		super.stop(onStopped);
-		ProcessWrapper.instance.stop();
-	}
+	// override public function stop(?onStopped:Function = null) {
+	// 	super.stop(onStopped);
+	// 	ProcessWrapper.instance.stop();
+	// }
 }

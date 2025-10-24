@@ -2,12 +2,15 @@ package spilehx.rfidtriggerserver.managers.actionmanager.actions;
 
 import haxe.Constraints.Function;
 
-class RadioAction extends Action {
+class PlayFileAction extends Action {
+	// public function new(cardId:String, command:String) {
+	// 	super(cardId, command);
+	// 	// this.type = "TestAction";
+	// }
 
 	override public function start() {
 		super.start();
-		var url:String = command;
-		triggerProcess("mpv", [url]);
+		triggerProcess("mplayer", ["-novideo", command]);
 	}
 
 	// override public function stop(?onStopped:Function = null) {

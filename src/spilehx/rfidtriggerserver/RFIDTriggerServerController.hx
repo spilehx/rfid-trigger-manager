@@ -21,9 +21,7 @@ class RFIDTriggerServerController {
 		RFIDManager.instance.init(onDeviceConnected, onCardRead);
 	}
 
-	private function onDeviceConnected() {
-		LOG("onDeviceConnected");
-	}
+	private function onDeviceConnected() {}
 
 	private function onCardRead(cardId:String) {
 		

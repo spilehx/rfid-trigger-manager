@@ -14,23 +14,24 @@ class Action {
 	public var cardId:String;
 	public var command:String;
 
-	private var onStopped:Function;
+	public var onStopped:Function;
 
 	public function new(cardId:String, command:String) {
-		this.type = "BASE_ACTION";
+		// this.type = "BASE_ACTION";
+		this.type = Type.getClassName(Type.getClass(this)).split(".").pop();
 		this.cardId = cardId;
 		this.command = command;
-		// setGeneralEnv();
+		setGeneralEnv();
 		// setRequiredEnv();
 	}
 
 	private function setGeneralEnv() {
-		var username = Sys.getEnv("SUDO_USER");
-		if (username == null || username == "") {
-			username = Sys.getEnv("USER");
-		}
+		// var username = Sys.getEnv("SUDO_USER");
+		// if (username == null || username == "") {
+		// 	username = Sys.getEnv("USER");
+		// }
 
-		loadUserEnv(username);
+		// loadUserEnv(username);
 
 		// var home = Sys.getEnv("HOME");
 		// if ((home == null || home == "") && username != null && username != "") {
@@ -109,12 +110,12 @@ class Action {
 
 	private function setRequiredEnv() {}
 
-	private function triggerProcess(command:String, args:Array<String>, ?onCompleteFollowOn:Function = null) {
+	private function triggerProcess(command:String, args:Array<String>) {
 		ProcessWrapper.instance.start(command, args, function() {
-			if (onCompleteFollowOn != null) {
+			// if (onCompleteFollowOn != null) {
 				onFinished();
-				onCompleteFollowOn();
-			}
+				// onCompleteFollowOn();
+			// }
 		});
 	}
 
@@ -122,27 +123,21 @@ class Action {
 		ProcessWrapper.instance.runProcessForResponse(command, args, onResult);
 	}
 
-	public function start(?onCompleteFollowOn:Function = null) {
+	public function start() {
+		USER_MESSAGE("Starting action: " + this.type +" "+command);
 		setCardActiveState(cardId, true);
 	}
 
-	public function stop(?onStopped:Function = null) {
-		if (onStopped != null) {
-			this.onStopped = onStopped;
-		}
-		ProcessWrapper.instance.stop(onStopped);
-		setCardActiveState(cardId, false);
+	public function stop() {
+		ProcessWrapper.instance.stop(function name() {
+			setCardActiveState(cardId, false);
+			onActionComplete(cardId);
+		});
 	}
 
 	public function startWhileAlreadyRunning() {
-		LOG("startWhileAlreadyRunning " + type);
+		USER_MESSAGE("Starting again: " + this.type +" "+command);
 		stop();
-	}
-
-	private function actionComplete() {
-		if (onActionComplete != null) {
-			onActionComplete(cardId);
-		}
 	}
 
 	private function onFinished() {

@@ -1,22 +1,18 @@
 package spilehx.rfidtriggerserver.managers;
 
-
-
-
-
+import spilehx.rfidtriggerserver.managers.actionmanager.actions.PlayFileAction;
 import spilehx.rfidtriggerserver.managers.settings.CardData;
 import spilehx.rfidtriggerserver.managers.actionmanager.actions.RadioAction;
 import spilehx.rfidtriggerserver.managers.actionmanager.actions.YTPVideoAction;
 import spilehx.rfidtriggerserver.managers.actionmanager.actions.YTPlayListAction;
 import spilehx.rfidtriggerserver.managers.actionmanager.actions.TestAction;
 import spilehx.rfidtriggerserver.managers.actionmanager.actions.Action;
-
 import haxe.Timer;
 import haxe.Constraints.Function;
 import sys.io.Process;
 import spilehx.rfidtriggerserver.managers.SettingsManager;
 
-class ActionManager extends spilehx.core.ManagerCore{
+class ActionManager extends spilehx.core.ManagerCore {
 	private var actionClasses:Array<Class<Action>>;
 	private var currentAction:Action;
 	private var currentCardId:String;
@@ -26,12 +22,8 @@ class ActionManager extends spilehx.core.ManagerCore{
 
 	public static final instance:ActionManager = new ActionManager();
 
-	// private function new() {
-		
-	// }
-
 	public function init() {
-		actionClasses = [YTPlayListAction, YTPVideoAction, RadioAction];
+		actionClasses = [YTPlayListAction, YTPVideoAction, RadioAction, PlayFileAction, TestAction];
 		registerActions();
 	}
 
@@ -43,63 +35,68 @@ class ActionManager extends spilehx.core.ManagerCore{
 		}
 	}
 
-	private var triggeredAction:Dynamic;
+	// private var triggeredAction:Dynamic;
 
 	public function doAction(cardId:String) {
-		USER_MESSAGE("Starting action for card: " + cardId);
-
 		var card:CardData = SettingsManager.instance.getCard(cardId);
 		if (card.enabled != true) {
 			USER_MESSAGE("Card not enabled: " + card.id);
 			return;
 		}
 
-		// triggeredAction = getActionInstanceFromType(card.action, cardId, card.command);
+		var triggeredAction = getActionInstanceFromType(card.action, cardId, card.command);
 
-		// if (currentAction == null) {
-		// 	startAction();
-		// } else {
-		// 	if (currentAction.cardId != triggeredAction.cardId) {
-		// 		LOG_INFO("Starting action for card: " + cardId);
-		// 		currentAction.stop(function() {
-		// 			trace("Stopped");
-		// 		});
-		// 	} else {
-		// 		// triggeredAction = null;
-		// 		LOG_INFO("RETRIGGER action for card: " + cardId);
-		// 		currentAction.startWhileAlreadyRunning();
-		// 	}
-		// }
+		if (currentAction == null) {
+			startAction(triggeredAction);
+		} else {
+			if (currentAction.cardId != triggeredAction.cardId) {
+				// new card action requested
+				if (currentAction != null) {
+					// currently playing another action
+					stopCurrentAction();
+					startAction(triggeredAction);
+				} else {
+					startAction(triggeredAction);
+				}
+			} else {
+				startWhileAlreadyRunning();
+			}
+		}
 	}
 
-	// private function startAction() {
-	// 	currentAction = triggeredAction;
-	// 	triggeredAction = null;
-	// 	currentAction.start(onActionComplete);
-	// }
+	private function startAction(triggeredAction:Action) {
+		currentAction = triggeredAction;
+		currentAction.start();
+		currentAction.onActionComplete = onActionComplete;
+	}
 
-	// private function onActionComplete() {
-	// 	USER_MESSAGE("Action complete: ");
-	// 	currentAction = null;
+	private function stopCurrentAction() {
+		if (currentAction != null) {
+			currentAction.stop();
+		}
+	}
 
-	// 	// start next if there
-	// 	if (triggeredAction != null) {
-	// 		startAction();
-	// 	} else {
-	// 		USER_MESSAGE("System idle, awaiting next card");
-	// 	}
-	// }
+	private function startWhileAlreadyRunning() {
+		if (currentAction != null) {
+			currentAction.startWhileAlreadyRunning();
+		}
+	}
 
-	// private function getActionInstanceFromType(actionType:String, cardId:String, command:String):Dynamic {
-	// 	for (actionClass in actionClasses) {
-	// 		var action = Type.createInstance(actionClass, [cardId, command]);
-	// 		if (actionType == action.type) {
-	// 			return action;
-	// 		}
-	// 	}
+	private function onActionComplete(cardId:String) {
+		USER_MESSAGE("Action complete: " + cardId);
+		currentAction = null;
+	}
 
-	// 	return null;
-	// }
+	private function getActionInstanceFromType(actionType:String, cardId:String, command:String):Dynamic {
+		for (actionClass in actionClasses) {
+			var action = Type.createInstance(actionClass, [cardId, command]);
+			if (actionType == action.type) {
+				return action;
+			}
+		}
+
+		return null;
+	}
 
 	function get_avaliableActionTypes():Array<String> {
 		return avaliableActionTypes;
