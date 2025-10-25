@@ -50,8 +50,6 @@ class SettingsManager extends spilehx.core.ManagerCore {
 	}
 
 	private function validateCardActions() {
-
-		
 		settings.avalibleCardActions = ActionManager.instance.avaliableActionTypes;
 
 		if(settings.avalibleCardActions !=null){
@@ -71,8 +69,6 @@ class SettingsManager extends spilehx.core.ManagerCore {
 					card.enabled = false;
 				}
 			}
-		}else{
-			// LOG("settings.avalibleCardActions.length == 0");
 		}
 
 		SettingsManager.instance.saveSettingsData();

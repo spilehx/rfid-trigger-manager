@@ -24,13 +24,10 @@ class RFIDTriggerServerController {
 	private function onDeviceConnected() {}
 
 	private function onCardRead(cardId:String) {
-		
-
 		if (SettingsManager.instance.hasCard(cardId) == false) {
             USER_MESSAGE("New card read, adding to system:"+cardId,true);
 			SettingsManager.instance.addCard(cardId);
 		} else {
-            // USER_MESSAGE("Stored card found:"+cardId,true);
 			ActionManager.instance.doAction(cardId);
 		}
 	}

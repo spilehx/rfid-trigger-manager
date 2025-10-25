@@ -8,9 +8,6 @@ import spilehx.rfidtriggerserver.managers.adminmanager.http.HTTPServer;
 
 class AdminManager extends spilehx.core.ManagerCore {
 	public static final instance:AdminManager = new AdminManager();
-
-	// private function new() {}
-
 	public function init() {
 		addRoutes();
 		HTTPServer.instance.startServer(1337);
