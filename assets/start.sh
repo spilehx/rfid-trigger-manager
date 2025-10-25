@@ -1,3 +1,4 @@
+cat > /home/cassette/rfid-trigger-manager/dist/start.sh <<'EOF'
 #!/usr/bin/env bash
 set -euo pipefail
 
@@ -5,19 +6,22 @@ set -euo pipefail
 exec >> "$HOME/.rfid-autostart.log" 2>&1
 echo "===== $(date) start ====="
 
-# Make sure PATH is sane in GUI session
+# Sane PATH in GUI sessions
 export PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:$PATH"
 
 # Run from the script’s directory
 cd "$(dirname "$0")"
 echo "PWD: $(pwd)"
 
-# Where is 'hl'?
+# Show where 'hl' is (or NOT FOUND)
 echo "command -v hl -> $(command -v hl || echo 'NOT FOUND')"
 
-# Run the app (stderr/stdout already go to the log via exec)
-# Use absolute path to hl if command -v shows NOT FOUND, e.g. /usr/local/bin/hl
-hl RFIDTriggerServer.hl </dev/null &
+# Start your app in background so launcher can exit cleanly
+# If NOT FOUND above, change 'hl' to its absolute path (e.g. /usr/local/bin/hl)
+nohup hl RFIDTriggerServer.hl </dev/null &
 
-echo "Started hl in background with PID $!"
+echo "Started hl with PID $!"
 echo "===== $(date) end (launcher) ====="
+EOF
+
+chmod +x /home/cassette/rfid-trigger-manager/dist/start.sh
