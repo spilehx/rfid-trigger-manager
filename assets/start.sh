@@ -1,27 +1,43 @@
-cat > /home/cassette/rfid-trigger-manager/dist/start.sh <<'EOF'
+mkdir -p /home/cassette/bin
+
+cat > /home/cassette/bin/rfid-autostart.sh <<'EOF'
 #!/usr/bin/env bash
 set -euo pipefail
 
-# Log everything from here on
+# 1) Log immediately so we KNOW this ran
 exec >> "$HOME/.rfid-autostart.log" 2>&1
-echo "===== $(date) start ====="
+echo "===== $(date) start (wrapper) ====="
 
-# Sane PATH in GUI sessions
+# 2) Sane PATH for GUI sessions
 export PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:$PATH"
 
-# Run from the script’s directory
-cd "$(dirname "$0")"
+# 3) Go to app dir
+cd "/home/cassette/rfid-trigger-manager/dist" || { echo "cd failed"; exit 1; }
 echo "PWD: $(pwd)"
 
-# Show where 'hl' is (or NOT FOUND)
-echo "command -v hl -> $(command -v hl || echo 'NOT FOUND')"
+# 4) Locate 'hl' (and print the path we’ll use)
+HL_BIN="$(command -v hl || true)"
+if [[ -z "${HL_BIN}" ]]; then
+  # try common location
+  for p in /usr/local/bin/hl /usr/bin/hl; do
+    [[ -x "$p" ]] && HL_BIN="$p" && break
+  done
+fi
+echo "HL_BIN='$HL_BIN'"
 
-# Start your app in background so launcher can exit cleanly
-# If NOT FOUND above, change 'hl' to its absolute path (e.g. /usr/local/bin/hl)
-nohup hl RFIDTriggerServer.hl </dev/null &
+if [[ -z "${HL_BIN}" ]]; then
+  echo "ERROR: 'hl' not found in PATH. Install it or set absolute path."
+  exit 127
+fi
+
+# 5) Make sure the .hl file exists
+[[ -f RFIDTriggerServer.hl ]] || { echo "ERROR: RFIDTriggerServer.hl missing"; exit 1; }
+
+# 6) Start in background so autostart can exit cleanly
+nohup "$HL_BIN" RFIDTriggerServer.hl </dev/null &
 
 echo "Started hl with PID $!"
-echo "===== $(date) end (launcher) ====="
+echo "===== $(date) end (wrapper) ====="
 EOF
 
-chmod +x /home/cassette/rfid-trigger-manager/dist/start.sh
+chmod +x /home/cassette/bin/rfid-autostart.sh
