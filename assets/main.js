@@ -374,7 +374,6 @@ function createNewRow(card) {
   row.appendChild(createCell(card, "current", "text", false));
   row.appendChild(createCell(card, "command", "text", true));
   row.appendChild(createCell(card, "action", "select", true, actions));
-  row.appendChild(createCell(card, "actionState", "text", false));
   row.appendChild(createCell(card, "trigger", "button", false));
   return row;
 }
