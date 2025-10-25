@@ -347,7 +347,11 @@ function createCell(card, fieldName, type, editable, selectOptions) {
     inputEl.id = "inputChild";
     tdEl.appendChild(inputEl);
   } else {
-    tdEl.textContent = fieldValue;
+    if (type == "button") {
+      tdEl.appendChild(getTriggerButton(card));
+    } else {
+      tdEl.textContent = fieldValue;
+    }
   }
 
   tdEl.id = fieldName;
@@ -371,8 +375,40 @@ function createNewRow(card) {
   row.appendChild(createCell(card, "command", "text", true));
   row.appendChild(createCell(card, "action", "select", true, actions));
   row.appendChild(createCell(card, "actionState", "text", false));
-
+  row.appendChild(createCell(card, "trigger", "button", false));
   return row;
+}
+
+function getTriggerButton(card) {
+  var btn = document.createElement("button");
+  btn.style.width = "35px";
+  btn.style.height = "35px";
+  btn.style.border = "none";
+  btn.style.cursor = "pointer";
+  btn.style.background = "transparent";
+  btn.style.fontSize = "18px";
+  btn.textContent = "▶️";
+
+  btn.addEventListener("click", () => {
+    sendTriggerRequest(card.id);
+  });
+
+  return btn;
+}
+
+function sendTriggerRequest(cardId) {
+  const url = `${window.location.origin}/trigger?cardid=${cardId}`;
+  fetch(url, { method: "GET" })
+    .then((response) => {
+      if (!response.ok) throw new Error(`HTTP ${response.status}`);
+      return response.text();
+    })
+    .then((data) => {
+      console.log("Trigger response:", data);
+    })
+    .catch((error) => {
+      console.error("Trigger request failed:", error);
+    });
 }
 
 function setDeviceIdField(value) {
