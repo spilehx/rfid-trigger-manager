@@ -4,7 +4,8 @@ set -euo pipefail
 # Run from the script’s directory
 cd "$(dirname "$0")"
 
-hl RFIDTriggerServer.hl > /dev/null
+sudo hl RFIDTriggerServer.hl 
+##> /dev/null
 
 
 
