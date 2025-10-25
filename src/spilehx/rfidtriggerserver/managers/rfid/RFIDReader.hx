@@ -91,7 +91,7 @@ class RFIDReader {
 				mainThread.sendMessage('[RFIDReader error] ' + Std.string(e));
 			}
 
-			// tidy up
+			//TODO: tidy up
 			if (fin != null) {
 				try {
 					fin.close();

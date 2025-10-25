@@ -8,3 +8,4 @@ cd "$(dirname "$0")"
 # Send logs to journald; remove the redirections if you want to see logs
 # in 'journalctl -u cassette.service'.
 exec /usr/bin/env hl RFIDTriggerServer.hl
+https://jonnyAnd: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@github.com

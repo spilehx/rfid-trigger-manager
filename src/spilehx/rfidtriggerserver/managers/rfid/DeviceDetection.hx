@@ -1,7 +1,7 @@
 package spilehx.rfidtriggerserver.managers.rfid;
 
 class DeviceDetection {
-	private static var FORBIDDEN_DEVICE_NAME_STRINGS:Array<String> = ["lid", "power button", "mouse", "touchpad", "video", "razer", "mic", "headphone", "logitech", "HDA Intel"];
+	private static var FORBIDDEN_DEVICE_NAME_STRINGS:Array<String> = ["Barcode", "intel", "gpio-keys", "Headset", "PC Speaker", "lid", "power button", "mouse", "touchpad", "video", "audio", "razer", "mic", "headphone", "logitech", "HDA Intel"];
 
 	public static function getDevices():Array<Device> {
 		var result:Array<Device> = [];
