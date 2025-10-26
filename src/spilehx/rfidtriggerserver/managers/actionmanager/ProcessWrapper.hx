@@ -48,7 +48,7 @@ class ProcessWrapper {
 	private function onPollProcess() {
 		if (proc != null) {
 			if (proc.exitCode(false) != null) {
-				trace("proc.stdout  " + proc.stdout.readAll());
+				// trace("proc.stdout  " + proc.stdout.readAll());
 				stopPollProcess();
 				onComplete();
 			}

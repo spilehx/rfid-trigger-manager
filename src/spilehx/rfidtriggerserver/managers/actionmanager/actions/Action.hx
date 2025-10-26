@@ -110,12 +110,13 @@ class Action {
 
 	private function setRequiredEnv() {}
 
-	private function triggerProcess(command:String, args:Array<String>) {
+	private function triggerProcess(command:String, args:Array<String>, onCompleteFollowOn = null) {
 		ProcessWrapper.instance.start(command, args, function() {
-			// if (onCompleteFollowOn != null) {
+			if (onCompleteFollowOn != null) {	
+				onCompleteFollowOn();
+			}else{
 				onFinished();
-				// onCompleteFollowOn();
-			// }
+			}
 		});
 	}
 

@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+TRACK_URI="spotify:track:3n3Ppam7vgaVa1iaRUc9Lp"
+
 init() {
   if isMopidyRunning; then
     echo "Mopidy is running. Stopping Mopidy..."
@@ -7,7 +9,8 @@ init() {
   else
     echo "Mopidy is not running. Starting Mopidy..."
     startMopidy
-    playSpotify
+    # sleep 5
+    # playSpotify
   fi
 }
 
@@ -30,6 +33,7 @@ stopMopidy() {
 
 playSpotify() {
   echo "Playing Spotify..."
+  mpc -h 127.0.0.1 clear && mpc add "$TRACK_URI" && mpc play
 }
 
 init

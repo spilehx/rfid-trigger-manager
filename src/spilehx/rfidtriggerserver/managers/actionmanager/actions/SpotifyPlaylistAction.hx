@@ -1,28 +1,97 @@
 package spilehx.rfidtriggerserver.managers.actionmanager.actions;
 
-import haxe.Constraints.Function;
+import spilehx.rfidtriggerserver.helpers.ActionCommandHelpers;
+import sys.io.Process;
 
 class SpotifyPlaylistAction extends Action {
-	// public function new(cardId:String, command:String) {
-	// 	super(cardId, command);
-	// 	// this.type = "TestAction";
-	// }
+
 	override public function start() {
 		super.start();
-		// var url:String = "https://www.youtube.com/watch?v=" + command;
-		// // yt-dlp -x --audio-format mp3
-
-		// triggerProcess("yt-dlp", ["-x", "--audio-format", "mp3", url], onCompleteFollowOn);
-
-		// triggerProcess("mpv", ["--no-video", url], onCompleteFollowOn);
+		checkMopidy();
 	}
 
-	// override public function stop(?onStopped:Function = null) {
-	// 	super.stop(onStopped);
-	// 	ProcessWrapper.instance.stop();
-	// }
+	override public function stop() {
+		stopMpc();
+		setCardActiveState(cardId, false);
+		onActionComplete(cardId);
+	}
+
 	override public function startWhileAlreadyRunning() {
-		USER_MESSAGE("SpotifyPlaylistAction next track: " + this.type +" "+command);
-		// stop();
+		USER_MESSAGE("Next track: " + this.type + " " + command);
+		nextTrackMpc();
+	}
+
+	private function checkMopidy() {
+		LOG_INFO("checking Mopidy state");
+
+		var mopidyRunning:Bool = ActionCommandHelpers.isProcessRunning("mopidy");
+
+		if (mopidyRunning == true) {
+			LOG_INFO("Mopidy OK");
+			setMPCPlaylist();
+		} else {
+			LOG_INFO("Starting Mopidy");
+			ActionCommandHelpers.startMopidy(function(success:Bool) {
+				if (success == true) {
+					setMPCPlaylist();
+				} else {
+					LOG_ERROR("Could not start mopidy");
+					onFinished();
+				}
+			});
+		}
+	}
+
+	private function setMPCPlaylist() {
+		// mopidy & sleep 5 && mpc -h 127.0.0.1 clear && mpc add "spotify:playlist:7heA0nmQrcLSKwbDJZqkYU" && mpc play
+		USER_MESSAGE("Playing spotfy: " + "spotify:playlist:" + command);
+		var playlist:String = "spotify:playlist:" + command;
+
+		setPlaylist(playlist, function(success:Bool) {
+			if (success == true) {
+				USER_MESSAGE('Playlist added successfully: ' + command);
+				playMPC();
+			} else {
+				LOG_ERROR("Failed to add playlist");
+				onFinished();
+			}
+		});
+	}
+
+	private function playMPC() {
+		triggerProcess("mpc", ["play", "-q"]);
+	}
+
+	private function stopMpc() {
+		triggerProcess("mpc", ["stop", "-q"]);
+	}
+
+	private function nextTrackMpc() {
+		triggerProcess("mpc", ["next", "-q"]);
+	}
+
+	private function setPlaylist(trackUri:String, onComplete:Bool->Void):Void {
+		try {
+			// 1. Clear the current playlist
+			var clearProc = new Process("mpc", ["-h", "127.0.0.1", "clear"]);
+			var clearExit = clearProc.exitCode();
+			clearProc.close();
+
+			if (clearExit != 0) {
+				LOG_ERROR("Failed to clear MPC playlist (exit code: " + clearExit + ")");
+				onComplete(false);
+				return;
+			}
+
+			// 2. Add the new track URI
+			var addProc = new Process("mpc", ["-h", "127.0.0.1", "add", trackUri]);
+			var addExit = addProc.exitCode();
+			addProc.close();
+
+			onComplete((addExit == 0));
+		} catch (e:Dynamic) {
+			LOG_ERROR("Error running playSpotify: " + e);
+			onComplete(false);
+		}
 	}
 }

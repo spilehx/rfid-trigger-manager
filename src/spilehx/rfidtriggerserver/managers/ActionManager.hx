@@ -1,5 +1,6 @@
 package spilehx.rfidtriggerserver.managers;
 
+import spilehx.rfidtriggerserver.managers.actionmanager.actions.StopAllAction;
 import spilehx.rfidtriggerserver.managers.actionmanager.actions.SpotifyPlaylistAction;
 import spilehx.rfidtriggerserver.managers.actionmanager.actions.PlayFileAction;
 import spilehx.rfidtriggerserver.managers.settings.CardData;
@@ -24,7 +25,7 @@ class ActionManager extends spilehx.core.ManagerCore {
 	public static final instance:ActionManager = new ActionManager();
 
 	public function init() {
-		actionClasses = [YTPlayListAction, YTPVideoAction, RadioAction, PlayFileAction, TestAction, SpotifyPlaylistAction];
+		actionClasses = [YTPlayListAction, YTPVideoAction, RadioAction, PlayFileAction, TestAction, SpotifyPlaylistAction, StopAllAction];
 		registerActions();
 	}
 
