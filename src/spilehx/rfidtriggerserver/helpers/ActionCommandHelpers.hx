@@ -40,6 +40,11 @@ class ActionCommandHelpers {
 
 			if (onComplete != null) {
 				var success:Bool = (exitCode == 0);
+                if(success == true){
+                    USER_MESSAGE("Waiting for Mopidy to come up fully");
+                    Sys.sleep(5);
+                    USER_MESSAGE("Ok - proceeding");
+                }
 				onComplete(success);
 			}
 		} catch (e:Dynamic) {

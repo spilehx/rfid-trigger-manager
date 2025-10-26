@@ -32,7 +32,7 @@ class SpotifyPlaylistAction extends Action {
 		} else {
 			LOG_INFO("Starting Mopidy");
 			ActionCommandHelpers.startMopidy(function(success:Bool) {
-				Sys.sleep(5);
+				
 				if (success == true) {
 					setMPCPlaylist();
 				} else {
@@ -76,6 +76,8 @@ class SpotifyPlaylistAction extends Action {
 			// 1. Clear the current playlist
 			var clearProc = new Process("mpc", ["-h", "127.0.0.1", "clear"]);
 			var clearExit = clearProc.exitCode();
+			LOG("clear proc");
+			LOG(clearProc.stdout.readAll().toString());
 			LOG(clearProc.stderr.readAll().toString());
 			clearProc.close();
 
@@ -88,6 +90,9 @@ class SpotifyPlaylistAction extends Action {
 			// 2. Add the new track URI
 			var addProc = new Process("mpc", ["-h", "127.0.0.1", "add", trackUri]);
 			var addExit = addProc.exitCode();
+			LOG("add proc");
+			LOG(addProc.stdout.readAll().toString());
+			LOG(addProc.stderr.readAll().toString());
 			addProc.close();
 
 			onComplete((addExit == 0));
