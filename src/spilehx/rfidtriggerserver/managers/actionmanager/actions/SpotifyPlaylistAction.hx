@@ -51,8 +51,9 @@ var playlist:String = "spotify:track:3n3Ppam7vgaVa1iaRUc9Lp";
 		
 
 clearPlaylistMpc();
+Sys.sleep(1);
 addPlaylistMpc(playlist);
-Sys.sleep(5);
+Sys.sleep(1);
 trace("playing");
 				playMPC();
 
@@ -82,44 +83,48 @@ trace("playing");
 
 
 	private function clearPlaylistMpc() {
-		triggerProcess("mpc", ["clear"]);
+		triggerProcess("mpc", ["clear"],function () {
+			LOG("clearPlaylistMpc done");
+		});
 	}
 
 private function addPlaylistMpc(playlist:String) {
-		triggerProcess("mpc", ["add", playlist]);
+		triggerProcess("mpc", ["add", playlist],function () {
+			LOG("addPlaylistMpc done");
+		});
 	}
 
 
-	private function setPlaylist(trackUri:String, onComplete:Bool->Void):Void {
-		try {
+	// private function setPlaylist(trackUri:String, onComplete:Bool->Void):Void {
+	// 	try {
 
-			// 1. Clear the current playlist
-			var clearProc = new Process("mpc", ["-h", "0.0.0.0", "clear"], true);
-			var clearExit = clearProc.exitCode();
-			LOG("clear proc");
-			LOG(clearProc.stdout.readAll().toString());
-			LOG(clearProc.stderr.readAll().toString());
-			clearProc.close();
+	// 		// 1. Clear the current playlist
+	// 		var clearProc = new Process("mpc", ["-h", "0.0.0.0", "clear"], true);
+	// 		var clearExit = clearProc.exitCode();
+	// 		LOG("clear proc");
+	// 		LOG(clearProc.stdout.readAll().toString());
+	// 		LOG(clearProc.stderr.readAll().toString());
+	// 		clearProc.close();
 
-			if (clearExit != 0) {
-				LOG_ERROR("Failed to clear MPC playlist (exit code: " + clearExit + ")");
-				onComplete(false);
-				return;
-			}
+	// 		if (clearExit != 0) {
+	// 			LOG_ERROR("Failed to clear MPC playlist (exit code: " + clearExit + ")");
+	// 			onComplete(false);
+	// 			return;
+	// 		}
 
-			// 2. Add the new track URI
-			var addProc = new Process("mpc", ["-h", "0.0.0.0", "add", trackUri], true);
-			var addExit = addProc.exitCode();
-			LOG("add proc");
-			LOG(addProc.stdout.readAll().toString());
-			LOG(addProc.stderr.readAll().toString());
-			// Sys.sleep(5);
-			addProc.close();
+	// 		// 2. Add the new track URI
+	// 		var addProc = new Process("mpc", ["-h", "0.0.0.0", "add", trackUri], true);
+	// 		var addExit = addProc.exitCode();
+	// 		LOG("add proc");
+	// 		LOG(addProc.stdout.readAll().toString());
+	// 		LOG(addProc.stderr.readAll().toString());
+	// 		// Sys.sleep(5);
+	// 		addProc.close();
 
-			onComplete((addExit == 0));
-		} catch (e:Dynamic) {
-			LOG_ERROR("Error running playSpotify: " + e);
-			onComplete(false);
-		}
-	}
+	// 		onComplete((addExit == 0));
+	// 	} catch (e:Dynamic) {
+	// 		LOG_ERROR("Error running playSpotify: " + e);
+	// 		onComplete(false);
+	// 	}
+	// }
 }

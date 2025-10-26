@@ -26,7 +26,7 @@ class ActionCommandHelpers {
 	public static function startMopidy(onComplete:Bool->Void = null):Void {
 		try {
 			// Run the command through a shell to emulate `nohup ... &`
-			var proc = new Process("/bin/sh", ["-c", "nohup mopidy >/dev/null 2>&1 &"]);
+			var proc = new Process("/bin/sh", ["-c", "nohup mopidy >/dev/null 2>&1 &"],true);
 
 			// Wait for shell to finish launching the background job
 			var exitCode = proc.exitCode();
