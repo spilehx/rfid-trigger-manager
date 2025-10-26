@@ -10,7 +10,7 @@ import haxe.Json;
 import sys.FileSystem;
 
 class SettingsManager extends spilehx.core.ManagerCore {
-	public static final IS_DEBUG:Bool = false;
+	public static final IS_DEBUG:Bool = true;
 
 	private static final SETTINGS_FILE_PATH:String = "./settings.json";
 

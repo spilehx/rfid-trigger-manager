@@ -75,29 +75,41 @@ var playlist:String = "spotify:track:3n3Ppam7vgaVa1iaRUc9Lp";
 
 	private function setPlaylist(trackUri:String, onComplete:Bool->Void):Void {
 		try {
-			// 1. Clear the current playlist
-			var clearProc = new Process("mpc", ["-h", "0.0.0.0", "clear"]);
+
+// 1. Clear the current playlist
+			var clearProc = new Process('mpc -h 127.0.0.1 clear && mpc add "spotify:track:3n3Ppam7vgaVa1iaRUc9Lp" && mpc play',true);
 			var clearExit = clearProc.exitCode();
 			LOG("clear proc");
 			LOG(clearProc.stdout.readAll().toString());
 			LOG(clearProc.stderr.readAll().toString());
 			clearProc.close();
 
-			if (clearExit != 0) {
-				LOG_ERROR("Failed to clear MPC playlist (exit code: " + clearExit + ")");
-				onComplete(false);
-				return;
-			}
+onComplete((clearExit == 0));
 
-			// 2. Add the new track URI
-			var addProc = new Process("mpc", ["-h", "0.0.0.0", "add", trackUri]);
-			var addExit = addProc.exitCode();
-			LOG("add proc");
-			LOG(addProc.stdout.readAll().toString());
-			LOG(addProc.stderr.readAll().toString());
-			addProc.close();
 
-			onComplete((addExit == 0));
+			// // 1. Clear the current playlist
+			// var clearProc = new Process("mpc", ["-h", "0.0.0.0", "clear"]);
+			// var clearExit = clearProc.exitCode();
+			// LOG("clear proc");
+			// LOG(clearProc.stdout.readAll().toString());
+			// LOG(clearProc.stderr.readAll().toString());
+			// clearProc.close();
+
+			// if (clearExit != 0) {
+			// 	LOG_ERROR("Failed to clear MPC playlist (exit code: " + clearExit + ")");
+			// 	onComplete(false);
+			// 	return;
+			// }
+
+			// // 2. Add the new track URI
+			// var addProc = new Process("mpc", ["-h", "0.0.0.0", "add", trackUri]);
+			// var addExit = addProc.exitCode();
+			// LOG("add proc");
+			// LOG(addProc.stdout.readAll().toString());
+			// LOG(addProc.stderr.readAll().toString());
+			// addProc.close();
+
+			// onComplete((addExit == 0));
 		} catch (e:Dynamic) {
 			LOG_ERROR("Error running playSpotify: " + e);
 			onComplete(false);
