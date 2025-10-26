@@ -46,7 +46,9 @@ class SpotifyPlaylistAction extends Action {
 	private function setMPCPlaylist() {
 		// mopidy & sleep 5 && mpc -h 127.0.0.1 clear && mpc add "spotify:playlist:7heA0nmQrcLSKwbDJZqkYU" && mpc play
 		USER_MESSAGE("Playing spotfy: " + "spotify:playlist:" + command);
-		var playlist:String = "spotify:playlist:" + command;
+		// var playlist:String = "spotify:playlist:" + command;
+var playlist:String = "spotify:track:3n3Ppam7vgaVa1iaRUc9Lp";
+		
 
 		setPlaylist(playlist, function(success:Bool) {
 			if (success == true) {
