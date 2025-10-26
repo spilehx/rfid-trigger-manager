@@ -18,7 +18,11 @@ class RFIDTriggerServerController {
         ActionManager.instance.init(); // required before settings so we have a list of avalible actions
 		SettingsManager.instance.init();
 		AdminManager.instance.init();
-		RFIDManager.instance.init(onDeviceConnected, onCardRead);
+
+
+		if(SettingsManager.IS_DEBUG == false){
+			RFIDManager.instance.init(onDeviceConnected, onCardRead);
+		}
 	}
 
 	private function onDeviceConnected() {}

@@ -3,4 +3,3 @@
 -main RFIDTriggerServer
 --hl dist/RFIDTriggerServer.hl
 
---cmd cp ./assets/start.sh ./dist

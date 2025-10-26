@@ -1,11 +1,12 @@
 package;
 
+import spilehx.rfidtriggerserver.managers.SettingsManager;
 import spilehx.core.SysUtils;
 import spilehx.rfidtriggerserver.RFIDTriggerServerController;
 
 class RFIDTriggerServer {
 	static function main() {
-		if (SysUtils.isRunningAsSudo()) {
+		if (SysUtils.isRunningAsSudo() || SettingsManager.IS_DEBUG == true) {
 			USER_MESSAGE("Starting RFIDTriggerServer", true);
 			var controller:RFIDTriggerServerController = new RFIDTriggerServerController();
 			controller.init();
