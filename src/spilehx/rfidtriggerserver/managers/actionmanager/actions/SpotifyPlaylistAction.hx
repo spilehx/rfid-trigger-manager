@@ -75,6 +75,7 @@ class SpotifyPlaylistAction extends Action {
 			// 1. Clear the current playlist
 			var clearProc = new Process("mpc", ["-h", "127.0.0.1", "clear"]);
 			var clearExit = clearProc.exitCode();
+			LOG(clearProc.stderr.readAll().toString());
 			clearProc.close();
 
 			if (clearExit != 0) {
