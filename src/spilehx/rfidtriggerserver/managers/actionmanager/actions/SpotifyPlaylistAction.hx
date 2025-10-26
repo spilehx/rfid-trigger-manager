@@ -32,6 +32,7 @@ class SpotifyPlaylistAction extends Action {
 		} else {
 			LOG_INFO("Starting Mopidy");
 			ActionCommandHelpers.startMopidy(function(success:Bool) {
+				Sys.sleep(5);
 				if (success == true) {
 					setMPCPlaylist();
 				} else {
