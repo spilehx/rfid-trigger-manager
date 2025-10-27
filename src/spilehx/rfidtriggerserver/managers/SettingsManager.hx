@@ -1,5 +1,6 @@
 package spilehx.rfidtriggerserver.managers;
 
+import haxe.io.Path;
 import spilehx.rfidtriggerserver.managers.rfid.DeviceDetection;
 import spilehx.rfidtriggerserver.managers.settings.CardData;
 import spilehx.rfidtriggerserver.managers.settings.SettingsData;
@@ -12,7 +13,9 @@ import sys.FileSystem;
 class SettingsManager extends spilehx.core.ManagerCore {
 	public var IS_DEBUG:Bool = false;
 
-	private static final SETTINGS_FILE_PATH:String = "./settings.json";
+	private static final SETTINGS_FILE_NAME:String = "settings.json";
+	private static final SETTINGS_PATH:String = "./appdata";
+	private static var SETTINGS_FILE_PATH:String = SETTINGS_PATH + "/" + SETTINGS_FILE_NAME;
 
 	@:isVar public var settings(get, set):SettingsData;
 	@:isVar public var verboseLogging(get, set):Bool;
@@ -54,10 +57,9 @@ class SettingsManager extends spilehx.core.ManagerCore {
 	private function validateCardActions() {
 		settings.avalibleCardActions = ActionManager.instance.avaliableActionTypes;
 
-		if(settings.avalibleCardActions !=null){
-
+		if (settings.avalibleCardActions != null) {
 			var userMsgIndentStr:String = "\n    - ";
-			USER_MESSAGE("  "+ settings.avalibleCardActions.length + " actions found " + userMsgIndentStr + settings.avalibleCardActions.join(userMsgIndentStr));
+			USER_MESSAGE("  " + settings.avalibleCardActions.length + " actions found " + userMsgIndentStr + settings.avalibleCardActions.join(userMsgIndentStr));
 
 			for (card in settings.cards) {
 				if (card.action.length < 1) {
@@ -80,7 +82,56 @@ class SettingsManager extends spilehx.core.ManagerCore {
 		loadSettingsFromFile();
 	}
 
+	public static function validateOrCreatePath(path:String):String {
+		if (path == null || path.length == 0) {
+			throw "validateOrCreatePath: Path is empty.";
+		}
+
+		// Normalize to remove duplicate slashes and resolve "." wherever possible.
+		var normalized = Path.normalize(path);
+		var isAbs = StringTools.startsWith(normalized, "/");
+		var cwd = Sys.getCwd();
+		var parts = normalized.split("/");
+
+		var acc = isAbs ? "/" : cwd;
+
+		for (p in parts) {
+			if (p == null || p == "" || p == ".") {
+				// skip empty and current-dir segments
+				continue;
+			}
+			if (p == "..") {
+				// go up one level safely
+				acc = Path.directory(acc);
+				if (acc == null || acc == "")
+					acc = "/";
+				continue;
+			}
+
+			// Join without duplicating slashes
+			var next = (acc == "/" ? "/" + p : Path.join([acc, p]));
+
+			if (FileSystem.exists(next)) {
+				if (!FileSystem.isDirectory(next)) {
+					throw 'validateOrCreatePath: "$next" exists but is not a directory.';
+				}
+				// already a directory; move on
+			} else {
+				try {
+					FileSystem.createDirectory(next);
+				} catch (e:Dynamic) {
+					throw 'validateOrCreatePath: Failed to create directory "$next": $e';
+				}
+			}
+
+			acc = next;
+		}
+
+		return acc;
+	}
+
 	private function validateSettingsFileExists() {
+		validateOrCreatePath(SETTINGS_PATH);
 		if (FileSystem.exists(SETTINGS_FILE_PATH) == false) {
 			// no file, so save a new one with defaults
 			saveSettingsData();

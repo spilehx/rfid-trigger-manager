@@ -23,6 +23,9 @@ class RFIDTriggerServer {
 	}
 
 	private static function setDebugMode():Bool{
+		return true;
+
+
 		// is we want to run this locally with out and RFID and ignorming the current sudo issue we have
 		// we will look for a local file that isnt in the repo.
 		var isDebug:Bool = FileSystem.exists("./DEBUG_MODE");

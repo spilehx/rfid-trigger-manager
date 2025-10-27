@@ -1,0 +1,15 @@
+services:
+  rfidtriggermanager:
+    container_name: rfidtriggermanager
+    image: rfidtriggermanager:latest
+    ports:
+      - "1337:1337"
+    environment:
+      - PUID=1000
+      - PGID=1000
+    devices:
+      - /dev/snd:/dev/snd
+    group_add:
+      - "audio"
+    volumes:
+      - ./vol/appdata:/app/appdata

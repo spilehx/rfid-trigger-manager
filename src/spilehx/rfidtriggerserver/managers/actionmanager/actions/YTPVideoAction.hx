@@ -7,5 +7,7 @@ class YTPVideoAction extends Action {
 		super.start();
 		var url:String = "https://www.youtube.com/watch?v=" + command;
 		triggerProcess("mpv", ["--no-video", url]);
+
+		// mpv --no-video https://www.youtube.com/watch?v=jfKfPfyJRdk
 	}
 }

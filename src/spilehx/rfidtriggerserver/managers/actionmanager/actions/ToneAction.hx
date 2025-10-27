@@ -11,6 +11,8 @@ class ToneAction extends Action {
 			durationSecs = 1;
 		}
 
+		// play -n synth 5 sine 440 
+
 		triggerProcessFromStingCommand("play -n synth "+durationSecs+" sine 440");
 	}
 }
