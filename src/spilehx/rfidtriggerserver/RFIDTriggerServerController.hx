@@ -20,7 +20,7 @@ class RFIDTriggerServerController {
 		AdminManager.instance.init();
 
 
-		if(SettingsManager.IS_DEBUG == false){
+		if(SettingsManager.instance.IS_DEBUG == false){
 			RFIDManager.instance.init(onDeviceConnected, onCardRead);
 		}
 	}
