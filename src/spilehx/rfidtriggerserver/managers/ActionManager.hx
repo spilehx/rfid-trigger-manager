@@ -7,7 +7,7 @@ import spilehx.rfidtriggerserver.managers.settings.CardData;
 import spilehx.rfidtriggerserver.managers.actionmanager.actions.RadioAction;
 import spilehx.rfidtriggerserver.managers.actionmanager.actions.YTPVideoAction;
 import spilehx.rfidtriggerserver.managers.actionmanager.actions.YTPlayListAction;
-import spilehx.rfidtriggerserver.managers.actionmanager.actions.TestAction;
+import spilehx.rfidtriggerserver.managers.actionmanager.actions.ToneAction;
 import spilehx.rfidtriggerserver.managers.actionmanager.actions.Action;
 import haxe.Timer;
 import haxe.Constraints.Function;
@@ -25,7 +25,7 @@ class ActionManager extends spilehx.core.ManagerCore {
 	public static final instance:ActionManager = new ActionManager();
 
 	public function init() {
-		actionClasses = [YTPlayListAction, YTPVideoAction, RadioAction, PlayFileAction, TestAction, SpotifyPlaylistAction, StopAllAction];
+		actionClasses = [YTPlayListAction, YTPVideoAction, RadioAction, PlayFileAction, ToneAction, SpotifyPlaylistAction, StopAllAction];
 		registerActions();
 	}
 
@@ -36,9 +36,6 @@ class ActionManager extends spilehx.core.ManagerCore {
 			avaliableActionTypes.push(action.type);
 		}
 	}
-
-	// private var triggeredAction:Dynamic;
-
 	public function doAction(cardId:String) {
 		var card:CardData = SettingsManager.instance.getCard(cardId);
 		if (card.enabled != true) {
@@ -68,8 +65,9 @@ class ActionManager extends spilehx.core.ManagerCore {
 
 	private function startAction(triggeredAction:Action) {
 		currentAction = triggeredAction;
-		currentAction.start();
 		currentAction.onActionComplete = onActionComplete;
+		currentAction.start();
+		
 	}
 
 	private function stopCurrentAction() {

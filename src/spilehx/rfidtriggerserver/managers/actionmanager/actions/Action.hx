@@ -2,9 +2,7 @@ package spilehx.rfidtriggerserver.managers.actionmanager.actions;
 
 import spilehx.rfidtriggerserver.managers.settings.CardData;
 import spilehx.rfidtriggerserver.managers.SettingsManager;
-
 import haxe.Constraints.Function;
-import haxe.Timer;
 import sys.io.Process;
 
 class Action {
@@ -110,11 +108,20 @@ class Action {
 
 	private function setRequiredEnv() {}
 
+	private function triggerProcessFromStingCommand(command:String, onCompleteFollowOn = null) {
+		// helper function so i can just use string commands like i would
+		// on the command line rather than breaking up into an array etc
+		var splitCommand:Array<String> = command.split(" ");
+		var mainCommand:String = splitCommand.shift();
+
+		triggerProcess(mainCommand, splitCommand, onCompleteFollowOn);
+	}
+
 	private function triggerProcess(command:String, args:Array<String>, onCompleteFollowOn = null) {
 		ProcessWrapper.instance.start(command, args, function() {
-			if (onCompleteFollowOn != null) {	
+			if (onCompleteFollowOn != null) {
 				onCompleteFollowOn();
-			}else{
+			} else {
 				onFinished();
 			}
 		});
@@ -125,24 +132,24 @@ class Action {
 	}
 
 	public function start() {
-		USER_MESSAGE("Starting action: " + this.type +" "+command);
+		USER_MESSAGE("Starting action: " + this.type + " " + command);
 		setCardActiveState(cardId, true);
 	}
 
 	public function stop() {
 		ProcessWrapper.instance.stop(function name() {
-			setCardActiveState(cardId, false);
-			onActionComplete(cardId);
+			onFinished();
 		});
 	}
 
 	public function startWhileAlreadyRunning() {
-		USER_MESSAGE("Starting again: " + this.type +" "+command);
+		USER_MESSAGE("Starting again: " + this.type + " " + command);
 		stop();
 	}
 
 	private function onFinished() {
 		setCardActiveState(cardId, false);
+		onActionComplete(cardId);
 	}
 
 	function get_type():String {
