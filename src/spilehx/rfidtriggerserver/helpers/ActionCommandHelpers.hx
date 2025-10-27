@@ -16,7 +16,7 @@ class ActionCommandHelpers {
 			proc.close();
 
 			// If exit code is 0, the process is running
-			return exitCode == 0;
+			return (exitCode == 0);
 		} catch (e:Dynamic) {
 			// On error (e.g., pgrep not found), assume not running
 			return false;
