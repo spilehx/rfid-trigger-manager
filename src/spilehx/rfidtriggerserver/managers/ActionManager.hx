@@ -9,9 +9,6 @@ import spilehx.rfidtriggerserver.managers.actionmanager.actions.YTPVideoAction;
 import spilehx.rfidtriggerserver.managers.actionmanager.actions.YTPlayListAction;
 import spilehx.rfidtriggerserver.managers.actionmanager.actions.ToneAction;
 import spilehx.rfidtriggerserver.managers.actionmanager.actions.Action;
-import haxe.Timer;
-import haxe.Constraints.Function;
-import sys.io.Process;
 import spilehx.rfidtriggerserver.managers.SettingsManager;
 
 class ActionManager extends spilehx.core.ManagerCore {

@@ -1,5 +1,6 @@
 package spilehx.rfidtriggerserver.managers;
 
+import spilehx.rfidtriggerserver.helpers.ActionCommandHelpers;
 import haxe.io.Path;
 import spilehx.rfidtriggerserver.managers.rfid.DeviceDetection;
 import spilehx.rfidtriggerserver.managers.settings.CardData;
@@ -82,56 +83,9 @@ class SettingsManager extends spilehx.core.ManagerCore {
 		loadSettingsFromFile();
 	}
 
-	public static function validateOrCreatePath(path:String):String {
-		if (path == null || path.length == 0) {
-			throw "validateOrCreatePath: Path is empty.";
-		}
-
-		// Normalize to remove duplicate slashes and resolve "." wherever possible.
-		var normalized = Path.normalize(path);
-		var isAbs = StringTools.startsWith(normalized, "/");
-		var cwd = Sys.getCwd();
-		var parts = normalized.split("/");
-
-		var acc = isAbs ? "/" : cwd;
-
-		for (p in parts) {
-			if (p == null || p == "" || p == ".") {
-				// skip empty and current-dir segments
-				continue;
-			}
-			if (p == "..") {
-				// go up one level safely
-				acc = Path.directory(acc);
-				if (acc == null || acc == "")
-					acc = "/";
-				continue;
-			}
-
-			// Join without duplicating slashes
-			var next = (acc == "/" ? "/" + p : Path.join([acc, p]));
-
-			if (FileSystem.exists(next)) {
-				if (!FileSystem.isDirectory(next)) {
-					throw 'validateOrCreatePath: "$next" exists but is not a directory.';
-				}
-				// already a directory; move on
-			} else {
-				try {
-					FileSystem.createDirectory(next);
-				} catch (e:Dynamic) {
-					throw 'validateOrCreatePath: Failed to create directory "$next": $e';
-				}
-			}
-
-			acc = next;
-		}
-
-		return acc;
-	}
-
+	
 	private function validateSettingsFileExists() {
-		validateOrCreatePath(SETTINGS_PATH);
+		ActionCommandHelpers.ensurePath(SETTINGS_PATH);
 		if (FileSystem.exists(SETTINGS_FILE_PATH) == false) {
 			// no file, so save a new one with defaults
 			saveSettingsData();

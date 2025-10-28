@@ -1,5 +1,6 @@
 package spilehx.rfidtriggerserver;
 
+import spilehx.rfidtriggerserver.helpers.ActionCommandHelpers;
 import spilehx.core.logger.GlobalLoggingSettings;
 import spilehx.rfidtriggerserver.managers.ActionManager;
 import spilehx.rfidtriggerserver.managers.RFIDManager;
@@ -10,11 +11,12 @@ class RFIDTriggerServerController {
 	public function new() {}
 
 	public function init() {
+		GlobalLoggingSettings.settings.verbose = true;
+		ActionCommandHelpers.ensureDefaultConfigFiles();
 		initManagers();
 	}
 
 	private function initManagers() {
-        GlobalLoggingSettings.settings.verbose = true;
         ActionManager.instance.init(); // required before settings so we have a list of avalible actions
 		SettingsManager.instance.init();
 		AdminManager.instance.init();

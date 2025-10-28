@@ -23,6 +23,12 @@ RUN git clone https://github.com/HaxeFoundation/hashlink .
 
 FROM haxe:latest
 
+
+## pre setup mopidy
+RUN mkdir -p /etc/apt/keyrings
+RUN wget -q -O /etc/apt/keyrings/mopidy-archive-keyring.gpg https://apt.mopidy.com/mopidy-archive-keyring.gpg
+RUN wget -q -O /etc/apt/sources.list.d/mopidy.sources https://apt.mopidy.com/bookworm.sources
+
 # ## Install hashlink and media deps
 RUN apt-get update && apt-get install -y --no-install-recommends \
     g++ \
@@ -36,11 +42,29 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     libsqlite3-dev \
     libglu1-mesa-dev \
     libgl-dev \
+    python3-pip \
+    yt-dlp \
     sox \
     mpv \
+    mopidy \
+    mpd \
+    mpc \
+    mopidy-mpd \
+    mopidy-alsamixer \
+    gstreamer1.0-alsa \
+    gstreamer1.0-plugins-base \
+    gstreamer1.0-plugins-good \
+    gstreamer1.0-plugins-bad \
+    gstreamer1.0-plugins-ugly\
     make
 
-# COPY ./assets/deps /app/deps
+
+
+
+## non apt deps
+COPY --from=build /app/assets/deps /app/deps
+RUN apt install /app/deps/gst-plugin-spotify_0.15.0.alpha.1-3_amd64.deb 
+RUN python3 -m pip install --break-system-packages mopidy-spotify==5.0.0a3
 
 
 
@@ -51,14 +75,18 @@ RUN make && make install
 RUN cd /
 RUN rm -rf /hashlink
 
-# # Install Node.js
-# RUN apt-get update && apt-get install -y --no-install-recommends gnupg 
-# RUN curl -sL https://deb.nodesource.com/setup_20.x | bash -
-# RUN apt-get install nodejs -y
 
 WORKDIR /app
 COPY --from=build /app/dist /app
+
+## setup volume files
 RUN mkdir /app/appdata
 
-# ENTRYPOINT ["hl", "/app/RFIDTriggerServer.hl"]
-ENTRYPOINT ["tail", "-f", "/dev/null"]
+## basic default config - will be used to populate if not there
+COPY --from=build /app/assets/defaultconfigs /app/defaultconfigs
+
+## Simple stub file so the app can tell if its running in docker
+RUN touch /app/IS_DOCKER.file
+
+ENTRYPOINT ["hl", "/app/RFIDTriggerServer.hl"]
+# ENTRYPOINT ["tail", "-f", "/dev/null"]
