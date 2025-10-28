@@ -33,25 +33,33 @@ class ActionCommandHelpers {
 		}
 	}
 
-	public static function checkMopidyState(onSuccess:Function, onFail:Function) {
-		LOG_INFO("checking Mopidy state");
-
+	public static function ensureMopidyState(onSuccess:Function = null, onFail:Function = null) {
+		var running:Bool = false;
 		var mopidyRunning:Bool = ActionCommandHelpers.isProcessRunning("mopidy");
 
 		if (mopidyRunning == true) {
-			LOG_INFO("Mopidy OK");
-			onSuccess();
-			// setMPCPlaylist();
+			USER_MESSAGE("Mopidy OK");
+			running = true;
 		} else {
-			LOG_INFO("Starting Mopidy");
+			USER_MESSAGE("Starting Mopidy");
 			ActionCommandHelpers.startMopidy(function(success:Bool) {
 				if (success == true) {
-					onSuccess();
+					running = true;
 				} else {
 					LOG_ERROR("Could not start mopidy");
-					onFail();
+					running = false;
 				}
 			});
+		}
+
+		if (running == true) {
+			if (onSuccess != null) {
+				onSuccess();
+			}
+		} else {
+			if (onFail != null) {
+				onFail();
+			}
 		}
 	}
 

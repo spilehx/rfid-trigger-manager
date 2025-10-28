@@ -29,8 +29,10 @@ RUN mkdir -p /etc/apt/keyrings
 RUN wget -q -O /etc/apt/keyrings/mopidy-archive-keyring.gpg https://apt.mopidy.com/mopidy-archive-keyring.gpg
 RUN wget -q -O /etc/apt/sources.list.d/mopidy.sources https://apt.mopidy.com/bookworm.sources
 
-# ## Install hashlink and media deps
-RUN apt-get update && apt-get install -y --no-install-recommends \
+RUN apt-get update
+
+## Install hashlink and media deps
+RUN apt-get install -y --no-install-recommends \
     g++ \
     libmbedtls-dev \
     libopenal-dev \
@@ -43,7 +45,6 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     libglu1-mesa-dev \
     libgl-dev \
     python3-pip \
-    yt-dlp \
     sox \
     mpv \
     mopidy \
@@ -58,14 +59,12 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     gstreamer1.0-plugins-ugly\
     make
 
-
-
-
 ## non apt deps
 COPY --from=build /app/assets/deps /app/deps
 RUN apt install /app/deps/gst-plugin-spotify_0.15.0.alpha.1-3_amd64.deb 
-RUN python3 -m pip install --break-system-packages mopidy-spotify==5.0.0a3
 
+RUN python3 -m pip install --break-system-packages mopidy-spotify==5.0.0a3
+RUN python3 -m pip install --break-system-packages "yt-dlp[default]"
 
 
 WORKDIR /hashlink

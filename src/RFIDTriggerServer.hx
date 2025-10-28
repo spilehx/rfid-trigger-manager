@@ -1,7 +1,6 @@
 package;
 
 import sys.FileSystem;
-import sys.io.File;
 import spilehx.rfidtriggerserver.managers.SettingsManager;
 import spilehx.core.SysUtils;
 import spilehx.rfidtriggerserver.RFIDTriggerServerController;

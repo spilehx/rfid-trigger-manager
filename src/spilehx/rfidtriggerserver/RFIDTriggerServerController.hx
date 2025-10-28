@@ -21,6 +21,8 @@ class RFIDTriggerServerController {
 		SettingsManager.instance.init();
 		AdminManager.instance.init();
 
+		ActionCommandHelpers.ensureMopidyState();// start mopidy for later
+
 
 		if(SettingsManager.instance.IS_DEBUG == false){
 			RFIDManager.instance.init(onDeviceConnected, onCardRead);

@@ -1,5 +1,7 @@
 package spilehx.rfidtriggerserver.managers.actionmanager.actions;
 
+import haxe.Constraints.Function;
+
 class YTPlayListAction extends Action {
 	private var playList:Array<String>;
 	private var currentTrack:Int = 0;
@@ -9,7 +11,11 @@ class YTPlayListAction extends Action {
 		super.start();
 		triggerProcessForResponse("yt-dlp", ["--flat-playlist", "--get-id", command], function(resp:Dynamic) {
 			playList = Std.string(resp).split("\n");
-			if (playList.length > 0) {
+			var validResponse:Bool = ((playList.length > 0)
+				&& (Std.string(resp).indexOf("WARNING") == -1)
+				&& (Std.string(resp).indexOf("ERROR") == -1));
+
+			if (validResponse) {
 				playTrack(0);
 			} else {
 				USER_MESSAGE("Bad playlist, no tracks found");
@@ -18,7 +24,6 @@ class YTPlayListAction extends Action {
 	}
 
 	override public function startWhileAlreadyRunning() {
-		LOG("startWhileAlreadyRunning " + type);
 		playNextTrack();
 	}
 
