@@ -14,10 +14,7 @@ class RFIDManager extends spilehx.core.ManagerCore {
 	@:isVar public var onDeviceConnected(get, set):Function;
 	@:isVar public var onRead(get, set):String->Void;
 
-	private var connectedDevices:Array<String>;
-
 	final queue = new Deque<String>();
-	// var running:Bool = false;
 	var pumpTimer:Timer;
 
 	private var device:Device;

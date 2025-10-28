@@ -1,5 +1,6 @@
 package spilehx.rfidtriggerserver.managers.rfid;
 
+import spilehx.rfidtriggerserver.helpers.ActionCommandHelpers;
 import haxe.Timer;
 import sys.thread.Thread;
 import haxe.io.Bytes;
@@ -91,7 +92,7 @@ class RFIDReader {
 				mainThread.sendMessage('[RFIDReader error] ' + Std.string(e));
 			}
 
-			//TODO: tidy up
+			// TODO: tidy up
 			if (fin != null) {
 				try {
 					fin.close();
@@ -195,6 +196,12 @@ class RFIDReader {
 
 	private function readProcDevices():String {
 		var p = "/proc/bus/input/devices";
+
+		if (ActionCommandHelpers.isRunningInDocker() == true) {
+			p = "/host_proc/bus/input/devices";
+		}
+
+		// var p = "/proc/bus/input/devices";
 		if (!FileSystem.exists(p)) {
 			return null;
 		}

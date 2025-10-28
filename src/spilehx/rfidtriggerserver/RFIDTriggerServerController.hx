@@ -17,14 +17,13 @@ class RFIDTriggerServerController {
 	}
 
 	private function initManagers() {
-        ActionManager.instance.init(); // required before settings so we have a list of avalible actions
+		ActionManager.instance.init(); // required before settings so we have a list of avalible actions
 		SettingsManager.instance.init();
 		AdminManager.instance.init();
 
-		ActionCommandHelpers.ensureMopidyState();// start mopidy for later
+		ActionCommandHelpers.ensureMopidyState(); // start mopidy for later
 
-
-		if(SettingsManager.instance.IS_DEBUG == false){
+		if (SettingsManager.instance.IS_DEBUG == false) {
 			RFIDManager.instance.init(onDeviceConnected, onCardRead);
 		}
 	}
@@ -33,7 +32,7 @@ class RFIDTriggerServerController {
 
 	private function onCardRead(cardId:String) {
 		if (SettingsManager.instance.hasCard(cardId) == false) {
-            USER_MESSAGE("New card read, adding to system:"+cardId,true);
+			USER_MESSAGE("New card read, adding to system:" + cardId, true);
 			SettingsManager.instance.addCard(cardId);
 		} else {
 			ActionManager.instance.doAction(cardId);
