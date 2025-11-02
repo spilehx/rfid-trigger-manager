@@ -25,6 +25,7 @@ Still very much work in progress.
 ### To run
 *Requires Hashlink to run currently*
 *Knowledge of haxe required*
+*Currently depends on mpv an yt-dlp but if you use the docker compose in the project, i handle this - but then you need to map your own audio, this should normally work fine, with blutooth speakers YMMV*
 
 - Pull repo and build with ``haxe build.hxml``
 - Enter the dist folder and run ``hl RFIDTriggerServer.hl``
