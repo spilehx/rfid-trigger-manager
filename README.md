@@ -17,7 +17,7 @@ An application to trigger playing music or any other action from RFID tags
  - When you add a youtube playlist it caches the files locally so play back is instant,
  - you can add your own spotify api credentials etc.
  - when you read the RFID again when its playing it will go to the next track,
- - you can upload cover art, which is served on a 'now playing' url
+ - you can upload cover art (in the web admin), which is served on a 'now playing' url http://localhost:1337/getimage
 
 Still very much work in progress.
 
