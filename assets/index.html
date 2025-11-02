@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RFID Admin</title>
+    <style>
+        /*$ADMIN_PAGE_STYLE_TAG*/
+    </style>
+    <script>
+        $ADMIN_PAGE_SCRIPT_TAG
+    </script>
+</head>
+
+<body>
+    <h1>RFID Admin</h1>
+
+    <div class="grid">
+
+        <div class="controls">
+            <span id="statusBanner" class="small status" style="display:none" aria-live="polite"></span>
+        </div>
+
+
+        <section class="panel">
+            <h2>System</h2>
+            <div class="row">
+                <div class="kv">
+                    <div class="label">Device ID</div>
+                    <div id="deviceId" class="value mono">—</div>
+                </div>
+                <div class="kv">
+                    <div class="label">Last Updated</div>
+                    <div id="lastUpdated" class="value small">—</div>
+                </div>
+                <div class="kv">
+                    <button id="chooseDeviceBtn">Choose Device</button>
+                </div>
+                <img id="nowplayingimg" src="./getimage" alt="now playing" width="70" height="70">
+            </div>
+        </section>
+
+        <section class="panel">
+            <h2>Cards</h2>
+
+            <button id="cacheModalBtn">Cache Media</button>
+
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Enabled</th>
+                        <th>Active</th>
+                        <th>Current</th>
+                        <th>Command</th>
+                        <th>Action</th>
+                        <th>Trigger</th>
+                        <th>Image</th>
+                    </tr>
+                </thead>
+                <tbody id="cardsBody"></tbody>
+            </table>
+        </section>
+
+        <section class="panel">
+            <h2>Logs</h2>
+            <div id="terminal" class="terminal"></div>
+            <div class="verboseloggingoption">
+                <label>
+                    Verbose Logging:
+                    <input type="checkbox" id="verboseLoggingCheckbox">
+                </label>
+            </div>
+
+        </section>
+    </div>
+
+    <!-- Device chooser modal -->
+    <div id="deviceModal" class="modal hidden" aria-hidden="true">
+        <div class="modal-backdrop"></div>
+        <div class="modal-dialog" role="dialog" aria-modal="true" aria-labelledby="deviceModalTitle">
+            <h3 id="deviceModalTitle">Choose Device:</h3>
+            <label class="sr-only" for="deviceSelect">Device</label>
+            <select id="deviceSelect"></select>
+            <div class="modal-actions">
+                <button id="deviceModalOk">OK</button>
+                <button id="deviceModalCancel" class="secondary">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="cacheModal" class="modal hidden" aria-hidden="true">
+        <div class="modal-backdrop"></div>
+        <div class="modal-dialog" role="dialog" aria-modal="true" aria-labelledby="cacheModalTitle">
+            <h3 id="cacheModalTitle">Trigger playlist cache:</h3>
+
+            <!-- Scrollable list container -->
+            <div class="modal-list-container">
+                <ul class="modal-item-list">
+
+                </ul>
+            </div>
+
+            <div class="modal-actions">
+                <button id="cacheModalOk">OK</button>
+            </div>
+        </div>
+    </div>
+
+
+
+</body>
+
+</html>

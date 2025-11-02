@@ -1,0 +1,288 @@
+:root {
+  --bg: #303030;
+  --fg: #ffffff;
+  --muted: #bdbdbd;
+  --card: #3a3a3a;
+  --border: #4a4a4a;
+  --accent: #7dd3fc;
+  --error: #ef4444;
+  --success: #22c55e;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  background-color: var(--bg);
+  color: var(--fg);
+  margin: 0;
+  font-family: Arial, Helvetica, sans-serif;
+  padding: 24px;
+}
+
+h1 {
+  text-align: center;
+  margin: 0 0 16px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.panel {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 16px;
+}
+
+.panel h2 {
+  margin: 0px 0 12px;
+}
+
+.row {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.kv {
+  min-width: 240px;
+}
+
+.label {
+  color: var(--muted);
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.value {
+  font-size: 16px;
+  margin-top: 4px;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+thead th {
+  text-align: left;
+  font-weight: 600;
+  color: var(--muted);
+  font-size: 12px;
+  padding: 10px;
+  border-bottom: 1px solid var(--border);
+}
+
+tbody td {
+  padding: 10px;
+  border-bottom: 1px solid var(--border);
+  vertical-align: middle;
+}
+
+input[type="text"],
+select {
+  background: #2b2b2b;
+  color: var(--fg);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 6px 8px;
+  width: 100%;
+}
+
+input[type="checkbox"] {
+  transform: scale(1.1);
+}
+
+.mono {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+}
+
+ul {
+  margin: 0;
+  padding-left: 18px;
+}
+
+.small {
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.controls {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.btn {
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--fg);
+  padding: 8px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.btn:hover {
+  border-color: var(--accent);
+}
+
+.pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  border: 1px solid var(--border);
+  padding: 8px 10px;
+  border-radius: 999px;
+}
+
+.error {
+  color: var(--error);
+}
+
+.success {
+  color: var(--success);
+}
+
+.status {
+  margin-left: 8px;
+}
+
+.terminal {
+  background-color: #1e1e1e; /* dark background */
+  color: #a3a3a3; /* green text */
+  font-family: monospace; /* terminal font */
+  padding: 15px;
+  border-radius: 8px;
+  height: 300px;
+  overflow-y: auto; /* scroll if content overflows */
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.6);
+  white-space: pre-wrap; /* preserve formatting and line breaks */
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start; /* ✅ lines stick to top */
+
+  scrollbar-width: thin;
+  scrollbar-color: #a3a3a3 #1e1e1e;
+}
+
+.terminal::-webkit-scrollbar {
+  width: 8px;
+}
+
+.terminal::-webkit-scrollbar-track {
+  background: #1e1e1e;
+}
+
+.terminal::-webkit-scrollbar-thumb {
+  background-color: #a3a3a3;
+  border-radius: 4px;
+}
+
+.terminal p {
+  margin: 0;
+  font-size: large;
+}
+
+.log_debug {
+  color: #2bbe2b;
+}
+
+.log_error {
+  color: #b13232;
+}
+
+.log_info {
+  color: #3265b1;
+}
+
+.log_warn {
+  color: #e2a218;
+}
+
+.verboseloggingoption {
+  margin-top: 9px;
+  margin-left: 9px;
+}
+
+.hidden {
+  display: none;
+}
+.modal {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+}
+.modal-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+}
+.modal-dialog {
+  position: relative;
+  max-width: 420px;
+  margin: 10vh auto;
+  padding: 16px 18px;
+  background: var(--panel-bg, #111);
+  border: 1px solid #333;
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+}
+.modal-dialog h3 {
+  margin: 0 0 10px;
+}
+.modal-actions {
+  display: flex;
+  gap: 8px;
+  justify-content: flex-end;
+  margin-top: 14px;
+}
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+
+button {
+  border-radius: 12px;
+}
+
+
+
+.modal-list-container {
+    max-height: 200px; /* adjust height as needed */
+    overflow-y: auto;
+    margin: 1rem 0;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    padding: 0.5rem;
+}
+
+.modal-item-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.modal-item-list li {
+    padding: 0.5rem;
+    border-bottom: 1px solid #eee;
+}
+
+.modal-item-list li:last-child {
+    border-bottom: none;
+}

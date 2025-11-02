@@ -1,0 +1,5 @@
+-lib weblink
+-cp src
+-main RFIDTriggerServer
+--hl dist/RFIDTriggerServer.hl
+
