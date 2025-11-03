@@ -1,9 +1,5 @@
 package;
 
-import spilehx.rfidtriggerserver.helpers.ActionCommandHelpers;
-import sys.FileSystem;
-import spilehx.rfidtriggerserver.managers.SettingsManager;
-import spilehx.core.SysUtils;
 import spilehx.rfidtriggerserver.RFIDTriggerServerController;
 
 class RFIDTriggerServer {
