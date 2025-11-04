@@ -58,6 +58,21 @@ class RFIDTriggerAdminConfigManager {
 		httpReq.get();
 	}
 
+	public function sendTriggerRequest(cardId:String) {
+		var serverUrl:String = js.Browser.document.location.href;
+		var path:String = "trigger?cardid="+cardId;
+
+		var httpReq:HTTPRequester = new HTTPRequester(serverUrl + path, "", function(data:Dynamic) {
+			// var sd:SettingsData = cast Json.parse(data).config;
+
+			// onSuccess(sd);
+		}, function(data) {
+			// onError(data);
+		});
+
+		httpReq.get();
+	}
+
 	private function updateSettings(onSuccess:SettingsData->Void, onError:Dynamic->Void) {
 		var serverUrl:String = js.Browser.document.location.href;
 		var path:String = "setconfig";

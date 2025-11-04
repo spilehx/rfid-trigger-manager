@@ -28,7 +28,7 @@ import haxe.ui.containers.Box;
 			<StaticItemRenderer id="colD" />
 			<CommandItemRenderer id="colE"/>
 			<ActionItemRenderer id="colF"/>
-			<TriggerItemRenderer id="colE"/>
+			<TriggerItemRenderer id="colG"/>
 		</tableview>
 			
 	</box>
@@ -47,6 +47,7 @@ class CardsListSection extends Box {
 		cardColumns.push(new CardColumn("colD", "Active", "active", 10));
 		cardColumns.push(new CardColumn("colE", "Command", "command", 20));
 		cardColumns.push(new CardColumn("colF", "Command", "action", 20));
+		cardColumns.push(new CardColumn("colG", "Trigger", "trigger", 20));
 
 		this.registerEvent(UIEvent.SHOWN, onShown);
 
@@ -159,6 +160,10 @@ class CardsListSection extends Box {
 			// set row data
 			Reflect.setField(rowDataItem, colId, data);
 		}
+
+		// //static items
+		// Reflect.setField(rowDataItem, colId, data);
+
 
 		return rowDataItem;
 	}
