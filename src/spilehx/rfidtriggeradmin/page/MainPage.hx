@@ -1,5 +1,6 @@
 package spilehx.rfidtriggeradmin.page;
 
+import spilehx.rfidtriggeradmin.page.components.CardsListSection;
 import spilehx.rfidtriggeradmin.page.components.OverViewSection;
 import haxe.ui.containers.VBox;
 import haxe.ui.components.Label;
@@ -39,7 +40,7 @@ class MainPage extends Box {
 	}
 
     private function addCardsSection() {
-		var section = new PageSection(new OverViewSection(), "Cards");
+		var section = new PageSection(new CardsListSection(), "Cards");
 		contentContainer.addComponent(section);
 		section.percentHeight = 60;
 	}

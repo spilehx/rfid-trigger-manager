@@ -22,3 +22,10 @@
 -cp src
 -main RFIDTriggerServer
 --hl dist/RFIDTriggerServer.hl
+
+
+# --next
+# -lib weblink hashlink
+# -cp src
+# -main RFIDTriggerServer
+# --hl dist/out/main.c

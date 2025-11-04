@@ -1,12 +1,13 @@
 package spilehx.rfidtriggeradmin.page.components;
 
+import haxe.ui.containers.Frame;
 import haxe.ui.core.Component;
 import haxe.ui.containers.VBox;
 import haxe.ui.containers.Box;
 
 @:xml('
    <vbox width="95%" height="10%" style="padding:10px;">
-        <label id="titleLable" text="Input field:" verticalAlign="center" />
+        <label id="titleLable" verticalAlign="center" />
         <frame id="mainframe" width="100%" height="100%" horizontalAlign="center" verticalAlign="center">
             <box id="mainframeContent" width="100%" height="100%" horizontalAlign="center" verticalAlign="center">
             </box>
@@ -36,7 +37,6 @@ class PageSection extends VBox {
 	}
 
 	private function addContent(content:Component) {
-		mainframeContent.backgroundColor = 0xff33ff;
 		mainframeContent.addComponent(content);
 	}
 }

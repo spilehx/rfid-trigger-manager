@@ -4,3 +4,4 @@ dist/DEBUG_MODE
 vol
 dist/appdata
 dist/filecache
+dist/out

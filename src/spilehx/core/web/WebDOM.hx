@@ -12,8 +12,8 @@ import js.html.Element;
 import js.Browser.document;
 
 class WebDOM {
-
 	public static final instance:WebDOM = new WebDOM();
+
 	@:isVar public var html(get, set):Element;
 	@:isVar public var head(get, set):Element;
 	@:isVar public var body(get, set):Element;
@@ -23,34 +23,31 @@ class WebDOM {
 		setElements();
 	}
 
-	public static function applyTextStyle(lable:Label, style:String){
-
+	public static function applyTextStyle(lable:Label, style:String) {
 		lable.element.classList.add(style);
 	}
 
-	public static function getGlobalPosition(positionComponent:Component,?hcenter:Bool = false,?vcenter:Bool = false):Dynamic{
+	public static function getGlobalPosition(positionComponent:Component, ?hcenter:Bool = false, ?vcenter:Bool = false):Dynamic {
 		var pos:Dynamic = {};
 
 		var viewPortRect:DOMRect = WebDOM.getElementById("gameviewport").getBoundingClientRect();
 		var positionComponentRect:DOMRect = positionComponent.element.getBoundingClientRect();
-		
+
 		pos.x = positionComponentRect.left - viewPortRect.left;
 		pos.y = positionComponentRect.top - viewPortRect.top;
 
-
-		if(hcenter == true){
-			pos.x += positionComponentRect.width/2;
+		if (hcenter == true) {
+			pos.x += positionComponentRect.width / 2;
 			// pos.y += positionComponentRect.height/2;
 		}
 
-		if(vcenter == true){
+		if (vcenter == true) {
 			// pos.x += positionComponentRect.width/2;
-			pos.y += positionComponentRect.height/2;
+			pos.y += positionComponentRect.height / 2;
 		}
 
 		return pos;
 	}
-
 
 	private function setElements() {
 		this.window = Browser.window;
@@ -63,7 +60,7 @@ class WebDOM {
 		document.title = title;
 	}
 
-	public static function getElementById(id:String){
+	public static function getElementById(id:String) {
 		return js.Browser.document.getElementById(id);
 	}
 

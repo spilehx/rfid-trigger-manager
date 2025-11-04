@@ -24,7 +24,6 @@ class RFIDTriggerAdminView {
 	}
 
 	private function setupHaxeApp(appContainerId:String) {
-		LOG("setupHaxeApp");
 		var appDiv:Element = js.Browser.document.getElementById(appContainerId);
 		Toolkit.init({
 			container: appDiv
