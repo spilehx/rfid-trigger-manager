@@ -18,7 +18,8 @@ import haxe.ui.containers.Box;
 				<column id="colC" text="Enabled" width="100%" />
 				<column id="colD" text="Active" width="100%" />
 				<column id="colE" text="Command" width="100%" />
-				<column id="colF" text="action" width="100%" />
+				<column id="colF" text="Action" width="100%" />
+				<column id="colG" text="Trigger" width="100%" />
 			</header>
 
 			<StaticItemRenderer id="colA"/>
@@ -27,6 +28,7 @@ import haxe.ui.containers.Box;
 			<StaticItemRenderer id="colD" />
 			<CommandItemRenderer id="colE"/>
 			<ActionItemRenderer id="colF"/>
+			<TriggerItemRenderer id="colE"/>
 		</tableview>
 			
 	</box>
