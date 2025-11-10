@@ -16,17 +16,17 @@ import haxe.ui.containers.Box;
    	<box width="100%" >
         <rule />
         <hbox id="content" width="100%" height="100%">
+		    <box id="card_enabled" width="100%" height="95%" verticalAlign="center">
+                <checkbox id="card_enabled_field" horizontalAlign="center" verticalAlign="center" height="90%"/>
+            </box>
             <box id="card_id" width="100%" height="95%" verticalAlign="center">
-                <label id="card_id_field" textAlign="center" horizontalAlign="center" verticalAlign="center" width="100%" text="card_id"/>
+                <label id="card_id_field" textAlign="left" horizontalAlign="center" verticalAlign="center" width="100%" text="card_id"/>
             </box>
             <box id="card_name" width="100%" height="95%" verticalAlign="center">
                 <textfield id="card_name_field" horizontalAlign="center" verticalAlign="center" height="90%" width="100%" text="card_name"/>
             </box>
-            <box id="card_enabled" width="100%" height="95%" verticalAlign="center">
-                <checkbox id="card_enabled_field" horizontalAlign="center" verticalAlign="center" height="90%"/>
-            </box>
-            <box id="card_active" width="100%" height="95%" verticalAlign="center">
-                <label id="card_active_field" textAlign="center" horizontalAlign="center" verticalAlign="center" height="100%" width="100%" text="card_action"/>
+			<box id="card_active" width="100%" height="95%" verticalAlign="center">
+                <label id="card_active_field" textAlign="center" horizontalAlign="center" verticalAlign="center" width="100%" text="card_id"/>
             </box>
             <box id="card_command" width="100%" height="95%" verticalAlign="center">
                  <textfield id="card_command_field" horizontalAlign="center" verticalAlign="center" height="90%" width="100%" text="card_command"/>

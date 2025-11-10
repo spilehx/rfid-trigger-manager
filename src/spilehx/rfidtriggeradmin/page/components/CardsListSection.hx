@@ -1,5 +1,6 @@
 package spilehx.rfidtriggeradmin.page.components;
 
+import haxe.ui.components.Label;
 import haxe.ui.core.Component;
 import haxe.ui.containers.VBox;
 import haxe.ui.containers.ScrollView;
@@ -14,31 +15,31 @@ import haxe.ui.containers.Box;
 	 	<vbox id="tableContainer" width="100%" height="100%" >
 			<hbox id="headerRow" horizontalAlign="center" width="95%" hidden="true">
 				<box width="100%" height="100%">
-					<label textAlign="left" horizontalAlign="center" height="100%" width="100%" text="ID"/>
+					<label textAlign="left" horizontalAlign="center" height="100%" width="100%" text=""/>
 				</box>
 				<box width="100%" height="100%">
-					<label textAlign="left" horizontalAlign="center" height="100%" width="100%" text="Name"/>
+					<label textAlign="left" horizontalAlign="left" height="100%" width="100%" text="ID" style="font-size: 18px;font-bold: true;"/>
 				</box>
 				<box width="100%" height="100%">
-					<label textAlign="left" horizontalAlign="center" height="100%" width="100%" text="Enabled"/>
+					<label textAlign="left" horizontalAlign="center" height="100%" width="100%" text="Name" style="font-size: 18px;font-bold: true;"/>
 				</box>
 				<box width="100%" height="100%">
-					<label textAlign="left" horizontalAlign="center" height="100%" width="100%" text="Active"/>
+					<label textAlign="left" horizontalAlign="center" height="100%" width="100%" text="Active" style="font-size: 18px;font-bold: true;"/>
 				</box>
 				<box width="100%" height="100%">
-					<label textAlign="left" horizontalAlign="center" height="100%" width="100%" text="Command"/>
+					<label textAlign="left" horizontalAlign="center" height="100%" width="100%" text="Command" style="font-size: 18px;font-bold: true;"/>
 				</box>
 				<box width="100%" height="100%">
-					<label textAlign="left" horizontalAlign="center" height="100%" width="100%" text="Action"/>
+					<label textAlign="center" horizontalAlign="center" height="100%" width="100%" text="Action" style="font-size: 18px;font-bold: true;"/>
 				</box>
 				<box width="100%" height="100%">
-					<label textAlign="left" horizontalAlign="center" height="100%" width="100%" text="Start"/>
+					<label textAlign="left" horizontalAlign="center" height="100%" width="100%" text=""/>
 				</box>
 				<box width="100%" height="100%">
-					<label textAlign="left" horizontalAlign="center" height="100%" width="100%" text="Image"/>
+					<label textAlign="left" horizontalAlign="center" height="100%" width="100%" text=""/>
 				</box>
 				<box width="100%" height="100%">
-					<label textAlign="left" horizontalAlign="center" height="100%" width="100%" text="Cache"/>
+					<label textAlign="left" horizontalAlign="center" height="100%" width="100%" text=""/>
 				</box>
 			</hbox>
 			<scrollview id="cardScrollView" width="100%" contentWidth="100%" hidden="true"/>
@@ -51,7 +52,7 @@ import haxe.ui.containers.Box;
 	</box>
 ')
 class CardsListSection extends Box {
-	private static final COL_WIDTHS:Array<Int> = [15, 20, 5, 5, 20, 15, 5, 5, 5];
+	private static final COL_WIDTHS:Array<Int> = [5, 10, 15, 5, 30, 20, 5, 5, 5];
 
 	private var cardListRows:Array<CardListRow>;
 
@@ -60,6 +61,7 @@ class CardsListSection extends Box {
 		cardListRows = new Array<CardListRow>();
 		this.registerEvent(UIEvent.SHOWN, onShown);
 
+	
 		//TEST
 
 		var tot:Int = 0;
@@ -79,7 +81,7 @@ class CardsListSection extends Box {
 
 	private function setup() {
 		cardScrollView.borderSize = 0;
-		headerRow.height = getRowHeight();
+		headerRow.height = getRowHeight()*.5;
 		this.backgroundColor = RFIDTriggerAdminSettings.SECTION_BG_COLOUR;
 		cardScrollView.backgroundColor = this.backgroundColor;
 		waitingLabel.text = RFIDTriggerAdminText.CARDLIST_SECTION_WAITING_FOR_LOAD;
