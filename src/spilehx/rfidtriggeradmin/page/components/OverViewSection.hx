@@ -1,5 +1,6 @@
 package spilehx.rfidtriggeradmin.page.components;
 
+import haxe.ui.components.Image;
 import spilehx.rfidtriggerserver.managers.settings.SettingsData;
 import haxe.ui.containers.VBox;
 import haxe.ui.containers.Box;
@@ -36,10 +37,19 @@ class OverViewSection extends Box {
 	}
 
 	private function onUpdate(settings:SettingsData) {
+		LOG("DID UPDATE");
 		deviceIDValueLable.text = settings.deviceID;
 		lastUpdatedValueLable.text = getDateTimeString();
+	
+
+		nowPlayingImg = new Image();
+
+
+		
 		nowPlayingImg.resource = js.Browser.document.location.href+"getimage";
 	}
+
+
 
 	private function getDateTimeString():String {
 		var now = Date.now();

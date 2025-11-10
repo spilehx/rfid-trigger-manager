@@ -60,17 +60,33 @@ class RFIDTriggerAdminConfigManager {
 
 	public function sendTriggerRequest(cardId:String) {
 		var serverUrl:String = js.Browser.document.location.href;
-		var path:String = "trigger?cardid="+cardId;
+		var path:String = "trigger?cardid=" + cardId;
 
 		var httpReq:HTTPRequester = new HTTPRequester(serverUrl + path, "", function(data:Dynamic) {
-			// var sd:SettingsData = cast Json.parse(data).config;
 
-			// onSuccess(sd);
 		}, function(data) {
-			// onError(data);
+
 		});
 
 		httpReq.get();
+	}
+
+	public function sendImgUploadRequest(cardId:String, imgData:String) {
+		var serverUrl:String = js.Browser.document.location.href;
+		var path:String = "uploadimage";
+
+		var data = {
+			cardId: cardId,
+			file: imgData
+		};
+
+		var httpReq:HTTPRequester = new HTTPRequester(serverUrl + path, Json.stringify(data), function(data:Dynamic) {
+
+		}, function(data) {
+
+		});
+
+		httpReq.post();
 	}
 
 	private function updateSettings(onSuccess:SettingsData->Void, onError:Dynamic->Void) {
