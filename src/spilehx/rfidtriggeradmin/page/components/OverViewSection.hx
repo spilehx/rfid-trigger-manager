@@ -37,12 +37,11 @@ class OverViewSection extends Box {
 	}
 
 	private function onUpdate(settings:SettingsData) {
-		LOG("DID UPDATE");
 		deviceIDValueLable.text = settings.deviceID;
 		lastUpdatedValueLable.text = getDateTimeString();
 	
 
-		nowPlayingImg = new Image();
+
 
 
 		

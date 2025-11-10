@@ -40,13 +40,16 @@ import haxe.ui.containers.Box;
             <box id="card_image" width="100%" height="95%" verticalAlign="center">
                <image id="card_image_img" height="100%" width ="100%" horizontalAlign="center" verticalAlign="center" scaleMode="fitheight" />
             </box>
+			<box id="card_cache" width="100%" height="95%" verticalAlign="center">
+               <image id="card_cache_img" height="100%" width ="100%" horizontalAlign="center" verticalAlign="center" scaleMode="fitheight" />
+            </box>
         </hbox>
 	</box>
 ')
 class CardListRow extends Box {
 	@:isVar public var cardId(get, null):String;
 
-	private var card:CardData;
+	public var card:CardData;
 	private var userUpdating:Bool = false;
 
 	public function new(card:CardData) {
@@ -63,6 +66,7 @@ class CardListRow extends Box {
 	private function setImages() {
 		card_start_img.resource = RFIDTriggerAdminImg.PLAY_IMG;
 		card_image_img.resource = RFIDTriggerAdminImg.PIC_IMG;
+		card_cache_img.resource = RFIDTriggerAdminImg.CACHE_IMG;
 	}
 
 	public function updateColWidths(colWidths:Array<Int>) {
@@ -79,9 +83,12 @@ class CardListRow extends Box {
 			card_id_field.text = card.id;
 			card_name_field.text = card.name;
 			card_enabled_field.selected = card.enabled;
+
 			card_active_field.text = Std.string(card.active);
 			card_command_field.text = Std.string(card.command);
 			card_action_field.text = Std.string(card.action);
+
+			card_cache.hidden = (card.action != "YTPlayListAction");//TODO: should be a static const
 
 			// set action options
 			var options:Array<Dynamic> = new Array<Dynamic>();
@@ -113,15 +120,20 @@ class CardListRow extends Box {
 			RFIDTriggerAdminConfigManager.instance.sendTriggerRequest(card.id);
 		});
 
-		card_image_img.registerEvent(MouseEvent.CLICK, function(e) {
+		card_image.registerEvent(MouseEvent.CLICK, function(e) {
 			openImageFileSelector();
+		});
+
+		card_cache.registerEvent(MouseEvent.CLICK, function(e) {
+			LOG("Caching playlist: "+card.id);
+			RFIDTriggerAdminConfigManager.instance.sendCacheRequest(card.id);
 		});
 	}
 
 	private function onValueChanged(fieldName:String, value:Dynamic) {
 		var currentVal:Dynamic = Reflect.getProperty(card, fieldName);
 		if (currentVal != value) {
-			LOG("Value updated: " + fieldName + " --> " + value);
+		
 			Reflect.setProperty(card, fieldName, value);
 			RFIDTriggerAdminConfigManager.instance.updateCard(card, onCardDataUpdateComplete);
 			userUpdating = true;
@@ -129,7 +141,7 @@ class CardListRow extends Box {
 	}
 
 	private function onCardDataUpdateComplete(data) {
-		// LOG("Update Successful");
+		LOG("Update Successful");
 		userUpdating = false;
 	}
 
