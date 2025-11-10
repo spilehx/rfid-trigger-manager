@@ -39,16 +39,9 @@ class OverViewSection extends Box {
 	private function onUpdate(settings:SettingsData) {
 		deviceIDValueLable.text = settings.deviceID;
 		lastUpdatedValueLable.text = getDateTimeString();
-	
 
-
-
-
-		
-		nowPlayingImg.resource = js.Browser.document.location.href+"getimage";
+		nowPlayingImg.resource = js.Browser.document.location.href + "getimage";
 	}
-
-
 
 	private function getDateTimeString():String {
 		var now = Date.now();
