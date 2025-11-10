@@ -16,6 +16,7 @@ class UploadImageRoute extends Route {
 	}
 
 	override function onRequest(request:Request) {
+		USER_MESSAGE("UploadImageRoute");
 		var data:Dynamic = Json.parse(Std.string(request.data));
 		var cardId:String = Reflect.getProperty(data, "cardId");
 		var fileString:String = Reflect.getProperty(data, "file");
