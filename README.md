@@ -1,9 +1,8 @@
 
-# rfid-trigger-manager
+<div align="center" width="100%">
+    <img src="https://raw.githubusercontent.com/spilehx/rfid-trigger-manager/main/docs/assets/text-logo.png" width="900" alt="" />
+</div>
 
-Work in progress!
-
-Inspired by the fantastic https://github.com/MiczFlor/RPi-Jukebox-RFID but fully reimagined in [haxe](https://haxe.org/)
 
 ## Summary
 An application to trigger playing music or any other action from RFID tags
@@ -32,4 +31,8 @@ Still very much work in progress.
 - command line options avalible ``hl RFIDTriggerServer.hl --help``
 - Open a browser to http://localhost:1337
 
-Just a fun project for now, but full binary and updated docs coming soon!
+
+
+
+---
+### Inspired by the fantastic https://github.com/MiczFlor/RPi-Jukebox-RFID but fully reimagined in [haxe](https://haxe.org/)
