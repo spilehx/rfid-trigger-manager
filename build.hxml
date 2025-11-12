@@ -23,4 +23,5 @@
 -lib weblink hashlink
 -cp src
 -main RFIDTriggerServer
+-D hlgen.makefile=make
 --hl dist/out/RFIDTriggerServer.c
