@@ -1,5 +1,6 @@
 package spilehx.rfidtriggeradmin.page.components;
 
+import haxe.ui.events.UIEvent;
 import haxe.ui.components.Image;
 import spilehx.rfidtriggerserver.managers.settings.SettingsData;
 import haxe.ui.containers.VBox;
@@ -18,7 +19,7 @@ import haxe.ui.containers.Box;
 				<label id="lastUpdatedValueLable" verticalAlign="center" />
 			</vbox>
 
-			<box height="100%" width="100%" verticalAlign="center">
+			<box id="nowPlayingContainer" height="100%" width="100%" verticalAlign="center">
 				 <image id="nowPlayingImg" width="100%" height="100%" scaleMode="fitheight" verticalAlign="center"/>
 			</box>
 		
@@ -33,22 +34,25 @@ class OverViewSection extends Box {
 	}
 
 	private function setup() {
+		this.registerEvent(UIEvent.SHOWN, onShown);
+	}
+
+	private function onShown(e) {
 		RFIDTriggerAdminConfigManager.instance.registerSettingUpdate(onUpdate);
 	}
 
 	private function onUpdate(settings:SettingsData) {
 		deviceIDValueLable.text = settings.deviceID;
 		lastUpdatedValueLable.text = getDateTimeString();
-
-		RFIDTriggerAdminConfigManager.instance.sendGetImageRequest(function (imgData:String) {
-			LOG("IMG DATA "+imgData);
-			nowPlayingImg.resource = imgData;
-		});
-		
+		nowPlayingContainer.removeAllComponents();
+		nowPlayingContainer.addComponent(getNowPlayingImage());
 	}
 
-
-
+	private function getNowPlayingImage():Image {
+		var img:Image = new Image();
+		img.resource = js.Browser.document.location.href + "getimage?Cachbust="+Date.now().getTime;
+		return img;
+	}
 
 	private function getDateTimeString():String {
 		var now = Date.now();
