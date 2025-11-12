@@ -76,6 +76,18 @@ class RFIDTriggerAdminConfigManager {
 		httpReq.get();
 	}
 
+
+	public function sendGetImageRequest(onData:String->Void) {
+		var serverUrl:String = js.Browser.document.location.href;
+		var path:String = "getimage";
+
+		var httpReq:HTTPRequester = new HTTPRequester(serverUrl + path, "", function(data:Dynamic) {
+			onData(data);
+		}, function(data) {});
+
+		httpReq.get();
+	}
+
 	public function sendImgUploadRequest(cardId:String, imgData:String) {
 		var serverUrl:String = js.Browser.document.location.href;
 		var path:String = "uploadimage";

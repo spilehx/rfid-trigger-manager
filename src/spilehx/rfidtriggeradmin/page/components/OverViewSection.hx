@@ -40,8 +40,15 @@ class OverViewSection extends Box {
 		deviceIDValueLable.text = settings.deviceID;
 		lastUpdatedValueLable.text = getDateTimeString();
 
-		nowPlayingImg.resource = js.Browser.document.location.href + "getimage";
+		RFIDTriggerAdminConfigManager.instance.sendGetImageRequest(function (imgData:String) {
+			LOG("IMG DATA "+imgData);
+			nowPlayingImg.resource = imgData;
+		});
+		
 	}
+
+
+
 
 	private function getDateTimeString():String {
 		var now = Date.now();
