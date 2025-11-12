@@ -4,3 +4,6 @@ dist
 vol
 hxformat.json
 release
+
+assets/index.html
+assets/main.js

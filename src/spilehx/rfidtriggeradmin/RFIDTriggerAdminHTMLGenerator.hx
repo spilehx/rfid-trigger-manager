@@ -8,8 +8,6 @@ class RFIDTriggerAdminHTMLGenerator {
 	private static var ENV_KEY_outputFolderPath:String = "outputFolderPath";
 
 	public static macro function generateHtmlFile():Expr {
-		// var outputFolderPath = Std.string(Macros.getEnvVar(ENV_KEY_outputFolderPath));
-		// var adminHTMLFileName = Std.string(Macros.getEnvVar(ENV_KEY_adminHTMLFileName));
 		var outputFolderPath = Macros.getEnvVar(ENV_KEY_outputFolderPath);
 		var adminHTMLFileName = Macros.getEnvVar(ENV_KEY_adminHTMLFileName);
 		var fullHTMLFilePath = outputFolderPath + "/" + adminHTMLFileName;
@@ -30,11 +28,6 @@ class RFIDTriggerAdminHTMLGenerator {
 		head.addChild(title);
 
 		head.addChild(getStyleTag());
-
-		// var script:HtmlItem = new HtmlItem("script");
-		// script.addAttribute("src", "./main.js");
-		// head.addChild(script);
-
 		var script:HtmlItem = new HtmlItem("script");
 		script.addInnerHTML("$ADMIN_PAGE_SCRIPT_TAG");
 		head.addChild(script);
