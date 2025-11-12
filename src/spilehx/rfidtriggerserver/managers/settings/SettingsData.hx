@@ -6,6 +6,7 @@ class SettingsData {
 	public var cards:Array<CardData>;
 	public var avalibleCardActions:Array<String>;
 	public var avalibleDevices:Array<String>;
+	public var logs:String;
 
 	public function new() {
         verboseLogging = true;
@@ -13,6 +14,7 @@ class SettingsData {
 		cards = new Array<CardData>();
 		avalibleCardActions = [];
 		avalibleDevices = [];
+		logs = "";
 	}
 }
 

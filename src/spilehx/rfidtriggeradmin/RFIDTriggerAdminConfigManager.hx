@@ -49,7 +49,7 @@ class RFIDTriggerAdminConfigManager {
 
 		var httpReq:HTTPRequester = new HTTPRequester(serverUrl + path, "", function(data:Dynamic) {
 			var sd:SettingsData = cast Json.parse(data).config;
-
+			sd.logs = cast Json.parse(data).logs;
 			onSuccess(sd);
 		}, function(data) {
 			onError(data);
@@ -62,11 +62,7 @@ class RFIDTriggerAdminConfigManager {
 		var serverUrl:String = js.Browser.document.location.href;
 		var path:String = "trigger?cardid=" + cardId;
 
-		var httpReq:HTTPRequester = new HTTPRequester(serverUrl + path, "", function(data:Dynamic) {
-
-		}, function(data) {
-
-		});
+		var httpReq:HTTPRequester = new HTTPRequester(serverUrl + path, "", function(data:Dynamic) {}, function(data) {});
 
 		httpReq.get();
 	}
@@ -75,11 +71,7 @@ class RFIDTriggerAdminConfigManager {
 		var serverUrl:String = js.Browser.document.location.href;
 		var path:String = "triggerytcache?cardid=" + cardId;
 
-		var httpReq:HTTPRequester = new HTTPRequester(serverUrl + path, "", function(data:Dynamic) {
-
-		}, function(data) {
-
-		});
+		var httpReq:HTTPRequester = new HTTPRequester(serverUrl + path, "", function(data:Dynamic) {}, function(data) {});
 
 		httpReq.get();
 	}
@@ -93,11 +85,7 @@ class RFIDTriggerAdminConfigManager {
 			file: imgData
 		};
 
-		var httpReq:HTTPRequester = new HTTPRequester(serverUrl + path, Json.stringify(data), function(data:Dynamic) {
-
-		}, function(data) {
-
-		});
+		var httpReq:HTTPRequester = new HTTPRequester(serverUrl + path, Json.stringify(data), function(data:Dynamic) {}, function(data) {});
 
 		httpReq.post();
 	}

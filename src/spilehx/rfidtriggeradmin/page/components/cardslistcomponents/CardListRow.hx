@@ -15,33 +15,33 @@ import haxe.ui.containers.Box;
 @:xml('
    	<box width="100%" >
         <rule />
-        <hbox id="content" width="100%" height="100%">
-		    <box id="card_enabled" width="100%" height="95%" verticalAlign="center">
+        <hbox id="content" width="100%" height="100%" horizontalSpacing="5">
+		    <box id="card_enabled" width="100%" height="75%" verticalAlign="center">
                 <checkbox id="card_enabled_field" horizontalAlign="center" verticalAlign="center" height="90%"/>
             </box>
-            <box id="card_id" width="100%" height="95%" verticalAlign="center">
+            <box id="card_id" width="100%" height="75%" verticalAlign="center">
                 <label id="card_id_field" textAlign="left" horizontalAlign="center" verticalAlign="center" width="100%" text="card_id"/>
             </box>
-            <box id="card_name" width="100%" height="95%" verticalAlign="center">
-                <textfield id="card_name_field" horizontalAlign="center" verticalAlign="center" height="90%" width="100%" text="card_name"/>
+            <box id="card_name" width="100%" height="75%" verticalAlign="center">
+                <textfield id="card_name_field" horizontalAlign="center" verticalAlign="center" height="95%" width="100%" text="card_name"/>
             </box>
-			<box id="card_active" width="100%" height="95%" verticalAlign="center">
+			<box id="card_active" width="100%" height="75%" verticalAlign="center">
                 <label id="card_active_field" textAlign="center" horizontalAlign="center" verticalAlign="center" width="100%" text="card_id"/>
             </box>
-            <box id="card_command" width="100%" height="95%" verticalAlign="center">
-                 <textfield id="card_command_field" horizontalAlign="center" verticalAlign="center" height="90%" width="100%" text="card_command"/>
+            <box id="card_command" width="100%" height="75%" verticalAlign="center">
+                 <textfield id="card_command_field" horizontalAlign="center" verticalAlign="center" height="95%" width="100%" text="card_command"/>
             </box>
-            <box id="card_action" width="100%" height="95%" verticalAlign="center">
-                 <dropdown id="card_action_field" horizontalAlign="center" verticalAlign="center" height="90%" width="100%" text="action"/>
+            <box id="card_action" width="100%" height="75%" verticalAlign="center">
+                 <dropdown id="card_action_field" horizontalAlign="center" verticalAlign="center" height="95%" width="100%" text="action"/>
             </box>
-            <box id="card_start" width="100%" height="95%" verticalAlign="center">
-               <image id="card_start_img" height="100%" width ="100%" horizontalAlign="center" verticalAlign="center" scaleMode="fitheight" />
+            <box id="card_start" width="100%" height="75%" verticalAlign="center">
+               <image id="card_start_img" height="90%" width ="90%" horizontalAlign="center" verticalAlign="center" scaleMode="fitheight" />
             </box>
-            <box id="card_image" width="100%" height="95%" verticalAlign="center">
-               <image id="card_image_img" height="100%" width ="100%" horizontalAlign="center" verticalAlign="center" scaleMode="fitheight" />
+            <box id="card_image" width="100%" height="75%" verticalAlign="center">
+               <image id="card_image_img" height="90%" width ="90%" horizontalAlign="center" verticalAlign="center" scaleMode="fitheight" />
             </box>
-			<box id="card_cache" width="100%" height="95%" verticalAlign="center">
-               <image id="card_cache_img" height="100%" width ="100%" horizontalAlign="center" verticalAlign="center" scaleMode="fitheight" />
+			<box id="card_cache" width="100%" height="75%" verticalAlign="center">
+               <image id="card_cache_img" height="90%" width ="90%" horizontalAlign="center" verticalAlign="center" scaleMode="fitheight" />
             </box>
         </hbox>
 	</box>
@@ -61,6 +61,9 @@ class CardListRow extends Box {
 	private function setup() {
 		setImages();
 		setupChangeEvents();
+		card_action_field.backgroundColor = RFIDTriggerAdminSettings.SECTION_FIELD_BG_COLOUR;
+		card_command_field.backgroundColor = RFIDTriggerAdminSettings.SECTION_FIELD_BG_COLOUR;
+		card_name_field.backgroundColor = RFIDTriggerAdminSettings.SECTION_FIELD_BG_COLOUR;
 	}
 
 	private function setImages() {
