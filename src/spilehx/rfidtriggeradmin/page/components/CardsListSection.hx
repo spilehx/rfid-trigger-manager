@@ -13,24 +13,24 @@ import haxe.ui.containers.Box;
 @:xml('
    	<box width="100%" height="100%" >
 	 	<vbox id="tableContainer" width="100%" height="100%" >
-			<hbox id="headerRow" horizontalAlign="center" width="95%" hidden="true">
+			<hbox id="headerRow" horizontalAlign="center" width="100%" horizontalSpacing="5">
 				<box width="100%" height="100%">
 					<label textAlign="left" horizontalAlign="center" height="100%" width="100%" text=""/>
 				</box>
 				<box width="100%" height="100%">
-					<label textAlign="left" horizontalAlign="left" height="100%" width="100%" text="ID" style="font-size: 18px;font-bold: true;"/>
+					<label textAlign="left" horizontalAlign="left" height="100%" width="100%" text="ID" style="font-size: 14px;font-bold: true;"/>
 				</box>
 				<box width="100%" height="100%">
-					<label textAlign="left" horizontalAlign="center" height="100%" width="100%" text="Name" style="font-size: 18px;font-bold: true;"/>
+					<label textAlign="left" horizontalAlign="center" height="100%" width="100%" text="Name" style="font-size: 14px;font-bold: true;"/>
 				</box>
 				<box width="100%" height="100%">
-					<label textAlign="left" horizontalAlign="center" height="100%" width="100%" text="Active" style="font-size: 18px;font-bold: true;"/>
+					<label textAlign="left" horizontalAlign="center" height="100%" width="100%" text="Active" style="font-size: 14px;font-bold: true;"/>
 				</box>
 				<box width="100%" height="100%">
-					<label textAlign="left" horizontalAlign="center" height="100%" width="100%" text="Command" style="font-size: 18px;font-bold: true;"/>
+					<label textAlign="left" horizontalAlign="center" height="100%" width="100%" text="Command" style="font-size: 14px;font-bold: true;"/>
 				</box>
 				<box width="100%" height="100%">
-					<label textAlign="center" horizontalAlign="center" height="100%" width="100%" text="Action" style="font-size: 18px;font-bold: true;"/>
+					<label textAlign="center" horizontalAlign="center" height="100%" width="100%" text="Action" style="font-size: 14px;font-bold: true;"/>
 				</box>
 				<box width="100%" height="100%">
 					<label textAlign="left" horizontalAlign="center" height="100%" width="100%" text=""/>
@@ -42,17 +42,20 @@ import haxe.ui.containers.Box;
 					<label textAlign="left" horizontalAlign="center" height="100%" width="100%" text=""/>
 				</box>
 			</hbox>
-			<scrollview id="cardScrollView" width="100%" contentWidth="100%" hidden="true"/>
+			<scrollview id="cardScrollView" width="95%" contentWidth="100%" horizontalAlign="center"/>
 		
 		</vbox>
 		<vbox id="loadingContent" width="100%" horizontalAlign="center" verticalAlign="center">
 			<spinner horizontalAlign="center" />
 			<label textAlign="center" horizontalAlign="center" width="100%" id="waitingLabel"/>
-		</vbox>	
+		</vbox>
+		<vbox id="noCardsContent" width="100%" horizontalAlign="center" verticalAlign="center">
+			<label textAlign="center" horizontalAlign="center" width="100%" id="noCardsLable"/>
+		</vbox>		
 	</box>
 ')
 class CardsListSection extends Box {
-	private static final COL_WIDTHS:Array<Int> = [5, 10, 15, 5, 30, 20, 5, 5, 5];
+	private static final COL_WIDTHS:Array<Int> = [5, 13, 15, 8, 30, 20, 3, 3, 3];
 
 	private var cardListRows:Array<CardListRow>;
 
@@ -61,17 +64,14 @@ class CardsListSection extends Box {
 		cardListRows = new Array<CardListRow>();
 		this.registerEvent(UIEvent.SHOWN, onShown);
 
-	
-		//TEST
+		// // //TEST
 
-		var tot:Int = 0;
-		for(v in COL_WIDTHS){
-			tot += v;
-		}
+		// var tot:Int = 0;
+		// for(v in COL_WIDTHS){
+		// 	tot += v;
+		// }
 
-		LOG("TOTAL COLS---> "+tot);
-
-
+		// LOG("TOTAL COLS---> "+tot);
 	}
 
 	private function onShown(e) {
@@ -81,10 +81,14 @@ class CardsListSection extends Box {
 
 	private function setup() {
 		cardScrollView.borderSize = 0;
-		headerRow.height = getRowHeight()*.5;
+		headerRow.height = getRowHeight() * .5;
 		this.backgroundColor = RFIDTriggerAdminSettings.SECTION_BG_COLOUR;
 		cardScrollView.backgroundColor = this.backgroundColor;
+		tableContainer.opacity = 0;
+		noCardsContent.hidden = true;
+
 		waitingLabel.text = RFIDTriggerAdminText.CARDLIST_SECTION_WAITING_FOR_LOAD;
+		noCardsLable.text = RFIDTriggerAdminText.CARDLIST_SECTION_NO_CARDS;
 	}
 
 	private function onResize(e) {
@@ -92,13 +96,20 @@ class CardsListSection extends Box {
 	}
 
 	private function onUpdate(settings:SettingsData) {
+		hideLoader();
 		if (settings.cards.length > 0) {
-			if (loadingContent.parentComponent != null) { // remove loader if there
-				loadingContent.parentComponent.removeComponent(loadingContent);
-				headerRow.hidden = false;
-				cardScrollView.hidden = false;
-			}
+			tableContainer.opacity = 1;
+			noCardsContent.hidden = true;
 			populateRows(settings);
+		} else {
+			noCardsContent.hidden = false;
+				tableContainer.opacity = 0;
+		}
+	}
+
+	private function hideLoader() {
+		if (loadingContent.parentComponent != null) { // remove loader if there
+			loadingContent.parentComponent.removeComponent(loadingContent);
 		}
 	}
 
