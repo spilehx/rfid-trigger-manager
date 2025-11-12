@@ -1,7 +1,3 @@
-
-
-
-
 ## Create admin page js
 -lib haxeui-html5 haxeui-core
 -cp src
@@ -15,17 +11,16 @@
 -D outputFolderPath=./assets
 --macro spilehx.rfidtriggeradmin.RFIDTriggerAdminHTMLGenerator.generateHtmlFile()
 
-
-## Build server - this will also bundle the js and html internally, so is dependent on output from previouse steps being in assets folder 
+# Build server - this will also bundle the js and html internally, so is dependent on output from previouse steps being in assets folder 
 --next
 -lib weblink
 -cp src
 -main RFIDTriggerServer
 --hl dist/RFIDTriggerServer.hl
 
-
-# --next
-# -lib weblink hashlink
-# -cp src
-# -main RFIDTriggerServer
-# --hl dist/out/main.c
+# Buid hashlink C code
+--next
+-lib weblink hashlink
+-cp src
+-main RFIDTriggerServer
+--hl dist/out/RFIDTriggerServer.c

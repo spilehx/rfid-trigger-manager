@@ -1,0 +1,7 @@
+services:
+  rfidtriggermanagerbuildrelease:
+    build:
+      context: .
+      dockerfile: dockerfile-build-release
+    volumes:
+      - ./vol/release:/release
