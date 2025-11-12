@@ -1,7 +1,5 @@
 
 sandbox
-dist/DEBUG_MODE
+dist
 vol
-dist/appdata
-dist/filecache
-dist/out
+hxformat.json 

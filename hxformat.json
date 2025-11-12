@@ -1,9 +1,0 @@
-{
-  "wrapping": {
-    "arrayMatrixWrap": "noMatrixWrap",
-    "arrayWrap": {
-      "defaultWrap": "noWrap"
-    },
-    "maxLineLength": 1000
-  }
-}
