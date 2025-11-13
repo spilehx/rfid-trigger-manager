@@ -129,7 +129,12 @@ class RFIDTriggerAdminConfigManager {
 		}
 	}
 
-	public function getActiveCard():CardData{
+	public function updateDevice(device:String, onComplete:Dynamic->Void) {
+		settings.deviceID = device;
+		updateSettings(onComplete, onComplete);
+	}
+
+	public function getActiveCard():CardData {
 		for (i in 0...settings.cards.length) {
 			var card:CardData = settings.cards[i];
 			if (card.active == true) {

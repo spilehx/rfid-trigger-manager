@@ -13,7 +13,7 @@ import haxe.ui.containers.Box;
 @:xml('
    	<box width="100%" height="100%" >
 	 	<vbox id="tableContainer" width="100%" height="100%" >
-			<hbox id="headerRow" horizontalAlign="center" width="100%" horizontalSpacing="5">
+			<hbox id="headerRow" horizontalAlign="center" width="95%" horizontalSpacing="5">
 				<box width="100%" height="100%">
 					<label textAlign="left" horizontalAlign="center" height="100%" width="100%" text=""/>
 				</box>
@@ -83,7 +83,13 @@ class CardsListSection extends Box {
 		cardScrollView.borderSize = 0;
 		headerRow.height = getRowHeight() * .5;
 		this.backgroundColor = RFIDTriggerAdminSettings.SECTION_BG_COLOUR;
-		cardScrollView.backgroundColor = this.backgroundColor;
+
+		headerRow.paddingTop = 5;
+		tableContainer.borderRadius = 3;
+			tableContainer.borderSize = 1;
+		// headerRow.backgroundColor = RFIDTriggerAdminSettings.SECTION_FIELD_BG_COLOUR;
+		cardScrollView.backgroundColor = RFIDTriggerAdminSettings.SECTION_FIELD_BG_COLOUR;
+
 		tableContainer.opacity = 0;
 		noCardsContent.hidden = true;
 

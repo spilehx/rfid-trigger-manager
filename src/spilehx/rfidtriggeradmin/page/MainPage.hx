@@ -41,7 +41,6 @@ class MainPage extends Box {
 		var section = new PageSection(new OverViewSection(), RFIDTriggerAdminText.OVERVIEW_SECTION_TITLE, true);
 		contentContainer.addComponent(section);
 		section.percentHeight = 15;
-
 	}
 
 	private function addCardsSection() {
@@ -50,7 +49,7 @@ class MainPage extends Box {
 		section.percentHeight = 55;
 	}
 
-		private function addLogsSection() {
+	private function addLogsSection() {
 		var section = new PageSection(new LogsSection(), RFIDTriggerAdminText.LOGS_SECTION_TITLE, true);
 		contentContainer.addComponent(section);
 		section.percentHeight = 30;
