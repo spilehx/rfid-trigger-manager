@@ -1,7 +1,7 @@
 package spilehx.rfidtriggeradmin.page.components;
 
+import haxe.ui.events.MouseEvent;
 import haxe.ui.events.UIEvent;
-import haxe.ui.components.Image;
 import spilehx.rfidtriggerserver.managers.settings.SettingsData;
 import haxe.ui.containers.VBox;
 import haxe.ui.containers.Box;
@@ -10,21 +10,21 @@ import haxe.ui.containers.Box;
    	<box width="100%" height="100%" >
 		<hbox id="content" width="100%" height="100%" horizontalAlign="center" verticalAlign="center">
 			<vbox height="70%" width="100%" verticalAlign="center">
-				<label text="Device ID" verticalAlign="center" />
-				<label id="deviceIDValueLable" verticalAlign="center" />
+				<label id="deviceIDLable" text="Device ID" verticalAlign="center" />
+				<box id="deviceIDValueDropdownBox" width="100%" horizontalAlign="left">
+					<dropdown id="deviceIDValueDropdown" horizontalAlign="left" verticalAlign="center" height="95%" width="100%" text="device"/>
+				</box>
 			</vbox>
 			
 			<vbox height="70%" width="100%" verticalAlign="center">
-				<label text="Last Updated" verticalAlign="center" />
+				<label id="lastUpdatedLable" text="Last Updated" verticalAlign="center" />
 				<label id="lastUpdatedValueLable" verticalAlign="center" />
 			</vbox>
 
 			<box id="nowPlayingContainer" height="100%" width="100%" verticalAlign="center">
-				 <image id="nowPlayingImg" width="100%" height="100%" scaleMode="fitheight" verticalAlign="center"/>
+				 <NowPlayingComponent id="nowPlayingComponent" width="100%" height="100%" verticalAlign="center" horizontalAlign="center"/>
 			</box>
-		
 		</hbox>
-			
 	</box>
 ')
 class OverViewSection extends Box {
@@ -34,24 +34,53 @@ class OverViewSection extends Box {
 	}
 
 	private function setup() {
+		RFIDTriggerAdminSettings.SET_FONT_S(deviceIDLable, true);
+		RFIDTriggerAdminSettings.SET_FONT_S(lastUpdatedLable, true);
+		RFIDTriggerAdminSettings.SET_FONT_S(lastUpdatedValueLable, false);
+
 		this.registerEvent(UIEvent.SHOWN, onShown);
+
+		deviceIDValueDropdown.registerEvent(UIEvent.CHANGE, function(e) {
+			deviceIDValueDropdownChanges();
+		});
+	}
+
+	private function deviceIDValueDropdownChanges() {
+		LOG("VAL  " + deviceIDValueDropdown.text);
+		var value:String = deviceIDValueDropdown.text;
+
+		var currentVal:String = RFIDTriggerAdminConfigManager.instance.settings.deviceID;
+		if (currentVal != value) {
+			RFIDTriggerAdminConfigManager.instance.updateDevice(value, function(e) {
+				LOG("UPDATED");
+			});
+		}
 	}
 
 	private function onShown(e) {
 		RFIDTriggerAdminConfigManager.instance.registerSettingUpdate(onUpdate);
 	}
 
-	private function onUpdate(settings:SettingsData) {
-		deviceIDValueLable.text = settings.deviceID;
-		lastUpdatedValueLable.text = getDateTimeString();
-		nowPlayingContainer.removeAllComponents();
-		nowPlayingContainer.addComponent(getNowPlayingImage());
+	private function setupSetDevice(settings:SettingsData) {
+		deviceIDValueDropdown.text = Std.string(settings.deviceID);
+		var options:Array<Dynamic> = new Array<Dynamic>();
+		for (device in settings.avalibleDevices) {
+			options.push({
+				text: device
+			});
+		}
+
+		deviceIDValueDropdown.dataSource.data = options;
+		// deviceIDValueDropdown
+		// deviceIDEditButton.borderRadius = 5;
+		// deviceIDEditButton.backgroundColor = RFIDTriggerAdminSettings.SECTION_FIELD_BG_COLOUR;
+		// deviceIDEditButton.registerEvent(MouseEvent.CLICK, onEditDeviceButtonClick);
 	}
 
-	private function getNowPlayingImage():Image {
-		var img:Image = new Image();
-		img.resource = js.Browser.document.location.href + "getimage?Cachbust="+Date.now().getTime;
-		return img;
+	private function onUpdate(settings:SettingsData) {
+		setupSetDevice(settings);
+		lastUpdatedValueLable.text = getDateTimeString();
+		nowPlayingComponent.update();
 	}
 
 	private function getDateTimeString():String {

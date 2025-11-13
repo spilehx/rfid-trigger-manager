@@ -1,5 +1,6 @@
 package spilehx.rfidtriggeradmin.page;
 
+import spilehx.rfidtriggeradmin.tools.AnimateEffect;
 import spilehx.rfidtriggeradmin.page.components.LogsSection;
 import spilehx.rfidtriggeradmin.page.components.CardsListSection;
 import spilehx.rfidtriggeradmin.page.components.OverViewSection;
@@ -23,9 +24,11 @@ class MainPage extends Box {
 
 	private function onPageShown(e) {
 		contentContainer = new VBox();
-		contentContainer.verticalAlign = contentContainer.horizontalAlign = "center";
+		contentContainer.verticalAlign = "center";
+		contentContainer.horizontalAlign = "center";
 		contentContainer.percentWidth = 99;
-		contentContainer.percentHeight = 90;
+		contentContainer.percentHeight = 95;
+		contentContainer.verticalSpacing = 10;
 
 		this.addComponent(contentContainer);
 
@@ -35,19 +38,19 @@ class MainPage extends Box {
 	}
 
 	private function addOverViewSection() {
-		var section = new PageSection(new OverViewSection(), RFIDTriggerAdminText.OVERVIEW_SECTION_TITLE);
+		var section = new PageSection(new OverViewSection(), RFIDTriggerAdminText.OVERVIEW_SECTION_TITLE, true);
 		contentContainer.addComponent(section);
 		section.percentHeight = 15;
 	}
 
 	private function addCardsSection() {
-		var section = new PageSection(new CardsListSection(), RFIDTriggerAdminText.CARDLIST_SECTION_TITLE);
+		var section = new PageSection(new CardsListSection(), RFIDTriggerAdminText.CARDLIST_SECTION_TITLE, true);
 		contentContainer.addComponent(section);
 		section.percentHeight = 55;
 	}
 
-		private function addLogsSection() {
-		var section = new PageSection(new LogsSection(), RFIDTriggerAdminText.LOGS_SECTION_TITLE);
+	private function addLogsSection() {
+		var section = new PageSection(new LogsSection(), RFIDTriggerAdminText.LOGS_SECTION_TITLE, true);
 		contentContainer.addComponent(section);
 		section.percentHeight = 30;
 	}

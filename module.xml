@@ -1,0 +1,6 @@
+<module>
+    <components>
+        <component class="spilehx.rfidtriggeradmin.page.components.nowplaying.NowPlayingComponent" />
+        <component class="spilehx.rfidtriggeradmin.page.components.nowplaying.NowPlayingImageComponent" />
+    </components>
+</module>

@@ -21,6 +21,12 @@ class RFIDTriggerAdminView {
 
 	private function onDomLoaded() {
 		setupHaxeApp("app");
+		setPageStyle();
+	}
+
+	private function setPageStyle(){
+		var colString:String = StringTools.replace(RFIDTriggerAdminSettings.PAGE_BG_COLOUR,"0x","#");
+		js.Browser.document.body.style.backgroundColor = colString;
 	}
 
 	private function setupHaxeApp(appContainerId:String) {
