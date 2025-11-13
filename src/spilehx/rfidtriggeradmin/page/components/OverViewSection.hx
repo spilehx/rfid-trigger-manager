@@ -9,12 +9,12 @@ import haxe.ui.containers.Box;
    	<box width="100%" height="100%" >
 		<hbox id="content" width="100%" height="100%" horizontalAlign="center" verticalAlign="center">
 			<vbox height="70%" width="100%" verticalAlign="center">
-				<label text="Device ID" verticalAlign="center" />
+				<label id="deviceIDLable" text="Device ID" verticalAlign="center" />
 				<label id="deviceIDValueLable" verticalAlign="center" />
 			</vbox>
 			
 			<vbox height="70%" width="100%" verticalAlign="center">
-				<label text="Last Updated" verticalAlign="center" />
+				<label id="lastUpdatedLable" text="Last Updated" verticalAlign="center" />
 				<label id="lastUpdatedValueLable" verticalAlign="center" />
 			</vbox>
 
@@ -33,6 +33,12 @@ class OverViewSection extends Box {
 	}
 
 	private function setup() {
+		RFIDTriggerAdminSettings.SET_FONT_S(deviceIDLable,true);
+		RFIDTriggerAdminSettings.SET_FONT_S(deviceIDValueLable,false);
+
+		RFIDTriggerAdminSettings.SET_FONT_S(lastUpdatedLable,true);
+		RFIDTriggerAdminSettings.SET_FONT_S(lastUpdatedValueLable,false);
+
 		this.registerEvent(UIEvent.SHOWN, onShown);
 	}
 

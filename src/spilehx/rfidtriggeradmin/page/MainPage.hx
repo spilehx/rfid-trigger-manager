@@ -38,22 +38,20 @@ class MainPage extends Box {
 	}
 
 	private function addOverViewSection() {
-		var section = new PageSection(new OverViewSection(), RFIDTriggerAdminText.OVERVIEW_SECTION_TITLE);
+		var section = new PageSection(new OverViewSection(), RFIDTriggerAdminText.OVERVIEW_SECTION_TITLE, true);
 		contentContainer.addComponent(section);
 		section.percentHeight = 15;
-			AnimateEffect.fadeInForward(section, 2, function() {
-					// this.opacity = 1;
-				});
+
 	}
 
 	private function addCardsSection() {
-		var section = new PageSection(new CardsListSection(), RFIDTriggerAdminText.CARDLIST_SECTION_TITLE);
+		var section = new PageSection(new CardsListSection(), RFIDTriggerAdminText.CARDLIST_SECTION_TITLE, true);
 		contentContainer.addComponent(section);
 		section.percentHeight = 55;
 	}
 
 		private function addLogsSection() {
-		var section = new PageSection(new LogsSection(), RFIDTriggerAdminText.LOGS_SECTION_TITLE);
+		var section = new PageSection(new LogsSection(), RFIDTriggerAdminText.LOGS_SECTION_TITLE, true);
 		contentContainer.addComponent(section);
 		section.percentHeight = 30;
 	}

@@ -3,6 +3,7 @@ package spilehx.rfidtriggeradmin;
 import haxe.ui.components.Label;
 
 class RFIDTriggerAdminSettings {
+	public static final SECTION_FADEIN_DUR:Float = .4;
 	public static final UPDATE_INTERVAL:Int = 1000;
 	public static final PAGE_BG_COLOUR:String = "0x7E807F";
 	public static final DEPTH_SHADOW_COLOUR:Int = 0x252525;
@@ -15,17 +16,21 @@ class RFIDTriggerAdminSettings {
 	public static final CARDLIST_SECTION_VISIBLE_ROWS:Int = 10;
 
 	public static function SET_FONT_L(field:Label, bold:Bool = false) {
-		var fontSize:Float = 4;
+		var fontSize:Float = 2.8;
 		setFont(field, fontSize, bold);
 	}
 
 	public static function SET_FONT_M(field:Label, bold:Bool = false) {
-		var fontSize:Float = 3;
+		var fontSize:Float = 2.5;
 		setFont(field, fontSize, bold);
 	}
 
 	public static function SET_FONT_S(field:Label, bold:Bool = false) {
-		var fontSize:Float = 1;
+		var fontSize:Float = 1.5;
+		setFont(field, fontSize, bold);
+	}
+	public static function SET_FONT_XS(field:Label, bold:Bool = false) {
+		var fontSize:Float = 1.3;
 		setFont(field, fontSize, bold);
 	}
 

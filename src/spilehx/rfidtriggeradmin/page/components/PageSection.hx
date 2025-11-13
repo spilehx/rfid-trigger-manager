@@ -1,5 +1,6 @@
 package spilehx.rfidtriggeradmin.page.components;
 
+import spilehx.rfidtriggeradmin.tools.AnimateEffect;
 import haxe.ui.events.UIEvent;
 import spilehx.rfidtriggeradmin.tools.UiFilterEffects;
 import haxe.ui.containers.Frame;
@@ -17,11 +18,18 @@ import haxe.ui.containers.Box;
     </vbox>
 ')
 class PageSection extends VBox {
-	public function new(content:Component, title:String) {
+	private var doFadeIn:Bool;
+
+	public function new(content:Component, title:String, doFadeIn:Bool = false) {
 		super();
+		this.doFadeIn = doFadeIn;
 		setup();
 		setTitle(title);
 		addContent(content);
+
+		if (doFadeIn == true) {
+			this.opacity = 0;
+		}
 		this.registerEvent(UIEvent.SHOWN, onShown);
 	}
 
@@ -34,12 +42,15 @@ class PageSection extends VBox {
 
 	private function onShown(e) {
 		UiFilterEffects.addDepth(this, true);
+		if (doFadeIn == true) {
+			this.opacity = 1;
+			AnimateEffect.fadeInForward(this, RFIDTriggerAdminSettings.SECTION_FADEIN_DUR);
+		}
 	}
 
 	private function setTitle(title:String) {
-		titleLable.text = title;
-		titleLable.fontSize = 30;
-		titleLable.style.fontBold = true;
+		titleLable.text = title.toUpperCase();
+		RFIDTriggerAdminSettings.SET_FONT_L(titleLable, true);
 		titleLable.color = RFIDTriggerAdminSettings.SECTION_TITLE_COLOUR;
 	}
 
