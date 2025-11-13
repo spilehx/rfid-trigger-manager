@@ -1,5 +1,6 @@
 package spilehx.rfidtriggeradmin.page;
 
+import spilehx.rfidtriggeradmin.tools.AnimateEffect;
 import spilehx.rfidtriggeradmin.page.components.LogsSection;
 import spilehx.rfidtriggeradmin.page.components.CardsListSection;
 import spilehx.rfidtriggeradmin.page.components.OverViewSection;
@@ -40,6 +41,9 @@ class MainPage extends Box {
 		var section = new PageSection(new OverViewSection(), RFIDTriggerAdminText.OVERVIEW_SECTION_TITLE);
 		contentContainer.addComponent(section);
 		section.percentHeight = 15;
+			AnimateEffect.fadeInForward(section, 2, function() {
+					// this.opacity = 1;
+				});
 	}
 
 	private function addCardsSection() {
