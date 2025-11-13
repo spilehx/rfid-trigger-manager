@@ -1,5 +1,7 @@
 package spilehx.rfidtriggeradmin.page.components;
 
+import haxe.ui.events.UIEvent;
+import spilehx.rfidtriggeradmin.tools.UiFilterEffects;
 import haxe.ui.containers.Frame;
 import haxe.ui.core.Component;
 import haxe.ui.containers.VBox;
@@ -20,6 +22,7 @@ class PageSection extends VBox {
 		setup();
 		setTitle(title);
 		addContent(content);
+		this.registerEvent(UIEvent.SHOWN, onShown);
 	}
 
 	private function setup() {
@@ -27,6 +30,10 @@ class PageSection extends VBox {
 		this.backgroundColor = RFIDTriggerAdminSettings.SECTION_BG_COLOUR;
 		this.borderColor = RFIDTriggerAdminSettings.SECTION_BORDER_COLOUR;
 		this.borderRadius = 10;
+	}
+
+	private function onShown(e) {
+		UiFilterEffects.addDepth(this, true);
 	}
 
 	private function setTitle(title:String) {

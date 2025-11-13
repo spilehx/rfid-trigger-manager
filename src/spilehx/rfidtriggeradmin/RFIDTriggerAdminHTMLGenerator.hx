@@ -56,7 +56,6 @@ class RFIDTriggerAdminHTMLGenerator {
 
 		style.addInnerHTML("
             body {
-                background-color: #1c0730;
                 overflow: hidden;
             }
 

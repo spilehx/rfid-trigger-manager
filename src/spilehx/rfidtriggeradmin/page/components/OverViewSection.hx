@@ -1,7 +1,6 @@
 package spilehx.rfidtriggeradmin.page.components;
 
 import haxe.ui.events.UIEvent;
-import haxe.ui.components.Image;
 import spilehx.rfidtriggerserver.managers.settings.SettingsData;
 import haxe.ui.containers.VBox;
 import haxe.ui.containers.Box;
@@ -20,7 +19,7 @@ import haxe.ui.containers.Box;
 			</vbox>
 
 			<box id="nowPlayingContainer" height="100%" width="100%" verticalAlign="center">
-				 <image id="nowPlayingImg" width="100%" height="100%" scaleMode="fitheight" verticalAlign="center"/>
+				 <NowPlayingComponent id="nowPlayingComponent" width="100%" height="100%" verticalAlign="center" horizontalAlign="center"/>
 			</box>
 		
 		</hbox>
@@ -44,14 +43,7 @@ class OverViewSection extends Box {
 	private function onUpdate(settings:SettingsData) {
 		deviceIDValueLable.text = settings.deviceID;
 		lastUpdatedValueLable.text = getDateTimeString();
-		nowPlayingContainer.removeAllComponents();
-		nowPlayingContainer.addComponent(getNowPlayingImage());
-	}
-
-	private function getNowPlayingImage():Image {
-		var img:Image = new Image();
-		img.resource = js.Browser.document.location.href + "getimage?Cachbust="+Date.now().getTime;
-		return img;
+		nowPlayingComponent.update();
 	}
 
 	private function getDateTimeString():String {

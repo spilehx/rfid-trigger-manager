@@ -23,9 +23,11 @@ class MainPage extends Box {
 
 	private function onPageShown(e) {
 		contentContainer = new VBox();
-		contentContainer.verticalAlign = contentContainer.horizontalAlign = "center";
+		contentContainer.verticalAlign = "center";
+		contentContainer.horizontalAlign = "center";
 		contentContainer.percentWidth = 99;
-		contentContainer.percentHeight = 90;
+		contentContainer.percentHeight = 95;
+		contentContainer.verticalSpacing = 10;
 
 		this.addComponent(contentContainer);
 

@@ -128,4 +128,15 @@ class RFIDTriggerAdminConfigManager {
 			}
 		}
 	}
+
+	public function getActiveCard():CardData{
+		for (i in 0...settings.cards.length) {
+			var card:CardData = settings.cards[i];
+			if (card.active == true) {
+				return card;
+			}
+		}
+
+		return null;
+	}
 }
