@@ -19,10 +19,12 @@ class RFIDTriggerServerController {
 	}
 
 	private function initManagers() {
-		CacheManager.instance.init();
+		
 		ActionManager.instance.init(); // required before settings so we have a list of avalible actions
-		SettingsManager.instance.init();
 		SettingsManager.instance.parseApplicationArguments();
+		SettingsManager.instance.init();
+		
+		CacheManager.instance.init();
 		AdminManager.instance.init();
 
 		if (SysUtils.isRunningAsSudo() || SettingsManager.instance.isDebug == "true" || ActionCommandHelpers.isRunningInDocker() == true) {

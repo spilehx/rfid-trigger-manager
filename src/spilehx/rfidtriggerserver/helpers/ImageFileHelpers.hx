@@ -8,13 +8,13 @@ import sys.io.File;
 
 class ImageFileHelpers {
 	public static function saveImage(base64Data:String, cardId:String) {
-		var path:String = SettingsManager.IMAGE_FOLDER_PATH + "/" + cardId + ".jpg";
+		var path:String = SettingsManager.instance.IMAGE_FOLDER_PATH + "/" + cardId + ".jpg";
 		var bytes = Base64.decode(base64Data);
 		File.saveBytes(path, bytes);
 	}
 
 	public static function getCardImage(cardId:String = "null"):Bytes {
-		var path:String = SettingsManager.IMAGE_FOLDER_PATH + "/" + cardId + ".jpg";
+		var path:String = SettingsManager.instance.IMAGE_FOLDER_PATH + "/" + cardId + ".jpg";
 		var bytes:Bytes;
 		if (FileSystem.exists(path) == false) {
 			bytes = DefaultImg.getDefaultImage();
