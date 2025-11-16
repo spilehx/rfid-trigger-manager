@@ -18,7 +18,19 @@ An application to trigger playing music or any other action from RFID tags
  - when you read the RFID again when its playing it will go to the next track,
  - you can upload cover art (in the web admin), which is served on a 'now playing' url http://localhost:1337/getimage
 
-Still very much work in progress.
+
+
+
+
+# USAGE AND OPTIONS
+
+    RFIDTriggerServer [OPTIONS] 
+
+
+## General Options:
+    --help  Display this help message and exit.
+        -d      Runs in debug mode, so does not require sudo device detection deactivated.
+        -p      [PATH] Sets the path to the datafolder, if not there will be created.
 
 
 
@@ -39,6 +51,12 @@ Still very much work in progress.
 *Knowledge of haxe required*
 *Currently depends on mpv an yt-dlp but if you use the docker compose in the project, i handle this - but then you need to map your own audio, this should normally work fine, with blutooth speakers YMMV*
 
+Either:
+
+[Download the latest release](https://github.com/spilehx/rfid-trigger-manager/releases) 
+
+
+Or build from source:
 - Pull repo and build with ``haxe build.hxml``
 - Enter the dist folder and run ``hl RFIDTriggerServer.hl``
 - command line options avalible ``hl RFIDTriggerServer.hl --help``
