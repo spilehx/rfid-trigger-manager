@@ -7,22 +7,18 @@ import spilehx.rfidtriggerserver.helpers.ActionCommandHelpers.YTActionCommandHel
 import sys.io.Process;
 
 class CacheManager extends spilehx.core.ManagerCore {
-	private static final FILE_CACHE_PATH:String = "./filecache";
+	private var FILE_CACHE_PATH:String;
+	private var YT_FILE_CACHE_PATH:String;
 
 	public static final instance:CacheManager = new CacheManager();
 
-	private var YT_FILE_CACHE_PATH:String = FILE_CACHE_PATH + "/yt";
 	private var ytIdsToCache:Array<YTCacheQueueItem> = new Array<YTCacheQueueItem>();
 
 	private var ytCacheInProgress:Bool = false;
 
 	public function init() {
-		ensureCacheFolders();
-	}
-
-	private function ensureCacheFolders() {
-		FileSystemHelpers.ensurePath(FILE_CACHE_PATH);
-		FileSystemHelpers.ensurePath(YT_FILE_CACHE_PATH);
+		FILE_CACHE_PATH = SettingsManager.instance.FILE_CACHE_PATH;
+		YT_FILE_CACHE_PATH = SettingsManager.instance.YT_FILE_CACHE_PATH;
 	}
 
 	public function cacheYouTubePlaylistToAudio(cardId:String, hardRefresh:Bool = false) {
