@@ -1,6 +1,7 @@
 
 sandbox
-dist
+dist/*
+!dist/RFIDTriggerServer.hl
 vol
 hxformat.json
 release
