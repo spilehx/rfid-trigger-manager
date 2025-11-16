@@ -313,7 +313,7 @@ YT_FILE_CACHE_PATH = FileSystemHelpers.instance.getFullPath(RFIDTriggerServerCon
 		l.push("Options:");
 		l.push(INDENT + "--help" + TAB + "Display this help message and exit.");
 		for (arg in applicationArguments) {
-			l.push(INDENT + "-" + arg.keyValue + TAB + arg.description);
+			l.push(INDENT + arg.keyValue + TAB + arg.description);
 		}
 		
 

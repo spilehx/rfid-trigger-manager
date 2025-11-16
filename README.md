@@ -21,6 +21,19 @@ An application to trigger playing music or any other action from RFID tags
 Still very much work in progress.
 
 
+
+
+# USAGE AND OPTIONS
+
+    RFIDTriggerServer [OPTIONS] 
+
+
+## General Options:
+    --help  Display this help message and exit.
+        -d      Runs in debug mode, so does not require sudo device detection deactivated.
+        -p      [PATH] Sets the path to the datafolder, if not there will be created.
+
+
 ### To run
 *Requires Hashlink to run currently*
 *Knowledge of haxe required*
