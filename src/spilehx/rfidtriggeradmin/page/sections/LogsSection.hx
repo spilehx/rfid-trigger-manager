@@ -1,4 +1,4 @@
-package spilehx.rfidtriggeradmin.page.components;
+package spilehx.rfidtriggeradmin.page.sections;
 
 import haxe.ui.components.Label;
 import haxe.ui.containers.ScrollView;

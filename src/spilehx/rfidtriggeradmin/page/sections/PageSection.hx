@@ -1,4 +1,4 @@
-package spilehx.rfidtriggeradmin.page.components;
+package spilehx.rfidtriggeradmin.page.sections;
 
 import spilehx.rfidtriggeradmin.tools.AnimateEffect;
 import haxe.ui.events.UIEvent;
@@ -9,7 +9,7 @@ import haxe.ui.containers.VBox;
 import haxe.ui.containers.Box;
 
 @:xml('
-   <vbox width="95%" height="10%" style="padding:10px;">
+   <vbox width="100%" height="10%" style="padding:10px;">
         <label id="titleLable" verticalAlign="center" />
         <frame id="mainframe" width="100%" height="100%" horizontalAlign="center" verticalAlign="center">
             <box id="mainframeContent" width="100%" height="100%" horizontalAlign="center" verticalAlign="center">

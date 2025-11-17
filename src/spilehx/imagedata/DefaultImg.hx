@@ -1,4 +1,4 @@
-package spilehx.rfidtriggerserver.helpers;
+package spilehx.imagedata;
 
 import haxe.crypto.Base64;
 import haxe.io.Bytes;

@@ -1,6 +1,5 @@
-package spilehx.rfidtriggeradmin.page.components;
+package spilehx.rfidtriggeradmin.page.sections;
 
-import haxe.ui.events.MouseEvent;
 import haxe.ui.events.UIEvent;
 import spilehx.rfidtriggerserver.managers.settings.SettingsData;
 import haxe.ui.containers.VBox;

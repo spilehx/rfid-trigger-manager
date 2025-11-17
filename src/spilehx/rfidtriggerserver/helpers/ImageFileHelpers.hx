@@ -1,5 +1,6 @@
 package spilehx.rfidtriggerserver.helpers;
 
+import spilehx.imagedata.DefaultImg;
 import haxe.io.Bytes;
 import sys.FileSystem;
 import spilehx.rfidtriggerserver.managers.SettingsManager;
