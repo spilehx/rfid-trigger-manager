@@ -18,10 +18,10 @@
 -main RFIDTriggerServer
 --hl dist/RFIDTriggerServer.hl
 
-# Buid hashlink C code
---next
--lib weblink hashlink
--cp src
--main RFIDTriggerServer
--D hlgen.makefile=make
---hl dist/out/RFIDTriggerServer.c
+# # Buid hashlink C code
+# --next
+# -lib weblink hashlink
+# -cp src
+# -main RFIDTriggerServer
+# -D hlgen.makefile=make
+# --hl dist/out/RFIDTriggerServer.c

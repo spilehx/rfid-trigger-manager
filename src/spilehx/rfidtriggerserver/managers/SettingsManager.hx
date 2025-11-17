@@ -15,17 +15,11 @@ class SettingsManager extends spilehx.core.ManagerCore {
 
 	public var isDebug:String = "false";
 	public var applicationDataFolder:String = RFIDTriggerServerConfig.APP_DATA_FOLDER_DEFAULT_PATH;
+	public var IMAGE_FOLDER_PATH:String;
+	private var SETTINGS_FILE_PATH:String;
 
-	// private static final SETTINGS_FILE_NAME:String = "settings.json";
-	// private static final SETTINGS_PATH:String = "./appdata";
-	// private static var SETTINGS_FILE_PATH:String = SETTINGS_PATH + "/" + SETTINGS_FILE_NAME;
-	// private static var IMAGE_FOLDER_NAME:String = "images";
-	// public static var IMAGE_FOLDER_PATH:String = SETTINGS_PATH + "/" + IMAGE_FOLDER_NAME;
-public  var IMAGE_FOLDER_PATH:String;
-private  var SETTINGS_FILE_PATH:String;
-
-public  var FILE_CACHE_PATH:String;
-public  var YT_FILE_CACHE_PATH:String;
+	public var FILE_CACHE_PATH:String;
+	public var YT_FILE_CACHE_PATH:String;
 
 	@:isVar public var settings(get, set):SettingsData;
 	@:isVar public var verboseLogging(get, set):Bool;
@@ -35,40 +29,29 @@ public  var YT_FILE_CACHE_PATH:String;
 	private override function new() {
 		super();
 		applicationArguments.push(new CommandArg("d", "isDebug", "Runs in debug mode, so does not require sudo, and does not look for devices."));
-		applicationArguments.push(new CommandArg("p", "applicationDataFolder", "[PATH] Sets the path to the settings and cache folder, if there is not one you will be prompted to create"));
+		applicationArguments.push(new CommandArg("p", "applicationDataFolder",
+			"[PATH] Sets the path to the settings and cache folder, if there is not one you will be prompted to create"));
 
 		this.settings = new SettingsData();
 	}
 
 	public function init() {
-		// applicationArguments.push(new CommandArg("d", "isDebug", "Runs in debug mode, so does not require sudo, and does not look for devices."));
-		// applicationArguments.push(new CommandArg("p", "applicationDataFolder", "[PATH] Sets the path to the settings and cache folder, if there is not one you will be prompted to create"));
 
-		// this.settings = new SettingsData();
+		FileSystemHelpers.instance.setupApplicationDataFolder(function() {
+			USER_MESSAGE("Using app data at: " + applicationDataFolder);
 
+			SETTINGS_FILE_PATH = FileSystemHelpers.instance.getFullPath(RFIDTriggerServerConfig.SETTINGS_FOLDER + "/"
+				+ RFIDTriggerServerConfig.SETTINGS_FILE_NAME);
+			IMAGE_FOLDER_PATH = FileSystemHelpers.instance.getFullPath(RFIDTriggerServerConfig.IMAGE_FOLDER);
+			FILE_CACHE_PATH = FileSystemHelpers.instance.getFullPath(RFIDTriggerServerConfig.CACHE_FOLDER);
+			YT_FILE_CACHE_PATH = FileSystemHelpers.instance.getFullPath(RFIDTriggerServerConfig.YT_CACHE_FOLDER);
 
-		FileSystemHelpers.instance.setupApplicationDataFolder(function () {
-			USER_MESSAGE("Using app data at: "+applicationDataFolder);
-	
-
-SETTINGS_FILE_PATH = FileSystemHelpers.instance.getFullPath(RFIDTriggerServerConfig.SETTINGS_FOLDER+"/"+RFIDTriggerServerConfig.SETTINGS_FILE_NAME);
-IMAGE_FOLDER_PATH = FileSystemHelpers.instance.getFullPath(RFIDTriggerServerConfig.IMAGE_FOLDER);
-FILE_CACHE_PATH = FileSystemHelpers.instance.getFullPath(RFIDTriggerServerConfig.CACHE_FOLDER);
-YT_FILE_CACHE_PATH = FileSystemHelpers.instance.getFullPath(RFIDTriggerServerConfig.YT_CACHE_FOLDER);
-
-
-
-
-
-
-		// FileSystemHelpers.ensurePath(IMAGE_FOLDER_PATH);
-		validateSettingsFileExists();
-		loadSettings();
-		updateAvalibleDevices();
-		GlobalLoggingSettings.settings.verbose = this.settings.verboseLogging;
-		resetCards();
-		validateCardActions();
-
+			validateSettingsFileExists();
+			loadSettings();
+			updateAvalibleDevices();
+			GlobalLoggingSettings.settings.verbose = this.settings.verboseLogging;
+			resetCards();
+			validateCardActions();
 		});
 	}
 
@@ -94,7 +77,7 @@ YT_FILE_CACHE_PATH = FileSystemHelpers.instance.getFullPath(RFIDTriggerServerCon
 		saveSettingsData();
 	}
 
-	public function getActiveCardId():String{
+	public function getActiveCardId():String {
 		for (card in settings.cards) {
 			if (card.active == true) {
 				return card.id;
@@ -108,7 +91,8 @@ YT_FILE_CACHE_PATH = FileSystemHelpers.instance.getFullPath(RFIDTriggerServerCon
 
 		if (settings.avalibleCardActions != null) {
 			var userMsgIndentStr:String = "\n    - ";
-			USER_MESSAGE("  " + settings.avalibleCardActions.length + " actions found " + userMsgIndentStr + settings.avalibleCardActions.join(userMsgIndentStr));
+			USER_MESSAGE("  " + settings.avalibleCardActions.length + " actions found " + userMsgIndentStr
+				+ settings.avalibleCardActions.join(userMsgIndentStr));
 
 			for (card in settings.cards) {
 				if (card.action.length < 1) {
@@ -315,7 +299,6 @@ YT_FILE_CACHE_PATH = FileSystemHelpers.instance.getFullPath(RFIDTriggerServerCon
 		for (arg in applicationArguments) {
 			l.push(INDENT + arg.keyValue + TAB + arg.description);
 		}
-		
 
 		l.push("");
 		l.push("Examples:");

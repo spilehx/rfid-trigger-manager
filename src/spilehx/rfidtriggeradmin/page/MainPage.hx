@@ -1,5 +1,6 @@
 package spilehx.rfidtriggeradmin.page;
 
+import spilehx.rfidtriggeradmin.page.components.modelwindow.ModalWindow.ModalContentSettings;
 import spilehx.imagedata.SettingsIconImg;
 import spilehx.imagedata.LogoImg;
 import haxe.ui.components.Image;
@@ -23,7 +24,7 @@ class MainPage extends Box {
 
 	private static final CONTENT_PADDING:Float = 15;
 
-	private static final HEADER_HEIGHT:Float = 10;
+	private static final HEADER_HEIGHT:Float = 5;
 	private static final FOOTER_HEIGHT:Float = 3;
 
 	private static final SECTION_CONTENT_HEIGHT:Float = 100 - HEADER_HEIGHT - FOOTER_HEIGHT;
@@ -64,8 +65,6 @@ class MainPage extends Box {
 		// TODO: make this a neat standalone class with its own nice haxeui xml
 		var header:Box = new Box();
 
-		// header.backgroundColor = 0xcc66cc;
-
 		header.verticalAlign = "center";
 		header.horizontalAlign = "center";
 		header.percentWidth = 100;
@@ -80,11 +79,10 @@ class MainPage extends Box {
 		header.addComponent(logoImg);
 
 		var settingButton:Box = new Box();
-		// settingButton.backgroundColor = 0x6670cc;
 		settingButton.verticalAlign = "bottom";
 		settingButton.horizontalAlign = "right";
 		settingButton.percentWidth = 5;
-		settingButton.percentHeight = 35;
+		settingButton.percentHeight = 45;
 
 		var settingIconImg:Image = SettingsIconImg.getImageComponent();
 		settingIconImg.percentHeight = 90;
@@ -96,7 +94,7 @@ class MainPage extends Box {
 		header.addComponent(settingButton);
 
 		settingButton.registerEvent(MouseEvent.CLICK, function(e) {
-			trace("click");
+			RFIDTriggerAdminView.instance.openModal(new ModalContentSettings());
 		});
 	}
 
@@ -145,7 +143,6 @@ class MainPage extends Box {
 		});
 
 		footerContent.addComponent(siteLink);
-
 		footer.addComponent(footerContent);
 	}
 
@@ -155,7 +152,7 @@ class MainPage extends Box {
 		sectionContainer.horizontalAlign = "center";
 		sectionContainer.percentWidth = 100;
 		sectionContainer.percentHeight = SECTION_CONTENT_HEIGHT;
-		sectionContainer.verticalSpacing = 5;
+		sectionContainer.verticalSpacing = 10;
 		contentContainer.addComponent(sectionContainer);
 
 		addOverViewSection();
