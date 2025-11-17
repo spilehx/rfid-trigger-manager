@@ -33,6 +33,19 @@ An application to trigger playing music or any other action from RFID tags
         -p      [PATH] Sets the path to the datafolder, if not there will be created.
 
 
+
+
+# USAGE AND OPTIONS
+
+    RFIDTriggerServer [OPTIONS] 
+
+
+## General Options:
+    --help  Display this help message and exit.
+        -d      Runs in debug mode, so does not require sudo device detection deactivated.
+        -p      [PATH] Sets the path to the datafolder, if not there will be created.
+
+
 ### To run
 *Requires Hashlink to run currently*
 *Knowledge of haxe required*
@@ -48,7 +61,6 @@ Or build from source:
 - Enter the dist folder and run ``hl RFIDTriggerServer.hl``
 - command line options avalible ``hl RFIDTriggerServer.hl --help``
 - Open a browser to http://localhost:1337
-
 
 
 
