@@ -1,5 +1,6 @@
 package spilehx.rfidtriggeradmin.page;
 
+import spilehx.config.RFIDTriggerAdminFonts;
 import spilehx.config.RFIDTriggerAdminText;
 import spilehx.config.RFIDTriggerAdminSettings;
 import spilehx.rfidtriggeradmin.page.components.modelwindow.ModalWindow.ModalContentSettings;
@@ -121,7 +122,7 @@ class MainPage extends Box {
 		footerContent.verticalAlign = "center";
 
 		var versionLabel:Label = new Label();
-		RFIDTriggerAdminSettings.SET_FONT_XS(versionLabel);
+		RFIDTriggerAdminFonts.SET_FONT_XS(versionLabel);
 		versionLabel.color = RFIDTriggerAdminSettings.FOOTER_CONTENT_COLOUR;
 
 		// TODO: Dynamic footer version to be injected in build
@@ -133,7 +134,7 @@ class MainPage extends Box {
 		footerContent.addComponent(versionLabel);
 
 		var siteLink:Link = new Link();
-		RFIDTriggerAdminSettings.SET_FONT_XS(siteLink);
+		RFIDTriggerAdminFonts.SET_FONT_XS(siteLink);
 		siteLink.color = RFIDTriggerAdminSettings.FOOTER_CONTENT_COLOUR;
 		siteLink.text = RFIDTriggerAdminText.MAIN_PAGE_FOOTER_SITE_LINK_TEXT;
 		siteLink.horizontalAlign = "right";

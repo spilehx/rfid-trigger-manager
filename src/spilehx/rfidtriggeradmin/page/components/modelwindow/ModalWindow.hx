@@ -1,5 +1,6 @@
 package spilehx.rfidtriggeradmin.page.components.modelwindow;
 
+import spilehx.config.RFIDTriggerAdminFonts;
 import spilehx.config.RFIDTriggerAdminSettings;
 import haxe.ui.components.DropDown;
 import haxe.ui.containers.VBox;
@@ -85,7 +86,7 @@ class ModalContentSettings extends Box {
 	public function new() {
 		super();
 
-		RFIDTriggerAdminSettings.SET_FONT_S(closeBtn, true);
+		RFIDTriggerAdminFonts.SET_FONT_S(closeBtn, true);
 		closeBtn.registerEvent(MouseEvent.CLICK, function(e) {
 			RFIDTriggerAdminView.instance.closeModal();
 		});
@@ -188,11 +189,11 @@ class SettingsSection extends Box {
 		if (state == true) {
 			label.color = RFIDTriggerAdminSettings.SETTING_MODAL_ITEM_ACTIVE_COLOUR;
 			label.marginLeft = 15;
-			RFIDTriggerAdminSettings.SET_FONT_M(label, true);
+			RFIDTriggerAdminFonts.SET_FONT_M(label, true);
 		} else {
 			label.color = RFIDTriggerAdminSettings.SETTING_MODAL_ITEM_INACTIVE_COLOUR;
 			label.marginLeft = 25;
-			RFIDTriggerAdminSettings.SET_FONT_S(label, false);
+			RFIDTriggerAdminFonts.SET_FONT_S(label, false);
 		}
 	}
 
@@ -228,7 +229,7 @@ class SettingsSectionItem extends Box {
 	private function setup() {
 		label = new Label();
 		label.text = title;
-		RFIDTriggerAdminSettings.SET_FONT_S(label, false);
+		RFIDTriggerAdminFonts.SET_FONT_S(label, false);
 		label.color = RFIDTriggerAdminSettings.SETTING_MODAL_ITEM_ACTIVE_COLOUR;
 		this.addComponent(label);
 

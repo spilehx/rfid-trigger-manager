@@ -1,5 +1,6 @@
 package spilehx.rfidtriggeradmin.page.sections;
 
+import spilehx.config.RFIDTriggerAdminFonts;
 import spilehx.config.RFIDTriggerAdminSettings;
 import haxe.ui.events.UIEvent;
 import spilehx.rfidtriggerserver.managers.settings.SettingsData;
@@ -34,9 +35,9 @@ class OverViewSection extends Box {
 	}
 
 	private function setup() {
-		RFIDTriggerAdminSettings.SET_FONT_S(deviceIDLable, true);
-		RFIDTriggerAdminSettings.SET_FONT_S(lastUpdatedLable, true);
-		RFIDTriggerAdminSettings.SET_FONT_S(lastUpdatedValueLable, false);
+		RFIDTriggerAdminFonts.SET_FONT_S(deviceIDLable, true);
+		RFIDTriggerAdminFonts.SET_FONT_S(lastUpdatedLable, true);
+		RFIDTriggerAdminFonts.SET_FONT_S(lastUpdatedValueLable, false);
 
 		this.registerEvent(UIEvent.SHOWN, onShown);
 

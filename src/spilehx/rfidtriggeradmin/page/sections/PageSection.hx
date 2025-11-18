@@ -1,5 +1,6 @@
 package spilehx.rfidtriggeradmin.page.sections;
 
+import spilehx.config.RFIDTriggerAdminFonts;
 import spilehx.config.RFIDTriggerAdminSettings;
 import spilehx.rfidtriggeradmin.tools.AnimateEffect;
 import haxe.ui.events.UIEvent;
@@ -51,7 +52,7 @@ class PageSection extends VBox {
 
 	private function setTitle(title:String) {
 		titleLable.text = title.toUpperCase();
-		RFIDTriggerAdminSettings.SET_FONT_L(titleLable, true);
+		RFIDTriggerAdminFonts.SET_FONT_L(titleLable, true);
 		titleLable.color = RFIDTriggerAdminSettings.SECTION_TITLE_COLOUR;
 	}
 
