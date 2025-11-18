@@ -1,4 +1,4 @@
-package spilehx.rfidtriggeradmin;
+package spilehx.config;
 
 class RFIDTriggerAdminText {
 	public static final MAIN_PAGE_FOOTER_SITE_LINK_TEXT:String = "Need help or found a bug?";

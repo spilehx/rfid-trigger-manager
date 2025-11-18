@@ -1,5 +1,7 @@
 package spilehx.rfidtriggeradmin.page.sections;
 
+import spilehx.config.RFIDTriggerAdminText;
+import spilehx.config.RFIDTriggerAdminSettings;
 import haxe.ui.components.Label;
 import haxe.ui.core.Component;
 import haxe.ui.containers.VBox;

@@ -9,6 +9,7 @@ import spilehx.rfidtriggerserver.managers.ActionManager;
 import sys.io.File;
 import haxe.Json;
 import sys.FileSystem;
+import spilehx.config.RFIDTriggerServerConfig;
 
 class SettingsManager extends spilehx.core.ManagerCore {
 	private var applicationArguments:Array<CommandArg> = new Array<CommandArg>();

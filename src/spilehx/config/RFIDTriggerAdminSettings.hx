@@ -1,4 +1,4 @@
-package spilehx.rfidtriggeradmin;
+package spilehx.config;
 
 import haxe.ui.components.Label;
 

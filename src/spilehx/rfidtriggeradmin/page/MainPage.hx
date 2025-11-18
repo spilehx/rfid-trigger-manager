@@ -1,5 +1,7 @@
 package spilehx.rfidtriggeradmin.page;
 
+import spilehx.config.RFIDTriggerAdminText;
+import spilehx.config.RFIDTriggerAdminSettings;
 import spilehx.rfidtriggeradmin.page.components.modelwindow.ModalWindow.ModalContentSettings;
 import spilehx.imagedata.SettingsIconImg;
 import spilehx.imagedata.LogoImg;
@@ -7,7 +9,6 @@ import haxe.ui.components.Image;
 import haxe.ui.events.MouseEvent;
 import haxe.ui.components.Link;
 import haxe.ui.components.Label;
-import haxe.ui.containers.HBox;
 import haxe.ui.components.HorizontalRule;
 import spilehx.rfidtriggeradmin.page.sections.LogsSection;
 import spilehx.rfidtriggeradmin.page.sections.CardsListSection;

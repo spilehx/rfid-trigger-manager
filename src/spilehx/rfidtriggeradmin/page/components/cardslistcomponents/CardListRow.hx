@@ -1,5 +1,7 @@
 package spilehx.rfidtriggeradmin.page.components.cardslistcomponents;
 
+import spilehx.config.RFIDTriggerAdminImg;
+import spilehx.config.RFIDTriggerAdminSettings;
 import haxe.crypto.Base64;
 import haxe.io.Bytes;
 import js.html.FileReader;

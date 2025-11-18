@@ -186,7 +186,6 @@ class RFIDReader {
 		var tail:haxe.io.Bytes = (bytes.length >= 24) ? bytes.sub(16, 8) : bytes.sub(8, 8);
 
 		var bi = new BytesInput(tail);
-		// LE on Linux input
 		var typ = u16le(bi);
 		var code = u16le(bi);
 		var value = s32le(bi);
@@ -201,7 +200,6 @@ class RFIDReader {
 			p = "/host_proc/bus/input/devices";
 		}
 
-		// var p = "/proc/bus/input/devices";
 		if (!FileSystem.exists(p)) {
 			return null;
 		}

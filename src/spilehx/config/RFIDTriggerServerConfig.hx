@@ -1,4 +1,4 @@
-package spilehx.rfidtriggerserver;
+package spilehx.config;
 
 class RFIDTriggerServerConfig {
 	public static final APP_DATA_FOLDER_DEFAULT_PATH:String = "./RFIDTriggerServerData";

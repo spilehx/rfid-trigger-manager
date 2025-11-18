@@ -1,5 +1,6 @@
 package spilehx.rfidtriggeradmin;
 
+import spilehx.config.RFIDTriggerAdminSettings;
 import spilehx.rfidtriggerserver.managers.settings.SettingsData;
 import haxe.ui.core.Component;
 import spilehx.rfidtriggeradmin.page.components.modelwindow.ModalWindow;

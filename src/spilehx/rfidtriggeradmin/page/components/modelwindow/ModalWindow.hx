@@ -1,5 +1,6 @@
 package spilehx.rfidtriggeradmin.page.components.modelwindow;
 
+import spilehx.config.RFIDTriggerAdminSettings;
 import haxe.ui.components.DropDown;
 import haxe.ui.containers.VBox;
 import haxe.ui.components.Label;

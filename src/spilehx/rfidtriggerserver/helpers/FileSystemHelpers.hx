@@ -4,6 +4,7 @@ import haxe.Constraints.Function;
 import spilehx.rfidtriggerserver.managers.SettingsManager;
 import sys.FileSystem;
 import haxe.io.Path;
+import spilehx.config.RFIDTriggerServerConfig;
 
 class FileSystemHelpers {
 	public static final instance:FileSystemHelpers = new FileSystemHelpers();

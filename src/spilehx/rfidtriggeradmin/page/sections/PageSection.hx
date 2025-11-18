@@ -1,5 +1,6 @@
 package spilehx.rfidtriggeradmin.page.sections;
 
+import spilehx.config.RFIDTriggerAdminSettings;
 import spilehx.rfidtriggeradmin.tools.AnimateEffect;
 import haxe.ui.events.UIEvent;
 import spilehx.rfidtriggeradmin.tools.UiFilterEffects;

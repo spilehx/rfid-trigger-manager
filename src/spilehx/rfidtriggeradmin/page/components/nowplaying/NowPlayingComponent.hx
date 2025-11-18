@@ -1,5 +1,6 @@
 package spilehx.rfidtriggeradmin.page.components.nowplaying;
 
+import spilehx.config.RFIDTriggerAdminSettings;
 import spilehx.rfidtriggeradmin.tools.AnimateEffect;
 import spilehx.rfidtriggerserver.managers.settings.CardData;
 import spilehx.rfidtriggeradmin.tools.UiFilterEffects;
