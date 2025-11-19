@@ -1,43 +1,41 @@
 package spilehx.config;
 
+import haxe.ui.core.Component;
 import haxe.ui.components.Label;
 
 class RFIDTriggerAdminFonts {
-    private static final SITE_FONT_PRIMARY:String = "NunitoSans";
-     private static final SITE_FONT_SECONDARY:String = "Antonio-VariableFont_wght";
 
-    
+	private static final SITE_FONT_PRIMARY:String = "AvenirRegular";
+	private static final SITE_FONT_SECONDARY:String = "Antonio-VariableFont_wght";
 
-    public static function SET_FONT_L(field:Label, bold:Bool = false) {
+	public static function SET_FONT_L(field:Component, bold:Bool = false, primary:Bool = true) {
 		var fontSize:Float = 2.8;
-		setFont(field, fontSize, bold, SITE_FONT_SECONDARY);
+		setFont(field, fontSize, bold, primary);
 	}
 
-	public static function SET_FONT_M(field:Label, bold:Bool = false) {
+	public static function SET_FONT_M(field:Component, bold:Bool = false, primary:Bool = true) {
 		var fontSize:Float = 2;
-		setFont(field, fontSize, bold, SITE_FONT_SECONDARY);
+		setFont(field, fontSize, bold, primary);
 	}
 
-	public static function SET_FONT_S(field:Label, bold:Bool = false) {
+	public static function SET_FONT_S(field:Component, bold:Bool = false, primary:Bool = true) {
 		var fontSize:Float = 1.5;
-		setFont(field, fontSize, bold, SITE_FONT_PRIMARY);
+		setFont(field, fontSize, bold, primary);
 	}
-	public static function SET_FONT_XS(field:Label, bold:Bool = false) {
+
+	public static function SET_FONT_XS(field:Component, bold:Bool = false, primary:Bool = true) {
 		var fontSize:Float = 1.3;
-		setFont(field, fontSize, bold, SITE_FONT_PRIMARY);
+		setFont(field, fontSize, bold, primary);
 	}
 
-    
-
-	private static function setFont(field:Label, fontSize:Float, bold:Bool = false, fontNameString:String = "") {
+	private static function setFont(field:Component, fontSize:Float, bold:Bool = false, primary:Bool = true) {
 		// var styleString:String = " font-size: " + fontSize + "vh;";
+		var fontNameString:String = SITE_FONT_PRIMARY;
+		if (primary != true) {
+			fontNameString = SITE_FONT_SECONDARY;
+		}
 
-        if(fontNameString == ""){
-            fontNameString = SITE_FONT_PRIMARY;
-        }
-
-        var styleString:String = " font-family: '" + fontNameString + "'; font-size: " + fontSize + "vh;";
-
+		var styleString:String = " font-family: '" + fontNameString + "'; font-size: " + fontSize + "vh;";
 
 		if (bold == true) {
 			styleString += " font-weight: bold;";

@@ -38,8 +38,7 @@ class RFIDTriggerServerController {
 		USER_MESSAGE("Checking for avalible updates", true);
 
 		var runningVersion:String = VersionManager.getVersion();
-		// var runningSomanticVersion:SomanticVersion = new SomanticVersion(runningVersion);
-		// if (runningSomanticVersion.valid == true) {
+		if (new SomanticVersion(runningVersion).valid == true) {
 			VersionManager.getLatestReleaseName(RFIDTriggerServerConfig.REPO_ORG, RFIDTriggerServerConfig.REPO_NAME, newestVersion -> {
 				var isNewerVersion:Bool = VersionManager.isNewerVersion(runningVersion, newestVersion);
 				if(isNewerVersion == true){
@@ -47,9 +46,9 @@ class RFIDTriggerServerController {
 				}
 				onUpdateCheck(isNewerVersion);
 			});
-		// } else {
-		// 	onUpdateCheck(false);
-		// }
+		} else {
+			onUpdateCheck(false);
+		}
 	}
 
 	private function initManagers() {

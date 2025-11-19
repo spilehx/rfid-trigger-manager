@@ -8,7 +8,7 @@ class RFIDTriggerAdminSettings {
 	public static final SECTION_BG_COLOUR:Int = 0x333333;
 	public static final SECTION_FIELD_BG_COLOUR:Int = 0x444444;
 	public static final SECTION_BORDER_COLOUR:Int = 0xDFDCDC;
-	public static final SECTION_TITLE_COLOUR:Int = 0xFFFFFF;
+	public static final SECTION_TITLE_COLOUR:Int = 0xA8A8A8;
 	public static final FOOTER_CONTENT_COLOUR:Int = 0xAFAFAF;
 	public static final TEXT_WARN_COLOUR:Int = 0x912E2E;
 	public static final CARDLIST_SECTION_ROW_ACTIVE_BG_COLOUR:Int = 0x504F4F;

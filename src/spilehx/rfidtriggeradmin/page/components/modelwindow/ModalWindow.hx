@@ -101,17 +101,16 @@ class ModalContentSettings extends Box {
 	private function addSections() {
 		sectionContent = new Array<SettingsSection>();
 
-		sectionContent.push(new SettingsSection("DEVICE", [
+		sectionContent.push(new SettingsSection("Dvice", [
 			new SettingsSectionItem("Device ID", "deviceID", SettingsSectionItem.TYPE_DROPDOWN, "avalibleDevices")
 		]));
 
-		// sectionContent.push(new SettingsSection("You-tube",
-		//     [new SettingsSectionItem("poo")]
-		// ));
+		// sectionContent.push(new SettingsSection("Spotify", [
+		// 	new SettingsSectionItem("Device ID", "deviceID", SettingsSectionItem.TYPE_DROPDOWN, "avalibleDevices")
+		// ]));
 
-		// sectionContent.push(new SettingsSection("Spotify",
-		//     [new SettingsSectionItem("poo")]
-		// ));
+
+	
 
 		for (s in sectionContent) {
 			s.onSelected = onSectionSelected;

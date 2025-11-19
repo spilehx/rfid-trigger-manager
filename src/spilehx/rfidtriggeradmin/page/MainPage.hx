@@ -1,5 +1,6 @@
 package spilehx.rfidtriggeradmin.page;
 
+import spilehx.rfidtriggeradmin.tools.UiFilterEffects;
 import spilehx.rfidtriggeradmin.tools.AnimateEffect;
 import spilehx.config.RFIDTriggerAdminImg;
 import spilehx.config.RFIDTriggerAdminFonts;
@@ -170,15 +171,18 @@ class MainPage extends Box {
 	}
 
 	private function addOverViewSection() {
-		var section = new PageSection(new OverViewSection(), RFIDTriggerAdminText.OVERVIEW_SECTION_TITLE, true);
+		var section = new PageSection(new OverViewSection(), RFIDTriggerAdminText.OVERVIEW_SECTION_TITLE, false, false);
+		section.backgroundColor = section.borderColor = 0x000000;
+		
+		
 		sectionContainer.addComponent(section);
-		section.percentHeight = 15;
+		section.percentHeight = 10;
 	}
 
 	private function addCardsSection() {
 		var section = new PageSection(new CardsListSection(), RFIDTriggerAdminText.CARDLIST_SECTION_TITLE, true);
 		sectionContainer.addComponent(section);
-		section.percentHeight = 55;
+		section.percentHeight = 60;
 	}
 
 	private function addLogsSection() {

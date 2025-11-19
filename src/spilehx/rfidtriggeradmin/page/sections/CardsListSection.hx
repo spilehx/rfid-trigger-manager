@@ -88,8 +88,7 @@ class CardsListSection extends Box {
 
 		headerRow.paddingTop = 5;
 		tableContainer.borderRadius = 3;
-			tableContainer.borderSize = 1;
-		// headerRow.backgroundColor = RFIDTriggerAdminSettings.SECTION_FIELD_BG_COLOUR;
+		tableContainer.borderSize = 1;
 		cardScrollView.backgroundColor = RFIDTriggerAdminSettings.SECTION_FIELD_BG_COLOUR;
 
 		tableContainer.opacity = 0;
@@ -111,7 +110,7 @@ class CardsListSection extends Box {
 			populateRows(settings);
 		} else {
 			noCardsContent.hidden = false;
-				tableContainer.opacity = 0;
+			tableContainer.opacity = 0;
 		}
 	}
 
