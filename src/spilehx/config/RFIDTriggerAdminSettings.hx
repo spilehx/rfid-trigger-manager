@@ -24,6 +24,7 @@ class RFIDTriggerAdminSettings {
 	public static final SETTING_MODAL_ITEM_INACTIVE_COLOUR:Int = 0x616161;
 
 	public static final GITUB_REPO_URL:String = "https://github.com/spilehx/rfid-trigger-manager";
+	public static final GITUB_REPO_RELEASE_URL:String = "https://github.com/spilehx/rfid-trigger-manager/releases";
 
 	
 }

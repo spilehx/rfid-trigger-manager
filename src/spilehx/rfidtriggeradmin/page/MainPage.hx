@@ -124,15 +124,15 @@ class MainPage extends Box {
 		var versionLabel:Label = new Label();
 		RFIDTriggerAdminFonts.SET_FONT_XS(versionLabel);
 		versionLabel.color = RFIDTriggerAdminSettings.FOOTER_CONTENT_COLOUR;
-
-		// TODO: Dynamic footer version to be injected in build
 		versionLabel.text = RFIDTriggerAdminText.VERSION_PREFIX +": "+ RFIDTriggerAdminConfigManager.instance.settings.version;
-
 
 		if(RFIDTriggerAdminConfigManager.instance.settings.updateAvalible == true){
 			versionLabel.text += "   "+RFIDTriggerAdminText.UPDATE_AVAILABLE;
 			versionLabel.color = RFIDTriggerAdminSettings.TEXT_WARN_COLOUR;
 			AnimateEffect.attensionHeartBeat(versionLabel);
+			versionLabel.registerEvent(MouseEvent.CLICK,function(e) {
+				js.Browser.window.open(RFIDTriggerAdminSettings.GITUB_REPO_RELEASE_URL, "_blank");
+			});
 		}
 
 		versionLabel.horizontalAlign = "left";

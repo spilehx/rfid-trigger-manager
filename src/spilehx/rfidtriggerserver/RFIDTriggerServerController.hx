@@ -19,7 +19,7 @@ class RFIDTriggerServerController {
 
 		checkForUpdates(function(updateAvalible:Bool) {
 			if (updateAvalible == true) {
-				USER_MESSAGE_WARN("Newer version Avalible!");
+				
 				USER_MESSAGE_WARN("Download here: " + RFIDTriggerServerConfig.REPO_RELEASE_URL);
 				Sys.sleep(2);
 			} else {
@@ -38,14 +38,18 @@ class RFIDTriggerServerController {
 		USER_MESSAGE("Checking for avalible updates", true);
 
 		var runningVersion:String = VersionManager.getVersion();
-		var runningSomanticVersion:SomanticVersion = new SomanticVersion(runningVersion);
-		if (runningSomanticVersion.valid == true) {
+		// var runningSomanticVersion:SomanticVersion = new SomanticVersion(runningVersion);
+		// if (runningSomanticVersion.valid == true) {
 			VersionManager.getLatestReleaseName(RFIDTriggerServerConfig.REPO_ORG, RFIDTriggerServerConfig.REPO_NAME, newestVersion -> {
-				onUpdateCheck(VersionManager.isNewerVersion(runningVersion, newestVersion));
+				var isNewerVersion:Bool = VersionManager.isNewerVersion(runningVersion, newestVersion);
+				if(isNewerVersion == true){
+					USER_MESSAGE_WARN("Newer version Avalible! "+newestVersion);
+				}
+				onUpdateCheck(isNewerVersion);
 			});
-		} else {
-			onUpdateCheck(false);
-		}
+		// } else {
+		// 	onUpdateCheck(false);
+		// }
 	}
 
 	private function initManagers() {
