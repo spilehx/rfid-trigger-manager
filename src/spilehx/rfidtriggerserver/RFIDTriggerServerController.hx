@@ -1,5 +1,7 @@
 package spilehx.rfidtriggerserver;
 
+import spilehx.config.RFIDTriggerServerConfig;
+import spilehx.versionmanager.VersionManager;
 import spilehx.rfidtriggerserver.helpers.CacheManager;
 import spilehx.core.SysUtils;
 import spilehx.rfidtriggerserver.helpers.ActionCommandHelpers;
@@ -14,16 +16,39 @@ class RFIDTriggerServerController {
 
 	public function init() {
 		GlobalLoggingSettings.settings.verbose = true;
-		ActionCommandHelpers.ensureDefaultConfigFiles();
-		initManagers();
+
+		checkForUpdates(function(updateAvalible:Bool) {
+			if (updateAvalible == true) {
+				USER_MESSAGE_WARN("Newer version Avalible!");
+				USER_MESSAGE_WARN("Download here: " + RFIDTriggerServerConfig.REPO_RELEASE_URL);
+				Sys.sleep(2);
+			} else {
+				USER_MESSAGE("Running newest version!");
+			}
+			ActionCommandHelpers.ensureDefaultConfigFiles();
+			initManagers();
+		});
+	}
+
+	private function checkForUpdates(onUpdateCheck:Bool->Void) {
+		USER_MESSAGE("Checking for avalible updates", true);
+
+		var runningVersion:String = VersionManager.getVersion();
+		var runningSomanticVersion:SomanticVersion = new SomanticVersion(runningVersion);
+		if (runningSomanticVersion.valid == true) {
+			VersionManager.getLatestReleaseName(RFIDTriggerServerConfig.REPO_ORG, RFIDTriggerServerConfig.REPO_NAME, newestVersion -> {
+				onUpdateCheck(VersionManager.isNewerVersion(runningVersion, newestVersion));
+			});
+		} else {
+			onUpdateCheck(false);
+		}
 	}
 
 	private function initManagers() {
-		
 		ActionManager.instance.init(); // required before settings so we have a list of avalible actions
 		SettingsManager.instance.parseApplicationArguments();
 		SettingsManager.instance.init();
-		
+
 		CacheManager.instance.init();
 		AdminManager.instance.init();
 
@@ -38,10 +63,10 @@ class RFIDTriggerServerController {
 		}
 	}
 
-	private function notPrivledgedError(){
+	private function notPrivledgedError() {
 		var notSudoMsg:String = "Application not being run privileged\n	prehaps try \"$ sudo hl RFIDTriggerServer.hl\" ";
-			Sys.println("\033[1;" + 31 + "mSTARTUP ERROR: \033[0m"+notSudoMsg);
-			Sys.exit(1);
+		Sys.println("\033[1;" + 31 + "mSTARTUP ERROR: \033[0m" + notSudoMsg);
+		Sys.exit(1);
 	}
 
 	private function onDeviceConnected() {}

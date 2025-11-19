@@ -1,6 +1,5 @@
 package spilehx.macrotools;
 
-// import haxe.macro.Context;
 import sys.FileSystem;
 import sys.io.File;
 

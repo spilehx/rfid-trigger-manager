@@ -37,12 +37,10 @@ class SettingsManager extends spilehx.core.ManagerCore {
 	}
 
 	public function init() {
-
 		FileSystemHelpers.instance.setupApplicationDataFolder(function() {
 			USER_MESSAGE("Using app data at: " + applicationDataFolder);
 
-			SETTINGS_FILE_PATH = FileSystemHelpers.instance.getFullPath(RFIDTriggerServerConfig.SETTINGS_FOLDER + "/"
-				+ RFIDTriggerServerConfig.SETTINGS_FILE_NAME);
+			SETTINGS_FILE_PATH = FileSystemHelpers.instance.getFullPath(RFIDTriggerServerConfig.SETTINGS_FOLDER + "/"+ RFIDTriggerServerConfig.SETTINGS_FILE_NAME);
 			IMAGE_FOLDER_PATH = FileSystemHelpers.instance.getFullPath(RFIDTriggerServerConfig.IMAGE_FOLDER);
 			FILE_CACHE_PATH = FileSystemHelpers.instance.getFullPath(RFIDTriggerServerConfig.CACHE_FOLDER);
 			YT_FILE_CACHE_PATH = FileSystemHelpers.instance.getFullPath(RFIDTriggerServerConfig.YT_CACHE_FOLDER);
@@ -53,7 +51,15 @@ class SettingsManager extends spilehx.core.ManagerCore {
 			GlobalLoggingSettings.settings.verbose = this.settings.verboseLogging;
 			resetCards();
 			validateCardActions();
+			saveVersion();
 		});
+	}
+
+	private function saveVersion() {
+		settings.version = spilehx.versionmanager.VersionManager.getVersion();
+		settings.buildTime = spilehx.versionmanager.VersionManager.getBuildTime();
+		USER_MESSAGE("Running version: \""+settings.version+"\" built: "+settings.buildTime, true);
+		saveSettingsData();
 	}
 
 	function get_verboseLogging():Bool {
