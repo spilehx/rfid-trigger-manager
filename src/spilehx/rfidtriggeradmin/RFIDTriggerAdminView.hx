@@ -1,5 +1,6 @@
 package spilehx.rfidtriggeradmin;
 
+import js.Browser;
 import spilehx.config.RFIDTriggerAdminSettings;
 import spilehx.rfidtriggerserver.managers.settings.SettingsData;
 import haxe.ui.core.Component;
@@ -13,8 +14,10 @@ import spilehx.rfidtriggeradmin.page.MainPage;
 
 class RFIDTriggerAdminView {
 	public static final instance:RFIDTriggerAdminView = new RFIDTriggerAdminView();
+
 	private var modal:ModalWindow;
-	var _app:HaxeUIApp;
+	private var _app:HaxeUIApp;
+	private var initalSettingsLoadComplete:Bool = false;
 
 	private function new() {}
 
@@ -53,13 +56,24 @@ class RFIDTriggerAdminView {
 	}
 
 	private function onReady() {
-		_app.addComponent(new MainPage());
 		RFIDTriggerAdminConfigManager.instance.registerSettingUpdate(onConfigUpdate);
 	}
 
+	private var lastBuildStamp:Float;
 	private function onConfigUpdate(settings:SettingsData) {
-		if(settings.deviceID == ""){
-			openModal(new ModalContentSettings());
+		if (initalSettingsLoadComplete == false) {
+			initalSettingsLoadComplete = true;
+			lastBuildStamp = settings.buildTime;
+			_app.addComponent(new MainPage());
+
+			if (settings.deviceID == "") {
+				openModal(new ModalContentSettings());
+			}
+		}else{
+			// if backend has been updated refresh page
+			if(lastBuildStamp != settings.buildTime){
+				Browser.location.reload();
+			}
 		}
 	}
 

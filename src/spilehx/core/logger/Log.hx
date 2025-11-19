@@ -143,7 +143,6 @@ class Log {
 			#elseif (neko)
 			Sys.println(msg);
 			#else
-			// TODO:We might need other platforms here
 			Sys.println(msg);
 			#end
 		}

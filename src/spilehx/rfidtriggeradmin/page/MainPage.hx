@@ -125,7 +125,7 @@ class MainPage extends Box {
 		versionLabel.color = RFIDTriggerAdminSettings.FOOTER_CONTENT_COLOUR;
 
 		// TODO: Dynamic footer version to be injected in build
-		versionLabel.text = RFIDTriggerAdminText.VERSION_PREFIX + "0.0.1";
+		versionLabel.text = RFIDTriggerAdminText.VERSION_PREFIX +": "+ RFIDTriggerAdminConfigManager.instance.settings.version;
 
 		versionLabel.horizontalAlign = "left";
 		versionLabel.verticalAlign = "center";
