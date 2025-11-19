@@ -1,5 +1,6 @@
 package spilehx.rfidtriggeradmin.page.components.cardslistcomponents;
 
+import spilehx.config.RFIDTriggerAdminFonts;
 import spilehx.config.RFIDTriggerAdminImg;
 import spilehx.config.RFIDTriggerAdminSettings;
 import haxe.crypto.Base64;
@@ -18,32 +19,32 @@ import haxe.ui.containers.Box;
    	<box width="100%" >
         <rule />
         <hbox id="content" width="100%" height="100%" horizontalSpacing="5">
-		    <box id="card_enabled" width="100%" height="75%" verticalAlign="center">
+		    <box id="card_enabled" width="3%" height="75%" verticalAlign="center">
                 <checkbox id="card_enabled_field" horizontalAlign="center" verticalAlign="center" height="90%"/>
             </box>
-            <box id="card_id" width="100%" height="75%" verticalAlign="center">
+            <box id="card_id" width="5%" height="75%" verticalAlign="center">
                 <label id="card_id_field" textAlign="left" horizontalAlign="center" verticalAlign="center" width="100%" text="card_id"/>
             </box>
-            <box id="card_name" width="100%" height="75%" verticalAlign="center">
+            <box id="card_name" width="20%" height="75%" verticalAlign="center">
                 <textfield id="card_name_field" horizontalAlign="center" verticalAlign="center" height="95%" width="100%" text="card_name"/>
             </box>
-			<box id="card_active" width="100%" height="75%" verticalAlign="center">
+			<box id="card_active" width="5%" height="75%" verticalAlign="center">
                 <label id="card_active_field" textAlign="center" horizontalAlign="center" verticalAlign="center" width="100%" text="card_id"/>
             </box>
-            <box id="card_command" width="100%" height="75%" verticalAlign="center">
+            <box id="card_command" width="20%" height="75%" verticalAlign="center">
                  <textfield id="card_command_field" horizontalAlign="center" verticalAlign="center" height="95%" width="100%" text="card_command"/>
             </box>
-            <box id="card_action" width="100%" height="75%" verticalAlign="center">
+            <box id="card_action" width="20%" height="75%" verticalAlign="center">
                  <dropdown id="card_action_field" horizontalAlign="center" verticalAlign="center" height="95%" width="100%" text="action"/>
             </box>
-            <box id="card_start" width="100%" height="75%" verticalAlign="center">
-               <image id="card_start_img" height="90%" width ="90%" horizontalAlign="center" verticalAlign="center" scaleMode="fitheight" />
+            <box id="card_start" width="3%" height="75%" verticalAlign="center">
+               <image id="card_start_img" height="80%" width ="80%" horizontalAlign="center" verticalAlign="center" scaleMode="fitheight" />
             </box>
-            <box id="card_image" width="100%" height="75%" verticalAlign="center">
-               <image id="card_image_img" height="90%" width ="90%" horizontalAlign="center" verticalAlign="center" scaleMode="fitheight" />
+            <box id="card_image" width="3%" height="75%" verticalAlign="center">
+               <image id="card_image_img" height="80%" width ="80%" horizontalAlign="center" verticalAlign="center" scaleMode="fitheight" />
             </box>
-			<box id="card_cache" width="100%" height="75%" verticalAlign="center">
-               <image id="card_cache_img" height="90%" width ="90%" horizontalAlign="center" verticalAlign="center" scaleMode="fitheight" />
+			<box id="card_cache" width="3%" height="75%" verticalAlign="center">
+               <image id="card_cache_img" height="80%" width ="80%" horizontalAlign="center" verticalAlign="center" scaleMode="fitheight" />
             </box>
         </hbox>
 	</box>
@@ -52,6 +53,7 @@ class CardListRow extends Box {
 	@:isVar public var cardId(get, null):String;
 
 	public var card:CardData;
+
 	private var userUpdating:Bool = false;
 
 	public function new(card:CardData) {
@@ -87,13 +89,14 @@ class CardListRow extends Box {
 		if (userUpdating == false) {
 			card_id_field.text = card.id;
 			card_name_field.text = card.name;
+
 			card_enabled_field.selected = card.enabled;
 
 			card_active_field.text = Std.string(card.active);
 			card_command_field.text = Std.string(card.command);
 			card_action_field.text = Std.string(card.action);
 
-			card_cache.hidden = (card.action != "YTPlayListAction");//TODO: should be a static const
+			card_cache.hidden = (card.action != "YTPlayListAction"); // TODO: should be a static const
 
 			// set action options
 			var options:Array<Dynamic> = new Array<Dynamic>();
@@ -105,6 +108,17 @@ class CardListRow extends Box {
 
 			card_action_field.dataSource.data = options;
 		}
+
+		setFonts();
+	}
+
+	private function setFonts() {
+		RFIDTriggerAdminFonts.SET_FONT_XS(card_id_field, true);
+		RFIDTriggerAdminFonts.SET_FONT_XS(card_name_field);
+
+		RFIDTriggerAdminFonts.SET_FONT_XS(card_active_field);
+		RFIDTriggerAdminFonts.SET_FONT_XS(card_command_field);
+		RFIDTriggerAdminFonts.SET_FONT_XS(card_action_field);
 	}
 
 	private function setupChangeEvents() {
@@ -130,7 +144,7 @@ class CardListRow extends Box {
 		});
 
 		card_cache.registerEvent(MouseEvent.CLICK, function(e) {
-			LOG("Caching playlist: "+card.id);
+			LOG("Caching playlist: " + card.id);
 			RFIDTriggerAdminConfigManager.instance.sendCacheRequest(card.id);
 		});
 	}
@@ -138,7 +152,6 @@ class CardListRow extends Box {
 	private function onValueChanged(fieldName:String, value:Dynamic) {
 		var currentVal:Dynamic = Reflect.getProperty(card, fieldName);
 		if (currentVal != value) {
-		
 			Reflect.setProperty(card, fieldName, value);
 			RFIDTriggerAdminConfigManager.instance.updateCard(card, onCardDataUpdateComplete);
 			userUpdating = true;
