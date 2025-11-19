@@ -17,7 +17,15 @@ class Macros {
 
 
 #if (neko || eval || display)
+	public static function macroClassfileAsString(path:String):String {
+		var content:String = "";
 
+		if (sys.FileSystem.exists(path) == true) {
+			content = sys.io.File.getContent(path);
+		}
+
+		return content;
+	}
 
 	public static function getEnvVar(varName:String):Dynamic {
 		/* 

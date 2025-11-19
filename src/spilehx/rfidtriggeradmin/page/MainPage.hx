@@ -1,11 +1,10 @@
 package spilehx.rfidtriggeradmin.page;
 
+import spilehx.config.RFIDTriggerAdminImg;
 import spilehx.config.RFIDTriggerAdminFonts;
 import spilehx.config.RFIDTriggerAdminText;
 import spilehx.config.RFIDTriggerAdminSettings;
 import spilehx.rfidtriggeradmin.page.components.modelwindow.ModalWindow.ModalContentSettings;
-import spilehx.imagedata.SettingsIconImg;
-import spilehx.imagedata.LogoImg;
 import haxe.ui.components.Image;
 import haxe.ui.events.MouseEvent;
 import haxe.ui.components.Link;
@@ -73,7 +72,7 @@ class MainPage extends Box {
 		header.percentHeight = HEADER_HEIGHT;
 		contentContainer.addComponent(header);
 
-		var logoImg:Image = LogoImg.getImageComponent();
+		var logoImg:Image = RFIDTriggerAdminImg.getImageComponent(RFIDTriggerAdminImg.LOGO_IMG);
 		logoImg.percentHeight = 100;
 		logoImg.scaleMode = ScaleMode.FIT_HEIGHT;
 		logoImg.verticalAlign = "center";
@@ -86,7 +85,7 @@ class MainPage extends Box {
 		settingButton.percentWidth = 5;
 		settingButton.percentHeight = 45;
 
-		var settingIconImg:Image = SettingsIconImg.getImageComponent();
+		var settingIconImg:Image = RFIDTriggerAdminImg.getImageComponent(RFIDTriggerAdminImg.SETTINGS_ICON_IMG);
 		settingIconImg.percentHeight = 90;
 		settingIconImg.scaleMode = ScaleMode.FIT_HEIGHT;
 		settingIconImg.verticalAlign = "center";

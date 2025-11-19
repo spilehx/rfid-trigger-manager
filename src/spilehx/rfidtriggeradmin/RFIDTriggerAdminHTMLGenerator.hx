@@ -4,6 +4,7 @@ import spilehx.macrotools.Macros;
 import haxe.macro.Expr;
 
 class RFIDTriggerAdminHTMLGenerator {
+
 	private static var ENV_KEY_adminHTMLFileName:String = "adminHTMLFileName";
 	private static var ENV_KEY_outputFolderPath:String = "outputFolderPath";
 
@@ -28,6 +29,7 @@ class RFIDTriggerAdminHTMLGenerator {
 		head.addChild(title);
 
 		head.addChild(getStyleTag());
+		head.addChild(getFontStyleTag());
 		var script:HtmlItem = new HtmlItem("script");
 		script.addInnerHTML("$ADMIN_PAGE_SCRIPT_TAG");
 		head.addChild(script);
@@ -76,6 +78,14 @@ class RFIDTriggerAdminHTMLGenerator {
 
         ");
 
+		return style;
+	}
+
+
+	private static function getFontStyleTag():HtmlItem {
+		var fontCSS:String = Macros.macroClassfileAsString("./assets/fonts.css");
+		var style:HtmlItem = new HtmlItem("style");
+		style.addInnerHTML(fontCSS);
 		return style;
 	}
 }
