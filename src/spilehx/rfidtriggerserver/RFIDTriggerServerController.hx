@@ -26,7 +26,11 @@ class RFIDTriggerServerController {
 				USER_MESSAGE("Running newest version!");
 			}
 			ActionCommandHelpers.ensureDefaultConfigFiles();
+
 			initManagers();
+
+			SettingsManager.instance.settings.updateAvalible = updateAvalible;
+			SettingsManager.instance.saveSettingsData();
 		});
 	}
 

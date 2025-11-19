@@ -1,5 +1,6 @@
 package spilehx.rfidtriggeradmin.page;
 
+import spilehx.rfidtriggeradmin.tools.AnimateEffect;
 import spilehx.config.RFIDTriggerAdminImg;
 import spilehx.config.RFIDTriggerAdminFonts;
 import spilehx.config.RFIDTriggerAdminText;
@@ -126,6 +127,13 @@ class MainPage extends Box {
 
 		// TODO: Dynamic footer version to be injected in build
 		versionLabel.text = RFIDTriggerAdminText.VERSION_PREFIX +": "+ RFIDTriggerAdminConfigManager.instance.settings.version;
+
+
+		if(RFIDTriggerAdminConfigManager.instance.settings.updateAvalible == true){
+			versionLabel.text += "   "+RFIDTriggerAdminText.UPDATE_AVAILABLE;
+			versionLabel.color = RFIDTriggerAdminSettings.TEXT_WARN_COLOUR;
+			AnimateEffect.attensionHeartBeat(versionLabel);
+		}
 
 		versionLabel.horizontalAlign = "left";
 		versionLabel.verticalAlign = "center";
