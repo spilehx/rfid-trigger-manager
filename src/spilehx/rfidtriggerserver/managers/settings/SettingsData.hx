@@ -1,7 +1,10 @@
 package spilehx.rfidtriggerserver.managers.settings;
 
 class SettingsData {
-    public var verboseLogging:Bool; // show all outputs
+	public var version:String;
+	public var buildTime:Float;
+	public var updateAvalible:Bool;
+	public var verboseLogging:Bool; // show all outputs
 	public var deviceID:String; // stored id of usb rfid reader
 	public var cards:Array<CardData>;
 	public var avalibleCardActions:Array<String>;
@@ -9,7 +12,10 @@ class SettingsData {
 	public var logs:String;
 
 	public function new() {
-        verboseLogging = true;
+		updateAvalible = false;
+		buildTime = 0;
+		version = "";
+		verboseLogging = true;
 		deviceID = "";
 		cards = new Array<CardData>();
 		avalibleCardActions = [];
@@ -17,4 +23,3 @@ class SettingsData {
 		logs = "";
 	}
 }
-

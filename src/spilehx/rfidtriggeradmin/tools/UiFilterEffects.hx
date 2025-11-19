@@ -1,5 +1,6 @@
 package spilehx.rfidtriggeradmin.tools;
 
+import spilehx.config.RFIDTriggerAdminSettings;
 import haxe.ui.core.Component;
 import haxe.ui.components.Image;
 import js.html.Element;

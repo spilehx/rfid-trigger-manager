@@ -1,5 +1,10 @@
 package spilehx.rfidtriggeradmin;
 
+import js.Browser;
+import spilehx.config.RFIDTriggerAdminSettings;
+import spilehx.rfidtriggerserver.managers.settings.SettingsData;
+import haxe.ui.core.Component;
+import spilehx.rfidtriggeradmin.page.components.modelwindow.ModalWindow;
 import spilehx.core.web.WebDOM;
 import haxe.ui.Toolkit;
 import js.html.Element;
@@ -8,9 +13,15 @@ import haxe.ui.HaxeUIApp;
 import spilehx.rfidtriggeradmin.page.MainPage;
 
 class RFIDTriggerAdminView {
-	var _app:HaxeUIApp;
+	public static final instance:RFIDTriggerAdminView = new RFIDTriggerAdminView();
 
-	public function new() {
+	private var modal:ModalWindow;
+	private var _app:HaxeUIApp;
+	private var initalSettingsLoadComplete:Bool = false;
+
+	private function new() {}
+
+	public function init() {
 		LOG("RFIDTriggerAdminView - Starting");
 		if (js.Browser.document.readyState == "complete") {
 			onDomLoaded();
@@ -24,8 +35,8 @@ class RFIDTriggerAdminView {
 		setPageStyle();
 	}
 
-	private function setPageStyle(){
-		var colString:String = StringTools.replace(RFIDTriggerAdminSettings.PAGE_BG_COLOUR,"0x","#");
+	private function setPageStyle() {
+		var colString:String = StringTools.replace(RFIDTriggerAdminSettings.PAGE_BG_COLOUR, "0x", "#");
 		js.Browser.document.body.style.backgroundColor = colString;
 	}
 
@@ -45,6 +56,38 @@ class RFIDTriggerAdminView {
 	}
 
 	private function onReady() {
-        _app.addComponent(new MainPage());
+		RFIDTriggerAdminConfigManager.instance.registerSettingUpdate(onConfigUpdate);
+	}
+
+	private var lastBuildStamp:Float;
+	private function onConfigUpdate(settings:SettingsData) {
+		if (initalSettingsLoadComplete == false) {
+			initalSettingsLoadComplete = true;
+			lastBuildStamp = settings.buildTime;
+			_app.addComponent(new MainPage());
+
+			if (settings.deviceID == "") {
+				openModal(new ModalContentSettings());
+			}
+		}else{
+			// if backend has been updated refresh page
+			if(lastBuildStamp != settings.buildTime){
+				Browser.location.reload();
+			}
+		}
+	}
+
+	public function openModal(content:Component) {
+		if (modal == null) {
+			modal = new ModalWindow(content);
+			_app.addComponent(modal);
+		}
+	}
+
+	public function closeModal() {
+		if (modal != null) {
+			_app.removeComponent(modal);
+			modal = null;
+		}
 	}
 }

@@ -1,5 +1,7 @@
-package spilehx.rfidtriggeradmin.page.components;
+package spilehx.rfidtriggeradmin.page.sections;
 
+import spilehx.config.RFIDTriggerAdminFonts;
+import spilehx.config.RFIDTriggerAdminSettings;
 import spilehx.rfidtriggeradmin.tools.AnimateEffect;
 import haxe.ui.events.UIEvent;
 import spilehx.rfidtriggeradmin.tools.UiFilterEffects;
@@ -9,7 +11,7 @@ import haxe.ui.containers.VBox;
 import haxe.ui.containers.Box;
 
 @:xml('
-   <vbox width="95%" height="10%" style="padding:10px;">
+   <vbox width="100%" height="10%" style="padding:10px;">
         <label id="titleLable" verticalAlign="center" />
         <frame id="mainframe" width="100%" height="100%" horizontalAlign="center" verticalAlign="center">
             <box id="mainframeContent" width="100%" height="100%" horizontalAlign="center" verticalAlign="center">
@@ -50,7 +52,7 @@ class PageSection extends VBox {
 
 	private function setTitle(title:String) {
 		titleLable.text = title.toUpperCase();
-		RFIDTriggerAdminSettings.SET_FONT_L(titleLable, true);
+		RFIDTriggerAdminFonts.SET_FONT_L(titleLable, true);
 		titleLable.color = RFIDTriggerAdminSettings.SECTION_TITLE_COLOUR;
 	}
 

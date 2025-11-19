@@ -1,5 +1,6 @@
 package spilehx.rfidtriggeradmin;
 
+import spilehx.config.RFIDTriggerAdminSettings;
 import spilehx.rfidtriggerserver.managers.settings.CardData;
 import haxe.Json;
 import spilehx.rfidtriggerserver.managers.settings.SettingsData;

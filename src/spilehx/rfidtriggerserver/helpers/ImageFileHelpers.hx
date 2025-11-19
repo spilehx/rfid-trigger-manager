@@ -1,5 +1,6 @@
 package spilehx.rfidtriggerserver.helpers;
 
+import spilehx.config.RFIDTriggerAdminImg;
 import haxe.io.Bytes;
 import sys.FileSystem;
 import spilehx.rfidtriggerserver.managers.SettingsManager;
@@ -17,7 +18,7 @@ class ImageFileHelpers {
 		var path:String = SettingsManager.instance.IMAGE_FOLDER_PATH + "/" + cardId + ".jpg";
 		var bytes:Bytes;
 		if (FileSystem.exists(path) == false) {
-			bytes = DefaultImg.getDefaultImage();
+			bytes = RFIDTriggerAdminImg.getBytes(RFIDTriggerAdminImg.DEFAULT_CARD_IMG_DATA);
 		} else {
 			bytes = File.getBytes(path);
 		}

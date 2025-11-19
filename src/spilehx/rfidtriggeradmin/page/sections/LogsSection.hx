@@ -1,5 +1,6 @@
-package spilehx.rfidtriggeradmin.page.components;
+package spilehx.rfidtriggeradmin.page.sections;
 
+import spilehx.config.RFIDTriggerAdminSettings;
 import haxe.ui.components.Label;
 import haxe.ui.containers.ScrollView;
 import haxe.ui.events.UIEvent;

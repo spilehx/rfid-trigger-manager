@@ -1,4 +1,4 @@
-## Create admin page js
+# Create admin page js
 -lib haxeui-html5 haxeui-core
 -cp src
 -main RFIDTriggerAdmin

@@ -1,5 +1,7 @@
 package spilehx.rfidtriggeradmin.page.components.nowplaying;
 
+import spilehx.config.RFIDTriggerAdminFonts;
+import spilehx.config.RFIDTriggerAdminSettings;
 import spilehx.rfidtriggeradmin.tools.AnimateEffect;
 import spilehx.rfidtriggerserver.managers.settings.CardData;
 import spilehx.rfidtriggeradmin.tools.UiFilterEffects;
@@ -33,7 +35,7 @@ class NowPlayingComponent extends Box {
 		this.borderColor = RFIDTriggerAdminSettings.SECTION_BORDER_COLOUR;
 		this.borderSize = 2;
 
-		RFIDTriggerAdminSettings.SET_FONT_M(nowPlayingLabel, true);
+		RFIDTriggerAdminFonts.SET_FONT_M(nowPlayingLabel, true);
 	}
 
 	private function onShown(e) {
