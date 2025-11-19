@@ -4,5 +4,5 @@ README.md
 docker-compose.yml
 
 .gitignore
-.git
+# .git
 .github
