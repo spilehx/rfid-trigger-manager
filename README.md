@@ -3,6 +3,8 @@
     <img src="https://raw.githubusercontent.com/spilehx/rfid-trigger-manager/main/docs/assets/text-logo.png" width="900" alt="" />
 </div>
 
+### NOTE: this readme is currently work in progress - there are lots of features not documented here! have a look at the code and try things out, see what you can find! I will document soon!
+
 
 ## Summary
 An application to trigger playing music or any other action from RFID tags
@@ -17,6 +19,7 @@ An application to trigger playing music or any other action from RFID tags
  - you can add your own spotify api credentials etc.
  - when you read the RFID again when its playing it will go to the next track,
  - you can upload cover art (in the web admin), which is served on a 'now playing' url http://localhost:1337/getimage
+ - A minimal "currently playing" web page is available at http://localhost:1337/currentlyplaying if you want to show on a secondary display (this updates automatically without reloading).
 
 
 
@@ -61,6 +64,10 @@ Or build from source:
 - Enter the dist folder and run ``hl RFIDTriggerServer.hl``
 - command line options avalible ``hl RFIDTriggerServer.hl --help``
 - Open a browser to http://localhost:1337
+
+If you want to build a binary so you dont have to use hashlink
+    - run ``docker compose -f docker-compose-build-release.yml up --build``
+    - When this is complete you will find a 'release' folder with the output.
 
 
 

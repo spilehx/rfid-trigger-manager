@@ -12,6 +12,7 @@ class RFIDTriggerAdminConfigManager {
 	private var updateTimer:Timer;
 
 	public var settings:SettingsData;
+	private var serverUrl:String;
 
 	public static final instance:RFIDTriggerAdminConfigManager = new RFIDTriggerAdminConfigManager();
 
@@ -22,9 +23,19 @@ class RFIDTriggerAdminConfigManager {
 		startAutoUpdate();
 	}
 
-	private function startAutoUpdate() {
-		updateTimer = new Timer(RFIDTriggerAdminSettings.UPDATE_INTERVAL);
+	public function startAutoUpdate(interval:Int = 0) {
+
+		if(interval == 0){
+			interval = RFIDTriggerAdminSettings.UPDATE_INTERVAL;
+		}
+		serverUrl = js.Browser.document.location.origin+"/";
+		updateTimer = new Timer(interval);
 		updateTimer.run = onUpdate;
+	}
+
+	public function stopAutoUpdate(){
+		updateTimer.stop();
+		updateTimer = null;
 	}
 
 	private function onUpdate() {
@@ -45,7 +56,6 @@ class RFIDTriggerAdminConfigManager {
 	private function onLoadError(response:Dynamic) {}
 
 	private function loadSettings(onSuccess:SettingsData->Void, onError:Dynamic->Void) {
-		var serverUrl:String = js.Browser.document.location.href;
 		var path:String = "config";
 
 		var httpReq:HTTPRequester = new HTTPRequester(serverUrl + path, "", function(data:Dynamic) {
@@ -60,7 +70,6 @@ class RFIDTriggerAdminConfigManager {
 	}
 
 	public function sendTriggerRequest(cardId:String) {
-		var serverUrl:String = js.Browser.document.location.href;
 		var path:String = "trigger?cardid=" + cardId;
 
 		var httpReq:HTTPRequester = new HTTPRequester(serverUrl + path, "", function(data:Dynamic) {}, function(data) {});
@@ -69,7 +78,6 @@ class RFIDTriggerAdminConfigManager {
 	}
 
 	public function sendCacheRequest(cardId:String) {
-		var serverUrl:String = js.Browser.document.location.href;
 		var path:String = "triggerytcache?cardid=" + cardId;
 
 		var httpReq:HTTPRequester = new HTTPRequester(serverUrl + path, "", function(data:Dynamic) {}, function(data) {});
@@ -78,7 +86,6 @@ class RFIDTriggerAdminConfigManager {
 	}
 
 	public function sendImgUploadRequest(cardId:String, imgData:String) {
-		var serverUrl:String = js.Browser.document.location.href;
 		var path:String = "uploadimage";
 
 		var data = {
@@ -92,7 +99,6 @@ class RFIDTriggerAdminConfigManager {
 	}
 
 	private function updateSettings(onSuccess:SettingsData->Void, onError:Dynamic->Void) {
-		var serverUrl:String = js.Browser.document.location.href;
 		var path:String = "setconfig";
 		var dataStr:String = Json.stringify(settings);
 

@@ -11,7 +11,7 @@ import haxe.io.Bytes;
 
 @:xml('
    	<box width="100%" height="100%" >
-		<image id="nowPlayingImg"  height="100%" verticalAlign="center"/>
+		<image id="nowPlayingImg"  height="100%" verticalAlign="center" horizontalAlign="center"/>
 	</box>
 ')
 class NowPlayingImageComponent extends Box {

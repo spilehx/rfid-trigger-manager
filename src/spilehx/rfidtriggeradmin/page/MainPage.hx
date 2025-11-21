@@ -48,8 +48,6 @@ class MainPage extends Box {
 	}
 
 	private function setupPage() {
-		trace("HELLLOOOO");
-
 		contentContainer = new VBox();
 		contentContainer.verticalAlign = "center";
 		contentContainer.horizontalAlign = "center";

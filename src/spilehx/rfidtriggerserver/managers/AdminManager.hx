@@ -1,5 +1,6 @@
 package spilehx.rfidtriggerserver.managers;
 
+import spilehx.rfidtriggerserver.managers.adminmanager.CurrentlyPlayingScreenRoute;
 import spilehx.rfidtriggerserver.managers.adminmanager.TiggerYTPlaylistCacheRoute;
 import spilehx.rfidtriggerserver.managers.adminmanager.GetImageRoute;
 import spilehx.rfidtriggerserver.managers.adminmanager.UploadImageRoute;
@@ -23,8 +24,8 @@ class AdminManager extends spilehx.core.ManagerCore {
 		HTTPServer.instance.addRoute(AdminRoute);
 		HTTPServer.instance.addRoute(TiggerCardRoute);
 		HTTPServer.instance.addRoute(TiggerYTPlaylistCacheRoute);
-
 		HTTPServer.instance.addRoute(UploadImageRoute);
 		HTTPServer.instance.addRoute(GetImageRoute);
+		HTTPServer.instance.addRoute(CurrentlyPlayingScreenRoute);
 	}
 }

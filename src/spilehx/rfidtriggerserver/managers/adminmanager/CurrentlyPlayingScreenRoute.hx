@@ -8,12 +8,13 @@ import weblink.Request;
 
 import weblink.Weblink;
 
-class AdminRoute extends Route {
+class CurrentlyPlayingScreenRoute extends Route {
 	public function new(server:Weblink) {
-		super("/", new RestDataObject(), Route.GET_METHOD, server);
+		super("/currentlyplaying", new RestDataObject(), Route.GET_METHOD, server);
 	}
 
 	override function onRequest(request:Request) {
 		this.response.send(AdminPageTools.getAdminPageContent());
 	}
 }
+
