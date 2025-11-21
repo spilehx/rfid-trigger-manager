@@ -1,5 +1,6 @@
 package spilehx.rfidtriggeradmin;
 
+import spilehx.rfidtriggeradmin.page.NowPlayingPage;
 import js.Browser;
 import spilehx.config.RFIDTriggerAdminSettings;
 import spilehx.rfidtriggerserver.managers.settings.SettingsData;
@@ -15,6 +16,7 @@ import spilehx.rfidtriggeradmin.page.MainPage;
 class RFIDTriggerAdminView {
 	public static final instance:RFIDTriggerAdminView = new RFIDTriggerAdminView();
 
+	private var lastBuildStamp:Float;
 	private var modal:ModalWindow;
 	private var _app:HaxeUIApp;
 	private var initalSettingsLoadComplete:Bool = false;
@@ -59,21 +61,36 @@ class RFIDTriggerAdminView {
 		RFIDTriggerAdminConfigManager.instance.registerSettingUpdate(onConfigUpdate);
 	}
 
-	private var lastBuildStamp:Float;
 	private function onConfigUpdate(settings:SettingsData) {
 		if (initalSettingsLoadComplete == false) {
 			initalSettingsLoadComplete = true;
 			lastBuildStamp = settings.buildTime;
-			_app.addComponent(new MainPage());
 
-			if (settings.deviceID == "") {
-				openModal(new ModalContentSettings());
-			}
-		}else{
+			routeToPage(settings);
+		} else {
 			// if backend has been updated refresh page
-			if(lastBuildStamp != settings.buildTime){
+			if (lastBuildStamp != settings.buildTime) {
 				Browser.location.reload();
 			}
+		}
+	}
+
+	private function forceConfig(settings:SettingsData) {
+		if (settings.deviceID == "") {
+			openModal(new ModalContentSettings());
+		}
+	}
+
+	private function routeToPage(settings:SettingsData) {
+		if (js.Browser.document.location.href.indexOf("currentlyplaying") > -1) {
+			// set update to slower rate
+			// RFIDTriggerAdminConfigManager.instance.stopAutoUpdate();
+			// RFIDTriggerAdminConfigManager.instance.startAutoUpdate(RFIDTriggerAdminSettings.UPDATE_INTERVAL_SLOW);
+
+			_app.addComponent(new NowPlayingPage());
+		} else {
+			_app.addComponent(new MainPage());
+			forceConfig(settings);
 		}
 	}
 
