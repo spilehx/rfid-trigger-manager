@@ -3,11 +3,91 @@
     <img src="https://raw.githubusercontent.com/spilehx/rfid-trigger-manager/main/docs/assets/text-logo.png" width="900" alt="" />
 </div>
 
-### NOTE: this readme is currently work in progress - there are lots of features not documented here! have a look at the code and try things out, see what you can find! I will document soon!
 
 
-## Summary
-An application to trigger playing music or any other action from RFID tags
+RFID Trigger Manager lets you turn ordinary RFID cards into (or hidden RFID tags) into  real-world shortcuts. Tap a card to start music, launch a playlist, start a home automation, or trigger a custom action. Just run it on a system connected to an RFID reader and use the a simple web interface to setup what your triggers do! 
+
+
+
+
+### Table of Contents
+ - **[Features](#features)**
+ - **[Setup](#setup)**
+   - **[Quick Start](#quick-start)**
+   - **[RFID Readers and tags](#rfid-readers-and-tags)**
+   - **[Web admin](#web-admin)**
+   - **[Actions](#actions)**
+   - **[Config and Files](#config-and-files)**
+   - **[CLI](#cli)**
+ - **[Extra Notes](#extra-notes)**
+   - **[What could I use this for](#what-could-i-use-this-for)**
+   - **[FAQ](#faq)**
+ - **[Building from source](#building-from-source)**
+ - **[Bugs issues and pull requests](bugs-issues-and-pull-requests)**
+ 
+
+# Features
+lorium ipsum
+
+# Setup
+lorium ipsum
+
+## Quick Start
+asdasd
+
+## RFID Readers and tags
+asdasd
+
+## Web admin
+asdasd
+
+## Actions
+asdasd
+
+## Config and files
+asdasdasd
+
+## CLI
+asdasdasd
+
+# Extra Notes
+asdadas
+
+## What could I use this for
+asdasd
+
+## FAQ
+asdasd
+
+- Why make this silly thing
+asdasd
+
+- What is a haxe?
+asdasd
+
+# Building from source
+asdasd
+
+# Bugs issues and pull requests?
+- known issues
+
+
+
+
+####   Use old physical media such as old cassette tapes to play digital music
+By placing small rfid tags in old cassette tapes, and running The Trigger manager on a small pc with reader in a box you can have a rack of cassets that actilly play music - beep to start, beep again to go to next track! You can even have 'Cassets' play internet radio or if you have a smart home setup why not get that barry white cassette to dim the lights before it starts playing.
+
+#### Custom phyical triggers for a PC
+- Got a passion for retro games? why not buy some old floppy disks and hide the RFID tags inside and then set them up to trigger games to start! - Wanna play Monkey Island, just pull out the floppy and beep it.
+- Have regular automations or tasks you frequently do? Put a tag in a physical object and have them on your desk ready to go! Working from home? Put a tag on your beer can cooler - beep it, Teams and Outlook close and Steam opens.
+- Do Table top games? put at tag in the base of that space marine!
+
+#### Home automations
+  If you have a system such as [Home Assistant](https://www.home-assistant.io/) Why not use physical objects to trigger things? Want the lights in the house to come on as its evening, just put [whatever random object with tag inside] on a shelf. 
+
+
+### Just some random suggestions - Please let me know if you come up with a cool use cases
+
 
 ### Features 
  - Detect and use USB RFID readers
