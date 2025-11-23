@@ -58,6 +58,12 @@ RFID Trigger Manager lets you turn ordinary RFID cards into (or hidden RFID tags
    - When you are happy, activate the tag with the tick box on the left.
    - Now every time you scan this tag it will trigger this **[action](#actions)**.
 
+<div align="center" width="100%">
+    <img src="https://raw.githubusercontent.com/spilehx/rfid-trigger-manager/main/docs/assets/setup_card.gif" width="900" alt="" />
+</div>
+
+
+
 ## RFID Readers and tags
 
 RFID readers are very cheap and easy to buy, as are the tags, [have a look on amazon](https://amzn.eu/d/f5meZi6)
