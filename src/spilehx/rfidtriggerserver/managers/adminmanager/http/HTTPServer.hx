@@ -1,15 +1,10 @@
 package spilehx.rfidtriggerserver.managers.adminmanager.http;
 
-import haxe.io.Bytes;
-import haxe.io.BytesInput;
-import haxe.io.Input;
 import wtri.Response;
 import wtri.Request;
 import wtri.Server;
 
-// import weblink.Weblink;
 class HTTPServer {
-	// private var server:Weblink;
 	private var server:Server;
 	private var routeClasses:Array<Class<Route>>;
 
@@ -23,25 +18,24 @@ class HTTPServer {
 	private function new() {
 		routeClasses = new Array<Class<Route>>();
 		routes = new Array<Route>();
-		server = new wtri.Server(onHandle);
 	}
 
 	public function startServer(?port:Int = 1337) {
 		this.port = port;
 		instantiateRoutes();
-		// server.listen(port, false);
-		server.listen(port,"localhost", true);
+		server = new wtri.Server(onHandle);
+		server.listen(port, "localhost");
+
+		// server = new wtri.Server(onHandle).listen(port, "localhost");
 	}
 
 	private function onHandle(req:Request, res:Response) {
-		var path:String = req.path;
-		var method:String = req.method;
-
 		var route = findRoute(req);
 		if (route == null) {
 			// LOG_WARN("404 route requested " + method + " " + path);
 			res.end(BAD_REQUEST);
 		} else {
+			// trace("BEFOR "+req.path);
 			route.handler(req, res);
 		}
 	}

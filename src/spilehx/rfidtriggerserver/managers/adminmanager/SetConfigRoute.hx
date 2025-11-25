@@ -1,12 +1,9 @@
 package spilehx.rfidtriggerserver.managers.adminmanager;
 
-
 import wtri.Request;
 import wtri.Server;
 import spilehx.rfidtriggerserver.managers.adminmanager.http.Route;
 import spilehx.rfidtriggerserver.managers.settings.CardData;
-
-
 
 class SetConfigRoute extends Route {
 	public function new(server:Server) {
@@ -14,16 +11,10 @@ class SetConfigRoute extends Route {
 	}
 
 	override function onRequest(request:Request) {
-
-
-
-		
-				LOG_OBJECT(haxe.Json.parse(Std.string(request.data)));
 		var requestDataObj:Dynamic = haxe.Json.parse(Std.string(request.data));
 		var newCardArray:Array<CardData> = requestDataObj.cards;
 
-
-		if(SettingsManager.instance.settings.deviceID != requestDataObj.deviceID){
+		if (SettingsManager.instance.settings.deviceID != requestDataObj.deviceID) {
 			USER_MESSAGE("Updated device: " + requestDataObj.deviceID);
 			SettingsManager.instance.settings.deviceID = requestDataObj.deviceID;
 		}

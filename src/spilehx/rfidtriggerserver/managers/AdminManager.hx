@@ -22,7 +22,7 @@ class AdminManager extends spilehx.core.ManagerCore {
 		HTTPServer.instance.addRoute(GetConfigRoute);
 		HTTPServer.instance.addRoute(SetConfigRoute);
 		HTTPServer.instance.addRoute(AdminRoute);
-		// HTTPServer.instance.addRoute(TiggerCardRoute);
+		HTTPServer.instance.addRoute(TiggerCardRoute);
 		// HTTPServer.instance.addRoute(TiggerYTPlaylistCacheRoute);
 		// HTTPServer.instance.addRoute(UploadImageRoute);
 		// HTTPServer.instance.addRoute(GetImageRoute);

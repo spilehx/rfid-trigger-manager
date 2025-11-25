@@ -40,6 +40,6 @@
 # -D analyzer-optimize
 # -D HXCPP_OPTIMIZE
 
-## cleanup
---next
+# ## cleanup
+# --next
 --cmd cp ./dist/cpp/RFIDTriggerServer ./dist/
