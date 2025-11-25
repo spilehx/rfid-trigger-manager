@@ -1,12 +1,13 @@
 package spilehx.rfidtriggerserver.managers.adminmanager;
 
+import wtri.Request;
+import wtri.Server;
 import spilehx.core.logger.LogStream;
 import spilehx.rfidtriggerserver.managers.adminmanager.http.Route;
-import weblink.Request;
-import weblink.Weblink;
+
 
 class GetConfigRoute extends Route {
-	public function new(server:Weblink) {
+	public function new(server:Server) {
 		super("/config", new ConfigRouteData(), Route.GET_METHOD, server);
 	}
 
@@ -15,6 +16,6 @@ class GetConfigRoute extends Route {
 		var configRouteData:ConfigRouteData = new ConfigRouteData();
 		configRouteData.config = SettingsManager.instance.settings;
 		configRouteData.logs = LogStream.instance.logString;
-		respond(configRouteData);
+		sendData(configRouteData);
 	}
 }

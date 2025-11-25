@@ -63,6 +63,7 @@ class HTTPRequester {
 
 		h.setPostData(_data);
 
+
 		h.onData = function(data) {
 			_onSuccess(data);
 		}

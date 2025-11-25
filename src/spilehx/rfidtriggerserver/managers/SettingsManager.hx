@@ -12,11 +12,14 @@ import sys.FileSystem;
 import spilehx.config.RFIDTriggerServerConfig;
 
 class SettingsManager extends spilehx.core.ManagerCore {
-	private var applicationArguments:Array<CommandArg> = new Array<CommandArg>();
-
 	public var isDebug:String = "false";
+
+	private var initTriggered:Bool = false;
+	private var prePopulatedValues:Dynamic = {};
+
 	public var applicationDataFolder:String = RFIDTriggerServerConfig.APP_DATA_FOLDER_DEFAULT_PATH;
 	public var IMAGE_FOLDER_PATH:String;
+
 	private var SETTINGS_FILE_PATH:String;
 
 	public var FILE_CACHE_PATH:String;
@@ -29,18 +32,17 @@ class SettingsManager extends spilehx.core.ManagerCore {
 
 	private override function new() {
 		super();
-		applicationArguments.push(new CommandArg("d", "isDebug", "Runs in debug mode, so does not require sudo, and does not look for devices."));
-		applicationArguments.push(new CommandArg("p", "applicationDataFolder",
-			"[PATH] Sets the path to the settings and cache folder, if there is not one you will be prompted to create"));
-
 		this.settings = new SettingsData();
 	}
 
 	public function init() {
+		initTriggered = true;
+		setValuesFromPrepopulatedDate();
 		FileSystemHelpers.instance.setupApplicationDataFolder(function() {
 			USER_MESSAGE("Using app data at: " + applicationDataFolder);
 
-			SETTINGS_FILE_PATH = FileSystemHelpers.instance.getFullPath(RFIDTriggerServerConfig.SETTINGS_FOLDER + "/"+ RFIDTriggerServerConfig.SETTINGS_FILE_NAME);
+			SETTINGS_FILE_PATH = FileSystemHelpers.instance.getFullPath(RFIDTriggerServerConfig.SETTINGS_FOLDER + "/"
+				+ RFIDTriggerServerConfig.SETTINGS_FILE_NAME);
 			IMAGE_FOLDER_PATH = FileSystemHelpers.instance.getFullPath(RFIDTriggerServerConfig.IMAGE_FOLDER);
 			FILE_CACHE_PATH = FileSystemHelpers.instance.getFullPath(RFIDTriggerServerConfig.CACHE_FOLDER);
 			YT_FILE_CACHE_PATH = FileSystemHelpers.instance.getFullPath(RFIDTriggerServerConfig.YT_CACHE_FOLDER);
@@ -55,10 +57,61 @@ class SettingsManager extends spilehx.core.ManagerCore {
 		});
 	}
 
+	// public function setPrePopulateValues(){
+	// 	//used to set values before the manager has started,
+	// 	// for example if we get cli args
+	// 	// they will then be used after init
+	// }
+
+	public function addPrePopulateValue(field:String, value:Dynamic) {
+		// used to set values before the manager has started,
+		// for example if we get cli args
+		// they will then be used after init
+
+		if (initTriggered == true) {
+			LOG_ERROR("Only run this before settings init!");
+			Sys.exit(0);
+		}
+
+		// if (Reflect.hasField(this, field) == true) {
+		Reflect.setField(prePopulatedValues, field, value);
+		// } else {
+		// 	LOG_ERROR("Cant set settings " + field + " - My fault! submit an bug please!");
+		// }
+	}
+
+	private function setValuesFromPrepopulatedDate() {
+		var fields = Reflect.fields(prePopulatedValues);
+
+
+// Cache valid fields for this instance's class
+var validFields = Type.getInstanceFields(Type.getClass(this));
+
+for (field in fields) {
+    if (validFields.indexOf(field) != -1) {
+        Reflect.setField(this, field, Reflect.getProperty(prePopulatedValues, field));
+    } else {
+        LOG_ERROR("Cant set settings " + field + " - My fault! submit a bug please!");
+    }
+}
+
+
+
+
+		// for (field in fields) {
+		// 	LOG("what??? "+this.isDebug);
+		// 	if (Reflect.hasField(this, field) == true) {
+		// 		Reflect.setField(prePopulatedValues, field, Reflect.getProperty(prePopulatedValues, field));
+		// 	} else {
+		// 		LOG_ERROR("Cant set settings " + field + " - My fault! submit an bug please!");
+		// 	}
+		// }
+	}
+
 	private function saveVersion() {
 		settings.version = spilehx.versionmanager.VersionManager.getVersion();
 		settings.buildTime = spilehx.versionmanager.VersionManager.getBuildTime();
-		USER_MESSAGE("Running version: \""+settings.version+"\" built: "+settings.buildTime, true);
+		USER_MESSAGE("Running version: \"" + settings.version + "\" built: " + settings.buildTime, true);
 		saveSettingsData();
 	}
 
@@ -224,104 +277,88 @@ class SettingsManager extends spilehx.core.ManagerCore {
 		return null;
 	}
 
-	public function parseApplicationArguments() {
-		var args:Array<String> = Sys.args();
-		var argPairs:Array<Array<String>> = new Array<Array<String>>();
-
-		if (args.length == 0) {
-			return;
-		}
-
-		if (args.indexOf("--help") > -1) {
-			printArgHelpAndExit();
-		}
-
-		// by definition there must be an even number of args
-		if (args.length % 2 != 0) {
-			printArgHelpAndExit("Bad Arguments");
-		}
-
-		while (args.length > 0) {
-			var argKey:String = args.shift();
-			var argValue:String = args.shift();
-			argPairs.push([argKey, argValue]);
-		}
-
-		// validate args
-		for (argPair in argPairs) {
-			var submittedKey:String = argPair[0];
-			var submittedValue:String = argPair[1];
-			var foundApplicationArgument:CommandArg = Lambda.find(applicationArguments, arg -> arg.keyValue == submittedKey);
-
-			if (foundApplicationArgument == null) {
-				printArgHelpAndExit("Bad Arguments " + submittedKey + " not found");
-				return;
-			} else {
-				if (Reflect.hasField(this, foundApplicationArgument.targetProperty) == true) {
-					Reflect.setField(this, foundApplicationArgument.targetProperty, submittedValue);
-				} else {
-					printArgHelpAndExit("Bad Arguments " + submittedKey + " not implemented - My fault! submit an bug please!");
-					return;
-				}
-			}
-		}
-	}
-
-	public function printArgHelpAndExit(errorMessage:String = "") {
-		var INDENT:String = "  \t";
-		var TAB:String = "\t";
-		var FG_RED:Int = 31;
-		var FG_GREEN:Int = 32;
-
-		var l:Array<String> = new Array<String>();
-
-		var toRed:String->String = function(input:String):String {
-			return "\033[1;" + FG_RED + "m" + input + " \033[0m";
-		}
-		var toGreen:String->String = function(input:String):String {
-			return "\033[1;" + FG_GREEN + "m" + input + " \033[0m";
-		}
-
-		if (errorMessage.length > 0) {
-			l.push(toRed("ERROR: " + errorMessage));
-			l.push("");
-		}
-
-		l.push(toGreen("Rfid Music Trigger Server - v0.0.0-alpha"));
-		l.push(toGreen("========================================"));
-
-		l.push("");
-		l.push("Usage:");
-		l.push(INDENT + "hl RFIDTriggerServer.hl [options]");
-
-		l.push("");
-		l.push("Description:");
-		l.push(INDENT + "The RFID Music Trigger Server and web admin interface");
-		l.push(INDENT + "By scanning tags you can trigger music to play from youtube, spotify or live streams");
-		l.push(INDENT + "When running, open http://localhost:1337 to setup reader and cards.");
-
-		l.push("");
-		l.push("Options:");
-		l.push(INDENT + "--help" + TAB + "Display this help message and exit.");
-		for (arg in applicationArguments) {
-			l.push(INDENT + arg.keyValue + TAB + arg.description);
-		}
-
-		l.push("");
-		l.push("Examples:");
-		l.push(INDENT + "# Start server in debug mode with rfid features deactivated");
-		l.push(INDENT + "hl RFIDTriggerServer.hl -d true");
-		l.push("");
-		l.push(INDENT + "# Display help message");
-		l.push(INDENT + "hl RFIDTriggerServer.hl --help");
-		l.push("");
-
-		while (l.length > 0) {
-			Sys.println(l.shift());
-		}
-
-		Sys.exit(1);
-	}
+	// 	public function parseApplicationArguments() {
+	// 		var args:Array<String> = Sys.args();
+	// trace("args--> "+args);
+	// 		var argPairs:Array<Array<String>> = new Array<Array<String>>();
+	// 		if (args.length == 0) {
+	// 			return;
+	// 		}
+	// 		if (args.indexOf("--help") > -1) {
+	// 			printArgHelpAndExit();
+	// 		}
+	// 		// by definition there must be an even number of args
+	// 		if (args.length % 2 != 0) {
+	// 			printArgHelpAndExit("Bad Arguments");
+	// 		}
+	// 		while (args.length > 0) {
+	// 			var argKey:String = args.shift();
+	// 			var argValue:String = args.shift();
+	// 			argPairs.push([argKey, argValue]);
+	// 		}
+	// 		// validate args
+	// 		for (argPair in argPairs) {
+	// 			var submittedKey:String = argPair[0];
+	// 			var submittedValue:String = argPair[1];
+	// 			var foundApplicationArgument:CommandArg = Lambda.find(applicationArguments, arg -> arg.keyValue == submittedKey);
+	// 			if (foundApplicationArgument == null) {
+	// 				printArgHelpAndExit("Bad Arguments " + submittedKey + " not found");
+	// 				return;
+	// 			} else {
+	// 				if (Reflect.hasField(this, foundApplicationArgument.targetProperty) == true) {
+	// 					Reflect.setField(this, foundApplicationArgument.targetProperty, submittedValue);
+	// 				} else {
+	// 					printArgHelpAndExit("Bad Arguments " + submittedKey + " not implemented - My fault! submit an bug please!");
+	// 					return;
+	// 				}
+	// 			}
+	// 		}
+	// 	}
+	// public function printArgHelpAndExit(errorMessage:String = "") {
+	// 	var INDENT:String = "  \t";
+	// 	var TAB:String = "\t";
+	// 	var FG_RED:Int = 31;
+	// 	var FG_GREEN:Int = 32;
+	// 	var l:Array<String> = new Array<String>();
+	// 	var toRed:String->String = function(input:String):String {
+	// 		return "\033[1;" + FG_RED + "m" + input + " \033[0m";
+	// 	}
+	// 	var toGreen:String->String = function(input:String):String {
+	// 		return "\033[1;" + FG_GREEN + "m" + input + " \033[0m";
+	// 	}
+	// 	if (errorMessage.length > 0) {
+	// 		l.push(toRed("ERROR: " + errorMessage));
+	// 		l.push("");
+	// 	}
+	// 	l.push(toGreen("Rfid Music Trigger Server - v0.0.0-alpha"));
+	// 	l.push(toGreen("========================================"));
+	// 	l.push("");
+	// 	l.push("Usage:");
+	// 	l.push(INDENT + "hl RFIDTriggerServer.hl [options]");
+	// 	l.push("");
+	// 	l.push("Description:");
+	// 	l.push(INDENT + "The RFID Music Trigger Server and web admin interface");
+	// 	l.push(INDENT + "By scanning tags you can trigger music to play from youtube, spotify or live streams");
+	// 	l.push(INDENT + "When running, open http://localhost:1337 to setup reader and cards.");
+	// 	l.push("");
+	// 	l.push("Options:");
+	// 	l.push(INDENT + "--help" + TAB + "Display this help message and exit.");
+	// 	for (arg in applicationArguments) {
+	// 		l.push(INDENT + arg.keyValue + TAB + arg.description);
+	// 	}
+	// 	l.push("");
+	// 	l.push("Examples:");
+	// 	l.push(INDENT + "# Start server in debug mode with rfid features deactivated");
+	// 	l.push(INDENT + "hl RFIDTriggerServer.hl -d true");
+	// 	l.push("");
+	// 	l.push(INDENT + "# Display help message");
+	// 	l.push(INDENT + "hl RFIDTriggerServer.hl --help");
+	// 	l.push("");
+	// 	while (l.length > 0) {
+	// 		Sys.println(l.shift());
+	// 	}
+	// 	Sys.exit(1);
+	// }
 
 	function get_settings():SettingsData {
 		return settings;
@@ -330,17 +367,5 @@ class SettingsManager extends spilehx.core.ManagerCore {
 	function set_settings(settings):SettingsData {
 		this.settings = settings;
 		return this.settings;
-	}
-}
-
-class CommandArg {
-	@:isVar public var keyValue(default, null):String;
-	@:isVar public var targetProperty(default, null):String;
-	@:isVar public var description(default, null):String;
-
-	public function new(keyValue:String, targetProperty:String, description:String) {
-		this.keyValue = "-" + keyValue;
-		this.targetProperty = targetProperty;
-		this.description = description;
 	}
 }

@@ -5,6 +5,7 @@ dist/*
 vol
 hxformat.json
 release
+bin
 
 assets/index.html
 assets/main.js

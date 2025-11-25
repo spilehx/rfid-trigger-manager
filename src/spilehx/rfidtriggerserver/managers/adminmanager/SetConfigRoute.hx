@@ -1,21 +1,27 @@
 package spilehx.rfidtriggerserver.managers.adminmanager;
 
 
+import wtri.Request;
+import wtri.Server;
 import spilehx.rfidtriggerserver.managers.adminmanager.http.Route;
 import spilehx.rfidtriggerserver.managers.settings.CardData;
 
-import weblink.Request;
-import spilehx.rfidtriggerserver.managers.adminmanager.http.Route;
-import weblink.Weblink;
+
 
 class SetConfigRoute extends Route {
-	public function new(server:Weblink) {
+	public function new(server:Server) {
 		super("/setconfig", new ConfigRouteData(), Route.POST_METHOD, server);
 	}
 
 	override function onRequest(request:Request) {
+
+
+
+		
+				LOG_OBJECT(haxe.Json.parse(Std.string(request.data)));
 		var requestDataObj:Dynamic = haxe.Json.parse(Std.string(request.data));
 		var newCardArray:Array<CardData> = requestDataObj.cards;
+
 
 		if(SettingsManager.instance.settings.deviceID != requestDataObj.deviceID){
 			USER_MESSAGE("Updated device: " + requestDataObj.deviceID);
@@ -47,6 +53,6 @@ class SetConfigRoute extends Route {
 		}
 		var configRouteData:ConfigRouteData = new ConfigRouteData();
 		configRouteData.config = SettingsManager.instance.settings;
-		respond(configRouteData);
+		sendData(configRouteData);
 	}
 }

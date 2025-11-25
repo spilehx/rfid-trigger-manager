@@ -1,19 +1,21 @@
 package spilehx.rfidtriggerserver.managers.adminmanager;
 
+import wtri.Request;
+import wtri.Server;
 import spilehx.rfidtriggerserver.managers.adminmanager.http.RestDataObject;
-import weblink.Request;
 import spilehx.rfidtriggerserver.managers.adminmanager.http.Route;
-import weblink.Weblink;
 
 class TiggerCardRoute extends Route {
-	public function new(server:Weblink) {
+	public function new(server:Server) {
 		super("/trigger", new RestDataObject(), Route.GET_METHOD, server);
 	}
 
 	override function onRequest(request:Request) {
-		var query:Dynamic = request.query();
+	LOG("TRIGGGER");
+	
+		var query:Dynamic = request.params;
 		var cardId:String = Reflect.getProperty(query, "cardid");
-		this.response.send("OK");
+		sendTxt("OK");
 
 		if (SettingsManager.instance.hasCard(cardId) == true) {
 			USER_MESSAGE("Manual Trigger " + cardId);

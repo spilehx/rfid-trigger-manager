@@ -1,27 +1,45 @@
-# Create admin page js
--lib haxeui-html5 haxeui-core
--cp src
--main RFIDTriggerAdmin
--js ./assets/main.js
+# # Create admin page js
+# -lib haxeui-html5 haxeui-core
+# -cp src
+# -main RFIDTriggerAdmin
+# -js ./assets/main.js
 
-# ## Use build time macro to create HTML boiler plate for admin
---next
--cp src
--D adminHTMLFileName=index.html
--D outputFolderPath=./assets
---macro spilehx.rfidtriggeradmin.RFIDTriggerAdminHTMLGenerator.generateHtmlFile()
+# # ## Use build time macro to create HTML boiler plate for admin
+# --next
+# -cp src
+# -D adminHTMLFileName=index.html
+# -D outputFolderPath=./assets
+# --macro spilehx.rfidtriggeradmin.RFIDTriggerAdminHTMLGenerator.generateHtmlFile()
 
 # Build server - this will also bundle the js and html internally, so is dependent on output from previouse steps being in assets folder 
---next
--lib weblink
--cp src
--main RFIDTriggerServer
---hl dist/RFIDTriggerServer.hl
+# # --next
+# -lib wtri 
+# ##haxeui-core haxeui-hxwidgets hxWidgets
+# -cp src
+# -main RFIDTriggerServer
+# --hl dist/RFIDTriggerServer.hl
 
-# Buid hashlink C code
---next
--lib weblink hashlink
+# # Buid hashlink C code
+# --next
+# -lib weblink hashlink
+# -cp src
+# -main RFIDTriggerServer
+# -D hlgen.makefile=make
+# --hl dist/out/RFIDTriggerServer.c
+
+
+
+# source files
+-lib wtri 
+##haxeui-core haxeui-hxwidgets hxWidgets
 -cp src
+# entry point
 -main RFIDTriggerServer
--D hlgen.makefile=make
---hl dist/out/RFIDTriggerServer.c
+# compile to C++ binary
+-cpp dist/cpp
+# -D analyzer-optimize
+# -D HXCPP_OPTIMIZE
+
+## cleanup
+--next
+--cmd cp ./dist/cpp/RFIDTriggerServer ./dist/
