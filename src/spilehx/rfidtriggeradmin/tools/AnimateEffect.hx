@@ -201,6 +201,7 @@ class AnimateEffect {
 	}
 
 	public static function bounceInForward(component:Component, ?duration:Float = .8, ?onComplete:Function = null) {
+		component.hidden = false;
 		var animId:String = "bounceForwardInAnimCss";
 		var animCssString:String = animId + " " + duration + "s ease-in 0s 1 normal forwards";
 
@@ -216,10 +217,24 @@ class AnimateEffect {
 	}
 
 	public static function fadeOutForward(component:Component, ?duration:Float = .5, ?onComplete:Function = null) {
+		if(	component.hidden == true){
+			LOG_WARN("Already hidden");
+			if(onComplete != null){
+				onComplete();
+			}
+			return;
+		}
+		
 		var animId:String = "fadeForwardOutAnimCss";
 		var animCssString:String = animId + " " + duration + "s cubic-bezier(0.5, 0, 0.75, 0) 0s 1 normal forwards";
 
-		triggerCssAnim(component, animId, fadeForwardOutAnimCss, animCssString, onComplete);
+		// triggerCssAnim(component, animId, fadeForwardOutAnimCss, animCssString, onComplete);
+		triggerCssAnim(component, animId, fadeForwardOutAnimCss, animCssString, function() {
+			component.hidden = true;
+			if(onComplete != null){
+				onComplete();
+			}
+		});
 	}
 
 	public static function attensionHeartBeat(component:Component, ?loop:Bool = true, ?duration:Float = 3, ?nCycles:Int = 1, ?onComplete:Function = null) {
@@ -270,16 +285,12 @@ class AnimateEffect {
 		component.element.style.animation = triggerString;
 
 		var clearUp:Dynamic->Void = function(?e) {
-			component.element.style.animation = "";
-
 			if (onComplete != null) {
 				onComplete();
 			}
 		}
 
-		component.element.addEventListener("animationend", clearUp);
-		component.registerEvent(UIEvent.HIDDEN, clearUp);
-		component.registerEvent(UIEvent.COMPONENT_REMOVED_FROM_PARENT, clearUp);
+		component.element.addEventListener("animationend", clearUp, { once: true });
 	}
 
 	public static function shake(component:Component) {
