@@ -9,7 +9,7 @@ import haxe.Timer;
 
 class RFIDTriggerAdminConfigManager {
 	private var updateFunctions:Array<SettingsData->Void>;
-	private var updateTimer:Timer;
+	private var reLoadDelay:Timer;
 	public var settings:SettingsData;
 	private var serverUrl:String;
 	public static final instance:RFIDTriggerAdminConfigManager = new RFIDTriggerAdminConfigManager();
@@ -27,11 +27,13 @@ class RFIDTriggerAdminConfigManager {
 	}
 
 	private function reloadSettings() {
-		var delay:Timer = new Timer(RFIDTriggerAdminSettings.UPDATE_INTERVAL);
-		delay.run = function() {
-			delay.stop();
-			delay = null;
-			loadSettings(onLoadSuccess, onLoadError);
+		if(reLoadDelay == null){
+			reLoadDelay = new Timer(RFIDTriggerAdminSettings.UPDATE_INTERVAL);
+			reLoadDelay.run = function() {
+				reLoadDelay.stop();
+				reLoadDelay = null;
+				loadSettings(onLoadSuccess, onLoadError);
+			}
 		}
 	}
 
