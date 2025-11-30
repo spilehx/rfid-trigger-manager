@@ -3,6 +3,7 @@ package spilehx.config;
 class RFIDTriggerAdminSettings {
 	public static final SECTION_FADEIN_DUR:Float = .4;
 	public static final UPDATE_INTERVAL:Int = 1000;
+	public static final REQUEST_TIMEOUT:Int = 5000;
 	public static final PAGE_BG_COLOUR:String = "0x000000";
 	public static final DEPTH_SHADOW_COLOUR:Int = 0x696969;
 	public static final SECTION_BG_COLOUR:Int = 0x333333;

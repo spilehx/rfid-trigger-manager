@@ -10,36 +10,29 @@ import haxe.Timer;
 class RFIDTriggerAdminConfigManager {
 	private var updateFunctions:Array<SettingsData->Void>;
 	private var updateTimer:Timer;
-
 	public var settings:SettingsData;
-
 	private var serverUrl:String;
-
 	public static final instance:RFIDTriggerAdminConfigManager = new RFIDTriggerAdminConfigManager();
 
 	private function new() {}
 
 	public function init() {
 		updateFunctions = new Array<SettingsData->Void>();
+		serverUrl = js.Browser.document.location.origin + "/";
 		startAutoUpdate();
 	}
 
-	public function startAutoUpdate(interval:Int = 0) {
-		if (interval == 0) {
-			interval = RFIDTriggerAdminSettings.UPDATE_INTERVAL;
-		}
-		serverUrl = js.Browser.document.location.origin + "/";
-		updateTimer = new Timer(interval);
-		updateTimer.run = onUpdate;
-	}
-
-	public function stopAutoUpdate() {
-		updateTimer.stop();
-		updateTimer = null;
-	}
-
-	private function onUpdate() {
+	private function startAutoUpdate(interval:Int = 0) {
 		loadSettings(onLoadSuccess, onLoadError);
+	}
+
+	private function reloadSettings() {
+		var delay:Timer = new Timer(RFIDTriggerAdminSettings.UPDATE_INTERVAL);
+		delay.run = function() {
+			delay.stop();
+			delay = null;
+			loadSettings(onLoadSuccess, onLoadError);
+		}
 	}
 
 	private function onLoadSuccess(sd:SettingsData) {
@@ -55,19 +48,21 @@ class RFIDTriggerAdminConfigManager {
 	}
 
 	private function onLoadError(response:Dynamic) {
+		LOG_ERROR("onLoadError");
 		RFIDTriggerAdminView.instance.showNoConnectComponent();
 	}
 
 	private function loadSettings(onSuccess:SettingsData->Void, onError:Dynamic->Void) {
 		var path:String = "config";
-
 		var httpReq:HTTPRequester = new HTTPRequester(serverUrl + path, "", function(data:Dynamic) {
 			var sd:SettingsData = cast Json.parse(data).config;
 			sd.logs = cast Json.parse(data).logs;
 			onSuccess(sd);
+			reloadSettings();
 		}, function(data) {
 			onError(data);
-		});
+			reloadSettings();
+		}, RFIDTriggerAdminSettings.REQUEST_TIMEOUT);
 
 		httpReq.get();
 	}
