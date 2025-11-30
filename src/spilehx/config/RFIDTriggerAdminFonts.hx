@@ -5,6 +5,14 @@ import haxe.ui.core.Component;
 class RFIDTriggerAdminFonts {
 	private static final SITE_FONT_PRIMARY:String = "AvenirRegular";
 	private static final SITE_FONT_SECONDARY:String = "Antonio-VariableFont_wght";
+private static final SITE_FONT_CLOCK:String = "DSEG7Modern-BoldItalic";
+
+	
+
+	public static function SET_FONT_CLOCK(field:Component,) {
+		var fontSize:Float = 3;
+		setFont(field, fontSize, true, true, SITE_FONT_CLOCK);
+	}
 
 	public static function SET_FONT_XL(field:Component, bold:Bool = false, primary:Bool = true) {
 		var fontSize:Float = 3.2;
@@ -31,10 +39,14 @@ class RFIDTriggerAdminFonts {
 		setFont(field, fontSize, bold, primary);
 	}
 
-	private static function setFont(field:Component, fontSize:Float, bold:Bool = false, primary:Bool = true) {
+	private static function setFont(field:Component, fontSize:Float, bold:Bool = false, primary:Bool = true, forceFont:String = "") {
 		var fontNameString:String = SITE_FONT_PRIMARY;
 		if (primary != true) {
 			fontNameString = SITE_FONT_SECONDARY;
+		}
+
+		if(forceFont != ""){
+			fontNameString = forceFont;
 		}
 
 		var styleString:String = " font-family: '" + fontNameString + "'; font-size: " + fontSize + "vh;";
