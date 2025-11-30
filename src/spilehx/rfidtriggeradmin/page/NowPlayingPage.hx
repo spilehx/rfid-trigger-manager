@@ -48,6 +48,7 @@ class NowPlayingPage extends Box {
 	}
 
 	private function setupPage() {
+		js.Browser.document.body.style.cursor = "none";
 		contentContainer = new VBox();
 		contentContainer.horizontalAlign = contentContainer.verticalAlign = "center";
 		contentContainer.percentWidth = 70;
@@ -55,7 +56,7 @@ class NowPlayingPage extends Box {
 		this.addComponent(contentContainer);
 
 		nowPlayingIdleClockComponent = new NowPlayingIdleClockComponent();
-		nowPlayingIdleClockComponent.percentHeight = 80;
+		nowPlayingIdleClockComponent.percentHeight = 60;
 		nowPlayingIdleClockComponent.verticalAlign = nowPlayingIdleClockComponent.horizontalAlign = "center";
 		this.addComponent(nowPlayingIdleClockComponent);
 

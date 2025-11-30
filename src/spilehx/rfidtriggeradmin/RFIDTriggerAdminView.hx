@@ -1,5 +1,6 @@
 package spilehx.rfidtriggeradmin;
 
+import spilehx.rfidtriggeradmin.page.components.noconnection.NoConnectionComponent;
 import spilehx.rfidtriggeradmin.page.NowPlayingPage;
 import js.Browser;
 import spilehx.config.RFIDTriggerAdminSettings;
@@ -18,6 +19,7 @@ class RFIDTriggerAdminView {
 
 	private var lastBuildStamp:Float;
 	private var modal:ModalWindow;
+	private var noConnectionComponent:NoConnectionComponent;
 	private var _app:HaxeUIApp;
 	private var initalSettingsLoadComplete:Bool = false;
 
@@ -61,6 +63,20 @@ class RFIDTriggerAdminView {
 		RFIDTriggerAdminConfigManager.instance.registerSettingUpdate(onConfigUpdate);
 	}
 
+	public function showNoConnectComponent() {
+		if (noConnectionComponent == null) {
+			noConnectionComponent = new NoConnectionComponent();
+			_app.addComponent(noConnectionComponent);
+		}
+	}
+
+	public function hideNoConnectComponent() {
+		if (noConnectionComponent != null) {
+			_app.removeComponent(noConnectionComponent);
+			noConnectionComponent = null;
+		}
+	}
+
 	private function onConfigUpdate(settings:SettingsData) {
 		if (initalSettingsLoadComplete == false) {
 			initalSettingsLoadComplete = true;
@@ -83,10 +99,6 @@ class RFIDTriggerAdminView {
 
 	private function routeToPage(settings:SettingsData) {
 		if (js.Browser.document.location.href.indexOf("currentlyplaying") > -1) {
-			// set update to slower rate
-			// RFIDTriggerAdminConfigManager.instance.stopAutoUpdate();
-			// RFIDTriggerAdminConfigManager.instance.startAutoUpdate(RFIDTriggerAdminSettings.UPDATE_INTERVAL_SLOW);
-
 			_app.addComponent(new NowPlayingPage());
 		} else {
 			_app.addComponent(new MainPage());

@@ -10,7 +10,7 @@ private static final SITE_FONT_CLOCK:String = "DSEG7Modern-BoldItalic";
 	
 
 	public static function SET_FONT_CLOCK(field:Component,) {
-		var fontSize:Float = 3;
+		var fontSize:Float = 2;
 		setFont(field, fontSize, true, true, SITE_FONT_CLOCK);
 	}
 
