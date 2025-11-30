@@ -34,8 +34,7 @@ class NowPlayingComponent extends Box {
 		this.borderRadius = 5;
 		this.borderColor = RFIDTriggerAdminSettings.SECTION_BORDER_COLOUR;
 		this.borderSize = 2;
-
-		RFIDTriggerAdminFonts.SET_FONT_M(nowPlayingLabel, true);
+		RFIDTriggerAdminFonts.SET_FONT_S(nowPlayingLabel, true);
 	}
 
 	private function onShown(e) {

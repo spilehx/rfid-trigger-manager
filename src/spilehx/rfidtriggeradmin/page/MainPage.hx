@@ -1,6 +1,7 @@
 package spilehx.rfidtriggeradmin.page;
 
-import spilehx.rfidtriggeradmin.tools.UiFilterEffects;
+import spilehx.rfidtriggerserver.managers.settings.SettingsData;
+import spilehx.rfidtriggeradmin.page.components.nowplaying.NowPlayingComponent;
 import spilehx.rfidtriggeradmin.tools.AnimateEffect;
 import spilehx.config.RFIDTriggerAdminImg;
 import spilehx.config.RFIDTriggerAdminFonts;
@@ -14,7 +15,6 @@ import haxe.ui.components.Label;
 import haxe.ui.components.HorizontalRule;
 import spilehx.rfidtriggeradmin.page.sections.LogsSection;
 import spilehx.rfidtriggeradmin.page.sections.CardsListSection;
-import spilehx.rfidtriggeradmin.page.sections.OverViewSection;
 import haxe.ui.containers.VBox;
 import haxe.ui.events.UIEvent;
 import haxe.ui.containers.Box;
@@ -24,10 +24,9 @@ import haxe.ui.constants.ScaleMode;
 class MainPage extends Box {
 	private var contentContainer:VBox;
 	private var sectionContainer:VBox;
-
+	private var nowPlayingComponent:NowPlayingComponent; 
 	private static final CONTENT_PADDING:Float = 15;
-
-	private static final HEADER_HEIGHT:Float = 5;
+	private static final HEADER_HEIGHT:Float = 10;
 	private static final FOOTER_HEIGHT:Float = 3;
 
 	private static final SECTION_CONTENT_HEIGHT:Float = 100 - HEADER_HEIGHT - FOOTER_HEIGHT;
@@ -45,6 +44,11 @@ class MainPage extends Box {
 	private function onPageShown(e) {
 		this.unregisterEvent(UIEvent.SHOWN, onPageShown);
 		setupPage();
+		RFIDTriggerAdminConfigManager.instance.registerSettingUpdate(onUpdate);
+	}
+
+	private function onUpdate(settings:SettingsData) {
+		nowPlayingComponent.update();
 	}
 
 	private function setupPage() {
@@ -73,17 +77,24 @@ class MainPage extends Box {
 		contentContainer.addComponent(header);
 
 		var logoImg:Image = RFIDTriggerAdminImg.getImageComponent(RFIDTriggerAdminImg.LOGO_IMG);
-		logoImg.percentHeight = 100;
+		logoImg.percentHeight = 85;
 		logoImg.scaleMode = ScaleMode.FIT_HEIGHT;
-		logoImg.verticalAlign = "center";
+		logoImg.verticalAlign = "top";
 		logoImg.horizontalAlign = "left";
 		header.addComponent(logoImg);
+
+		nowPlayingComponent = new NowPlayingComponent(); 
+		nowPlayingComponent.verticalAlign = "top";
+		nowPlayingComponent.horizontalAlign = "right";
+		nowPlayingComponent.percentWidth = 40;
+		nowPlayingComponent.percentHeight = 65;
+		header.addComponent(nowPlayingComponent);
 
 		var settingButton:Box = new Box();
 		settingButton.verticalAlign = "bottom";
 		settingButton.horizontalAlign = "right";
 		settingButton.percentWidth = 5;
-		settingButton.percentHeight = 45;
+		settingButton.percentHeight = 20;
 
 		var settingIconImg:Image = RFIDTriggerAdminImg.getImageComponent(RFIDTriggerAdminImg.SETTINGS_ICON_IMG);
 		settingIconImg.percentHeight = 90;
@@ -163,19 +174,21 @@ class MainPage extends Box {
 		sectionContainer.verticalSpacing = 10;
 		contentContainer.addComponent(sectionContainer);
 
-		addOverViewSection();
+		// addOverViewSection();
 		addCardsSection();
 		addLogsSection();
 	}
 
-	private function addOverViewSection() {
-		var section = new PageSection(new OverViewSection(), RFIDTriggerAdminText.OVERVIEW_SECTION_TITLE, false, false);
-		section.backgroundColor = section.borderColor = 0x000000;
-		
-		
-		sectionContainer.addComponent(section);
-		section.percentHeight = 10;
-	}
+	// private function addNowPlaying(){
+
+	// }
+
+	// private function addOverViewSection() {
+	// 	var section = new PageSection(new OverViewSection(), RFIDTriggerAdminText.OVERVIEW_SECTION_TITLE, false, false);
+	// 	section.backgroundColor = section.borderColor = 0x000000;	
+	// 	sectionContainer.addComponent(section);
+	// 	section.percentHeight = 10;
+	// }
 
 	private function addCardsSection() {
 		var section = new PageSection(new CardsListSection(), RFIDTriggerAdminText.CARDLIST_SECTION_TITLE, true);
