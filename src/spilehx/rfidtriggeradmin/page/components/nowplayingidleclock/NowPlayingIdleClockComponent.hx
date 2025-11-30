@@ -9,15 +9,21 @@ import haxe.ui.containers.Box;
 
 @:xml('
    	<box height="100%" verticalAlign="center" horizontalAlign="center">
-		<vbox id="numberGrid" width="100%" height="100%" verticalAlign="center" horizontalAlign="center" verticalSpacing="0">
-            <hbox width="100%" height="50%" horizontalAlign="center">
-                <label id="hour1Label" textAlign="center" width="50%" verticalAlign="center" horizontalAlign="center" text="3"/>
-                <label id="hour2Label" textAlign="center" width="50%" verticalAlign="center" horizontalAlign="center" text="6"/>
-            </hbox>
-            <hbox id="test2" width="100%" height="50%" horizontalAlign="center">
-                <label id="min1Label" textAlign="center" width="50%" verticalAlign="center" horizontalAlign="center" text="3"/>
-                <label id="min2Label" textAlign="center" width="50%" verticalAlign="center" horizontalAlign="center" text="6"/>
-            </hbox>
+		<vbox id="numberGrid" width="100%" height="100%" verticalAlign="center" horizontalAlign="center" verticalSpacing="2">
+            <vbox width="100%" height="70%" verticalAlign="center" horizontalAlign="center">
+                <hbox width="100%" height="100%" horizontalAlign="center">
+                    <label id="hour1Label" textAlign="center" width="50%" verticalAlign="center" horizontalAlign="center" text="3"/>
+                    <label id="hour2Label" textAlign="center" width="50%" verticalAlign="center" horizontalAlign="center" text="6"/>
+                </hbox>
+                <hbox width="100%" height="100%" horizontalAlign="center">
+                    <label id="min1Label" textAlign="center" width="50%" verticalAlign="center" horizontalAlign="center" text="3"/>
+                    <label id="min2Label" textAlign="center" width="50%" verticalAlign="center" horizontalAlign="center" text="6"/>
+                </hbox>
+                <label id="secondDot" textAlign="center" width="100%" verticalAlign="center" horizontalAlign="center" text="-"/>
+            </vbox>
+            <box width="100%" height="10%" verticalAlign="center" horizontalAlign="center">
+                 <label id="dateLabel" textAlign="center" width="50%" verticalAlign="center" horizontalAlign="center"/>
+            </box>
         </vbox>
 	</box>
 ')
@@ -36,11 +42,11 @@ class NowPlayingIdleClockComponent extends Box {
 		setFontStyle(hour2Label);
 		setFontStyle(min1Label);
 		setFontStyle(min2Label);
+		setFontStyle(secondDot);
+		setFontStyle(dateLabel);
+
 		this.width = this.height * .6;
-
-		// set initial values
 		update();
-
 		startUpdateInterval();
 	}
 
@@ -50,11 +56,11 @@ class NowPlayingIdleClockComponent extends Box {
 	}
 
 	function resizeTextToFit(label:Label) {
-		var targetHeight:Float = label.parentComponent.height * .8;
+		var targetHeight:Float = label.parentComponent.height;
 		while (label.height < targetHeight) {
 			label.invalidateComponentStyle();
 			label.validateNow();
-			label.fontSize += .2;
+			label.fontSize += 1;
 		}
 	}
 
@@ -90,9 +96,9 @@ class NowPlayingIdleClockComponent extends Box {
 	private function updateTimeFields() {
 		var now = Date.now();
 
-		// var day = StringTools.lpad(Std.string(now.getDate()), "0", 2);
-		// var month = StringTools.lpad(Std.string(now.getMonth() + 1), "0", 2);
-		// var year = Std.string(now.getFullYear());
+		var day = StringTools.lpad(Std.string(now.getDate()), "0", 2);
+		var month = StringTools.lpad(Std.string(now.getMonth() + 1), "0", 2);
+		var year = Std.string(now.getFullYear()).substr(2);
 
 		var hour = StringTools.lpad(Std.string(now.getHours()), "0", 2);
 		var minute = StringTools.lpad(Std.string(now.getMinutes()), "0", 2);
@@ -102,5 +108,8 @@ class NowPlayingIdleClockComponent extends Box {
 		hour2Label.text = hour.substr(1, 1);
 		min1Label.text = minute.substr(0, 1);
 		min2Label.text = minute.substr(1, 1);
+		dateLabel.text = day + "-" + month + "-" + year;
+
+		secondDot.text = second;
 	}
 }

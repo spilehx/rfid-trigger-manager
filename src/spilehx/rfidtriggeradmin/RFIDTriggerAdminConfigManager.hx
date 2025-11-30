@@ -12,6 +12,7 @@ class RFIDTriggerAdminConfigManager {
 	private var updateTimer:Timer;
 
 	public var settings:SettingsData;
+
 	private var serverUrl:String;
 
 	public static final instance:RFIDTriggerAdminConfigManager = new RFIDTriggerAdminConfigManager();
@@ -24,16 +25,15 @@ class RFIDTriggerAdminConfigManager {
 	}
 
 	public function startAutoUpdate(interval:Int = 0) {
-
-		if(interval == 0){
+		if (interval == 0) {
 			interval = RFIDTriggerAdminSettings.UPDATE_INTERVAL;
 		}
-		serverUrl = js.Browser.document.location.origin+"/";
+		serverUrl = js.Browser.document.location.origin + "/";
 		updateTimer = new Timer(interval);
 		updateTimer.run = onUpdate;
 	}
 
-	public function stopAutoUpdate(){
+	public function stopAutoUpdate() {
 		updateTimer.stop();
 		updateTimer = null;
 	}
@@ -43,6 +43,7 @@ class RFIDTriggerAdminConfigManager {
 	}
 
 	private function onLoadSuccess(sd:SettingsData) {
+		RFIDTriggerAdminView.instance.hideNoConnectComponent();
 		settings = sd;
 		sendUpdates();
 	}
@@ -53,7 +54,9 @@ class RFIDTriggerAdminConfigManager {
 		}
 	}
 
-	private function onLoadError(response:Dynamic) {}
+	private function onLoadError(response:Dynamic) {
+		RFIDTriggerAdminView.instance.showNoConnectComponent();
+	}
 
 	private function loadSettings(onSuccess:SettingsData->Void, onError:Dynamic->Void) {
 		var path:String = "config";
