@@ -64,14 +64,14 @@ class RFIDTriggerAdminView {
 	}
 
 	public function showNoConnectComponent() {
-		if (noConnectionComponent == null) {
+		if (noConnectionComponent == null && _app != null) {
 			noConnectionComponent = new NoConnectionComponent();
 			_app.addComponent(noConnectionComponent);
 		}
 	}
 
 	public function hideNoConnectComponent() {
-		if (noConnectionComponent != null) {
+		if (noConnectionComponent != null && _app != null) {
 			_app.removeComponent(noConnectionComponent);
 			noConnectionComponent = null;
 		}

@@ -15,6 +15,11 @@ class GetConfigRoute extends Route {
 		var configRouteData:ConfigRouteData = new ConfigRouteData();
 		configRouteData.config = SettingsManager.instance.settings;
 		configRouteData.logs = LogStream.instance.logString;
+
+		// //Testing timeout
+		// var randDelay = Std.random(6) + 1;
+		// Sys.sleep(randDelay);
+
 		respond(configRouteData);
 	}
 }
