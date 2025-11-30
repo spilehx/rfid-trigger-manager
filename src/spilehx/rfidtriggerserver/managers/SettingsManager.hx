@@ -259,6 +259,8 @@ for (field in fields) {
 
 	public function hasCard(id:String) {
 		for (card in settings.cards) {
+
+			trace("hs card"+id+" "+card.id);
 			if (card.id == id) {
 				return true;
 			}

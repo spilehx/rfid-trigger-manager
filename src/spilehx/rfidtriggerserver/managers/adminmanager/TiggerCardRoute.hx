@@ -11,10 +11,7 @@ class TiggerCardRoute extends Route {
 	}
 
 	override function onRequest(request:Request) {
-	LOG("TRIGGGER");
-	
-		var query:Dynamic = request.params;
-		var cardId:String = Reflect.getProperty(query, "cardid");
+		var cardId:String = request.params.get("cardid");
 		sendTxt("OK");
 
 		if (SettingsManager.instance.hasCard(cardId) == true) {

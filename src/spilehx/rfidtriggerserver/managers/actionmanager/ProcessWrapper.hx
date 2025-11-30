@@ -25,14 +25,9 @@ class ProcessWrapper {
 
 	public function start(cmd:String, args:Array<String>, ?onCompleteFollowOn:Function = null):Void {
 		this.onCompleteFollowOn = onCompleteFollowOn;
-		// trace("  cmd " + cmd + " " + args.join(" "));
-		// proc = new Process("/bin/sh", ["-c", cmd+" "+args.join(" ")], true);
-		// Sys.putEnv("PATH", "/usr/local/bin:" + Sys.getEnv("PATH"));
-		// Sys.putEnv("XDG_RUNTIME_DIR", "/run/user/1000");
-		// Sys.putEnv("PULSE_SERVER", "unix:/run/user/1000/pulse/native");
-		// setupEnv();
-		// EnvHelper.setupEnvAll(false); // pulls caller's env if started via sudo
+
 		proc = new Process(cmd, args, true);
+
 
 
 		pid = proc.getPid();
