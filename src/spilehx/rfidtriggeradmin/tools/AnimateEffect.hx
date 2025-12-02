@@ -416,42 +416,7 @@ class AnimateEffect {
 	}
 
 	public static function tweenValue(startValue:Float, endValue:Float, action:Float->Void, ?duration:Int = 100, ?onFinished:Function = null):Void {
-		var ease:Float->Float = function(t:Float):Float {
-			// easeInOutCubic
-			if (t < 0.5) {
-				return 4 * t * t * t;
-			} else {
-				return 1 - Math.pow(-2 * t + 2, 3) / 2;
-			}
-		};
-
-		var startStamp:Float = Timer.stamp(); // seconds
-		var totalMs:Float = duration;
-		var range:Float = endValue - startValue;
-		var tickMs:Int = 16;
-		var timer:Timer = new Timer(tickMs);
-		timer.run = function() {
-			var now:Float = Timer.stamp();
-			var elapsedMs:Float = (now - startStamp) * 1000.0;
-			// Clamp progress to [0,1]
-			var t:Float = elapsedMs / totalMs;
-			if (t < 0) {
-				t = 0;
-			}
-			if (t > 1) {
-				t = 1;
-			}
-			var v:Float = startValue + range * ease(t);
-			action(v);
-			if (t >= 1) {
-				timer.stop();
-				// Ensure exact final value
-				action(endValue);
-				if (onFinished != null) {
-					onFinished();
-				}
-			}
-		};
+		spilehx.rfidtriggeradmin.tools.TweenTools.tweenValue(startValue, endValue, action, duration, onFinished);
 	}
 
 	public static function clickEffect(component:Component, down:Bool) {

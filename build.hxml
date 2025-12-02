@@ -1,27 +1,42 @@
-# Create admin page js
--lib haxeui-html5 haxeui-core
--cp src
--main RFIDTriggerAdmin
--js ./assets/main.js
+# # Create admin page js
+# -lib haxeui-html5 haxeui-core
+# -cp src
+# -main RFIDTriggerAdmin
+# -js ./assets/main.js
 
-# ## Use build time macro to create HTML boiler plate for admin
---next
--cp src
--D adminHTMLFileName=index.html
--D outputFolderPath=./assets
---macro spilehx.rfidtriggeradmin.RFIDTriggerAdminHTMLGenerator.generateHtmlFile()
+# # ## Use build time macro to create HTML boiler plate for admin
+# --next
+# -cp src
+# -D adminHTMLFileName=index.html
+# -D outputFolderPath=./assets
+# --macro spilehx.rfidtriggeradmin.RFIDTriggerAdminHTMLGenerator.generateHtmlFile()
 
-# Build server - this will also bundle the js and html internally, so is dependent on output from previouse steps being in assets folder 
---next
--lib weblink
+# # Build server - this will also bundle the js and html internally, so is dependent on output from previouse steps being in assets folder 
+# --next
+# -lib weblink
+## haxelib install haxeui-openfl
+## haxelib run openfl setup
+## lime setup hashlink
+
+# -lib weblink haxeui-core haxeui-openfl
+
+## haxelib git hashlink https://github.com/HaxeFoundation/hashlink.git master other/haxelib/
+## haxelib git heaps https://github.com/HeapsIO/heaps.git
+## haxelib git hlsdl https://github.com/HaxeFoundation/hashlink master libs/sdl
+## haxelib git hlopenal https://github.com/HaxeFoundation/hashlink master libs/openal
+-lib weblink haxeui-core haxeui-heaps heaps hlsdl hlopenal
+-D resourcesPath=assets/serverViewAssets
+
+
+
 -cp src
 -main RFIDTriggerServer
---hl dist/RFIDTriggerServer.hl
+--hl dist/RFIDTriggerServer.hl 
 
-# Buid hashlink C code
---next
--lib weblink hashlink
--cp src
--main RFIDTriggerServer
--D hlgen.makefile=make
---hl dist/out/RFIDTriggerServer.c
+# # Buid hashlink C code
+# --next
+# -lib weblink hashlink
+# -cp src
+# -main RFIDTriggerServer
+# -D hlgen.makefile=make
+# --hl dist/out/RFIDTriggerServer.c

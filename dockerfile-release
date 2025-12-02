@@ -32,7 +32,12 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 
 ## pull and build hashlink
 WORKDIR /hashlink
-RUN git clone https://github.com/HaxeFoundation/hashlink .
+# RUN git clone https://github.com/HaxeFoundation/hashlink .
+# RUN make && make install
+
+## use nightly build
+RUN wget https://github.com/HaxeFoundation/hashlink/archive/refs/tags/latest.tar.gz
+WORKDIR /hashlink/hashlink-latest
 RUN make && make install
 
 ## clean up
@@ -46,8 +51,13 @@ RUN haxelib git weblink https://github.com/PXshadow/weblink
 RUN haxelib git hashlink https://github.com/HaxeFoundation/hashlink
 RUN haxelib dev hashlink $(haxelib libpath hashlink:git)/other/haxelib
 
+RUN haxelib git heaps https://github.com/HeapsIO/heaps.git
+RUN haxelib git hlsdl https://github.com/HaxeFoundation/hashlink master libs/sdl
+RUN haxelib git hlopenal https://github.com/HaxeFoundation/hashlink master libs/openal
+
 RUN haxelib git haxeui-core https://github.com/haxeui/haxeui-core
 RUN haxelib git haxeui-html5 https://github.com/haxeui/haxeui-html5
+RUN haxelib git haxeui-heaps https://github.com/haxeui/haxeui-heaps
 RUN haxe build.hxml
 
 ## get output bin

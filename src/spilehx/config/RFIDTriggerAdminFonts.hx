@@ -5,9 +5,7 @@ import haxe.ui.core.Component;
 class RFIDTriggerAdminFonts {
 	private static final SITE_FONT_PRIMARY:String = "AvenirRegular";
 	private static final SITE_FONT_SECONDARY:String = "Antonio-VariableFont_wght";
-private static final SITE_FONT_CLOCK:String = "DSEG7Modern-BoldItalic";
-
-	
+	private static final SITE_FONT_CLOCK:String = "DSEG7Modern-BoldItalic";
 
 	public static function SET_FONT_CLOCK(field:Component,) {
 		var fontSize:Float = 2;
@@ -45,7 +43,7 @@ private static final SITE_FONT_CLOCK:String = "DSEG7Modern-BoldItalic";
 			fontNameString = SITE_FONT_SECONDARY;
 		}
 
-		if(forceFont != ""){
+		if (forceFont != "") {
 			fontNameString = forceFont;
 		}
 
